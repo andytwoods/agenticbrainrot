@@ -1,6 +1,164 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-  <h1 class="title">Welcome to AgenticBrainrot</h1>
-  <p class="subtitle">A research study on agentic coding.</p>
+  {# Hero Section #}
+  <section class="hero is-medium is-link">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title is-1">
+          AgenticBrainrot
+        </h1>
+        <p class="subtitle is-3">
+          Is "Vibe Coding" making us worse at Python?
+        </p>
+        <div class="buttons is-centered">
+          <a href="{% url 'account_signup' %}" class="button is-primary is-large">
+            <strong>Join the Study</strong>
+          </a>
+          <a href="#about" class="button is-light is-large">
+            Learn More
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# About Section #}
+  <section id="about" class="section">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column is-6">
+          <h2 class="title is-2">The Mission</h2>
+          <p class="content is-size-5">
+            As AI assistants like Cursor and GitHub Copilot become ubiquitous, we're entering the era of <strong>vibe coding</strong>—where the AI generates the logic while we guide the "vibe".
+          </p>
+          <p class="content is-size-5">
+            But what happens to our internal skills over time? Does this convenience lead to cognitive atrophy, or does it free us to solve higher-level problems?
+          </p>
+          <p class="content is-size-5">
+            <strong>AgenticBrainrot</strong> is a longitudinal, citizen-science research project designed to measure exactly that.
+          </p>
+        </div>
+        <div class="column is-6">
+          <figure class="image is-4by3">
+            <div class="has-background-light" style="display: flex; align-items: center; justify-content: center; height: 100%; border: 2px dashed #ccc;">
+              <span class="has-text-grey">Placeholder: Illustration of Human-AI Collaboration</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# The Big Question Section #}
+  <section class="section has-background-light">
+    <div class="container">
+      <div class="has-text-centered mb-6">
+        <h2 class="title is-2">The Big Question</h2>
+        <p class="subtitle">Real-time aggregate data from our participants</p>
+      </div>
+      <div class="columns">
+        <div class="column is-8">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-4">Average Skill Trajectory</p>
+              <figure class="image is-2by1">
+                <div class="has-background-white" style="display: flex; align-items: center; justify-content: center; height: 100%; border: 1px solid #eee;">
+                  <span class="has-text-grey">Placeholder: Chart showing accuracy for High vs Low vibe-coders</span>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-4">Participation Growth</p>
+              <figure class="image is-square">
+                <div class="has-background-white" style="display: flex; align-items: center; justify-content: center; height: 100%; border: 1px solid #eee;">
+                  <span class="has-text-grey">Placeholder: Participation Map / Growth Graph</span>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# How it Works #}
+  <section class="section">
+    <div class="container">
+      <div class="has-text-centered mb-6">
+        <h2 class="title is-2">How It Works</h2>
+      </div>
+      <div class="columns">
+        <div class="column has-text-centered">
+          <div class="icon is-large has-text-primary">
+            <i class="fas fa-user-plus fa-3x"></i>
+          </div>
+          <h3 class="title is-4 mt-4">1. Register</h3>
+          <p>Create a profile and provide your baseline demographics and coding habits.</p>
+        </div>
+        <div class="column has-text-centered">
+          <div class="icon is-large has-text-primary">
+            <i class="fas fa-code fa-3x"></i>
+          </div>
+          <h3 class="title is-4 mt-4">2. Assessment</h3>
+          <p>Complete short Python challenges periodically (no AI, no Googling!).</p>
+        </div>
+        <div class="column has-text-centered">
+          <div class="icon is-large has-text-primary">
+            <i class="fas fa-chart-line fa-3x"></i>
+          </div>
+          <h3 class="title is-4 mt-4">3. Insights</h3>
+          <p>Explore your personal performance trends and see how you compare to the cohort.</p>
+        </div>
+        <div class="column has-text-centered">
+          <div class="icon is-large has-text-primary">
+            <i class="fas fa-calendar-check fa-3x"></i>
+          </div>
+          <h3 class="title is-4 mt-4">4. Longitudinal</h3>
+          <p>Return every 28 days to build a robust dataset of your skill trajectory.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# Call to Action #}
+  <section class="section has-background-primary-light">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <h2 class="title is-3">Help us answer the big question</h2>
+          <p class="subtitle">We are looking for participants, researchers, and collaborators.</p>
+        </div>
+        <div class="column is-narrow">
+          <div class="buttons">
+            <a href="{% url 'account_signup' %}" class="button is-primary is-large">Start Contributing</a>
+            <a href="https://github.com/your-repo/discussions" class="button is-link is-outlined is-large">Collaborator Interest</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# Sponsors #}
+  <section class="section">
+    <div class="container has-text-centered">
+      <p class="heading mb-4">Supported By</p>
+      <div class="columns is-centered is-mobile is-multiline">
+        <div class="column is-narrow">
+          <span class="tag is-large is-light">University Partner</span>
+        </div>
+        <div class="column is-narrow">
+          <span class="tag is-large is-light">OSS Foundation</span>
+        </div>
+        <div class="column is-narrow">
+          <span class="tag is-large is-light">Tech Sponsor</span>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock content %}
