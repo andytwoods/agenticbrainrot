@@ -5,6 +5,23 @@
   </div>
 </div>
 
+<div id="code-editor-toolbar" class="field is-grouped mb-0 p-2 is-dark" style="background-color: var(--bulma-scheme-main-ter); border: 1px solid var(--bulma-border); border-bottom: none; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+  <div class="control">
+    <div class="select is-small">
+      <select id="theme-select" title="Change editor theme">
+        <option value="default">Default Theme</option>
+        <option value="dark">Dark Theme</option>
+        <option value="light">Light Theme</option>
+        <option value="dracula">Dracula</option>
+        <option value="solarized-light">Solarized Light</option>
+        <option value="solarized-dark">Solarized Dark</option>
+      </select>
+    </div>
+  </div>
+  <div class="control">
+    <span class="is-size-7 has-text-grey">Python 3.x</span>
+  </div>
+</div>
 <div id="code-editor" data-skeleton="{{ challenge.skeleton_code }}"></div>
 
 <div class="buttons mt-3">

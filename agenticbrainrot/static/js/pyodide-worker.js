@@ -26,9 +26,45 @@ self.onmessage = async function (e) {
                 stdout: (text) => self.postMessage({ type: "stdout", text }),
                 stderr: (text) => self.postMessage({ type: "stderr", text }),
             });
+            // Setup linting environment
+            pyodide.runPython(`
+import sys
+import ast
+
+def check_syntax(code):
+    try:
+        compile(code, "<string>", "exec")
+        return []
+    except SyntaxError as e:
+        return [{
+            "line": e.lineno or 1,
+            "col": e.offset or 1,
+            "message": e.msg,
+            "severity": "error"
+        }]
+    except Exception as e:
+        return [{
+            "line": 1,
+            "col": 1,
+            "message": str(e),
+            "severity": "error"
+        }]
+`);
             self.postMessage({ type: "ready" });
         } catch (err) {
             self.postMessage({ type: "init_error", error: err.message });
+        }
+    }
+
+    if (msg.type === "lint") {
+        if (!pyodide) return;
+        try {
+            const pyCode = `import json; json.dumps(check_syntax(${JSON.stringify(msg.code)}))`;
+            const result = pyodide.runPython(pyCode);
+            self.postMessage({ type: "lint_result", results: JSON.parse(result), id: msg.id });
+        } catch (err) {
+            // If check_syntax itself fails
+            self.postMessage({ type: "lint_result", results: [{ line: 1, col: 1, message: err.message, severity: "error" }], id: msg.id });
         }
     }
 

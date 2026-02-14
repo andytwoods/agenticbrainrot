@@ -1,0 +1,56 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="{% url 'home' %}">
+      <strong>AgenticBrainrot</strong>
+    </a>
+    <a role="button"
+       class="navbar-burger"
+       aria-label="menu"
+       aria-expanded="false"
+       data-target="navbarMain">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div id="navbarMain" class="navbar-menu">
+    <div class="navbar-start">
+      {% if request.user.is_staff %}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Admin Preview</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'challenges:preview_challenge' %}">Code Editor</a>
+            <a class="navbar-item" href="{% url 'admin:index' %}">Django Admin</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <button id="theme-switcher" class="button is-rounded is-light" title="Toggle dark/light mode">
+          <span class="icon">
+            <i class="fas fa-moon"></i>
+          </span>
+          <span class="theme-text is-hidden-touch">Dark Mode</span>
+        </button>
+      </div>
+      {% if request.user.is_authenticated %}
+        <a class="navbar-item"
+           href="{% url 'accounts:detail' request.user.pk %}">My Profile</a>
+        <div class="navbar-item">
+          <a class="button is-light" href="{% url 'account_logout' %}">Sign Out</a>
+        </div>
+      {% else %}
+        {% if ACCOUNT_ALLOW_REGISTRATION %}
+          <div class="navbar-item">
+            <a id="sign-up-link" class="button is-primary" href="{% url 'account_signup' %}">Sign Up</a>
+          </div>
+        {% endif %}
+        <div class="navbar-item">
+          <a id="log-in-link" class="button is-light" href="{% url 'account_login' %}">Sign In</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</nav>

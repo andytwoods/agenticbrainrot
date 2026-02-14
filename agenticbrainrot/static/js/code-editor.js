@@ -10,6 +10,8 @@
     let editor = null;
     let worker = null;
     let pyodideReady = false;
+    let lintCallbacks = {};
+    let lintIdCounter = 0;
     let timerInterval = null;
     let startTime = null;
     let elapsedSeconds = 0;
@@ -28,6 +30,17 @@
 
     // -- Selectors --
     const editorEl = document.getElementById("code-editor");
+    const themeSelect = document.getElementById("theme-select");
+
+    const THEMES = {
+        "default": "default",
+        "dark": "dracula",
+        "light": "default",
+        "dracula": "dracula",
+        "solarized-light": "solarized light",
+        "solarized-dark": "solarized dark"
+    };
+
     const outputEl = document.getElementById("output");
     const runBtn = document.getElementById("run-btn");
     const submitBtn = document.getElementById("submit-btn");
@@ -37,44 +50,93 @@
     const testResultsEl = document.getElementById("test-results");
     const progressEl = document.getElementById("progress-indicator");
 
-    // -- CodeMirror 6 setup (loaded via CDN ESM) --
-    // We use a textarea fallback for simplicity; CodeMirror 6 requires
-    // ES modules which need import maps or bundlers. The textarea provides
-    // a functional editor that works with Pyodide.
+    // -- CodeMirror 5 setup --
     function initEditor() {
         if (!editorEl) return;
 
-        const textarea = document.createElement("textarea");
-        textarea.id = "code-textarea";
-        textarea.className = "textarea is-family-monospace";
-        textarea.rows = 15;
-        textarea.spellcheck = false;
-        textarea.value = editorEl.dataset.skeleton || "";
-        editorEl.appendChild(textarea);
+        editor = CodeMirror(editorEl, {
+            value: editorEl.dataset.skeleton || "",
+            mode: "python",
+            lineNumbers: true,
+            indentUnit: 4,
+            tabSize: 4,
+            lineWrapping: true,
+            spellcheck: false,
+            autofocus: true,
+            gutters: ["CodeMirror-lint-markers"],
+            lint: {
+                getAnnotations: pythonLinter,
+                async: true
+            }
+        });
 
-        editor = {
-            getValue: () => textarea.value,
-            setValue: (v) => { textarea.value = v; },
+        // Add telemetry listeners to CodeMirror
+        editor.on("change", (cm, change) => {
+            if (change.origin !== "setValue") {
+                keystrokeCount++;
+                lastKeystrokeTime = Date.now();
+            }
+        });
+
+        editor.on("inputRead", (cm, change) => {
+            if (change.origin === "paste") {
+                pasteCount++;
+                pasteTotalChars += change.text.join("\n").length;
+            }
+        });
+
+        // Custom theme setter for CM5
+        editor.setTheme = (themeName) => {
+            let cmTheme = THEMES[themeName] || "default";
+
+            // Special handling for site-syncing default
+            if (themeName === "default") {
+                const siteTheme = document.documentElement.getAttribute("data-theme") || "light";
+                cmTheme = siteTheme === "dark" ? "dracula" : "default";
+            }
+
+            editor.setOption("theme", cmTheme);
         };
 
-        // Telemetry listeners
-        textarea.addEventListener("keydown", () => {
-            keystrokeCount++;
-            lastKeystrokeTime = Date.now();
-        });
+        // Initialize theme from select or localStorage
+        if (themeSelect) {
+            const savedTheme = localStorage.getItem("editor-theme") || "default";
+            themeSelect.value = savedTheme;
+            editor.setTheme(savedTheme);
 
-        textarea.addEventListener("paste", (e) => {
-            pasteCount++;
-            const pasted = (e.clipboardData || window.clipboardData).getData("text");
-            pasteTotalChars += pasted.length;
-        });
+            themeSelect.addEventListener("change", () => {
+                const theme = themeSelect.value;
+                editor.setTheme(theme);
+                localStorage.setItem("editor-theme", theme);
+            });
+
+            // Listen for system theme changes to update "default" theme
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'theme' && themeSelect.value === 'default') {
+                    editor.setTheme('default');
+                }
+            });
+
+            // Watch for Bulma theme attribute changes
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === "attributes" && mutation.attributeName === "data-theme") {
+                        if (themeSelect.value === 'default') {
+                            editor.setTheme('default');
+                        }
+                    }
+                });
+            });
+            observer.observe(document.documentElement, { attributes: true });
+        }
+
 
         // Restore draft if available
         const attemptUuid = document.getElementById("attempt-uuid");
         if (attemptUuid) {
             const draft = localStorage.getItem("draft_" + attemptUuid.value);
             if (draft) {
-                textarea.value = draft;
+                editor.setValue(draft);
             }
         }
 
@@ -84,6 +146,31 @@
                 localStorage.setItem("draft_" + attemptUuid.value, editor.getValue());
             }
         }, 30000);
+    }
+
+    // -- Python Linter using Pyodide Worker --
+    function pythonLinter(text, updateLinting, options, cm) {
+        if (!pyodideReady || !worker) {
+            updateLinting(cm, []);
+            return;
+        }
+
+        const id = ++lintIdCounter;
+        lintCallbacks[id] = (results) => {
+            const annotations = results.map(r => ({
+                from: CodeMirror.Pos(r.line - 1, r.col - 1),
+                to: CodeMirror.Pos(r.line - 1, r.col), // CM5 lint doesn't strictly need precise 'to'
+                message: r.message,
+                severity: r.severity
+            }));
+            updateLinting(cm, annotations);
+        };
+
+        worker.postMessage({
+            type: "lint",
+            code: text,
+            id: id
+        });
     }
 
     // -- Pyodide Worker --
@@ -135,6 +222,13 @@
 
                 case "stderr":
                     appendOutput(msg.text, "stderr");
+                    break;
+
+                case "lint_result":
+                    if (lintCallbacks[msg.id]) {
+                        lintCallbacks[msg.id](msg.results);
+                        delete lintCallbacks[msg.id];
+                    }
                     break;
 
                 case "result":

@@ -1,0 +1,31 @@
+<footer class="footer py-4">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column is-4">
+        <h4 class="title is-6 mb-2">AgenticBrainrot</h4>
+        <p class="is-size-7">A citizen-science research study investigating the relationship between AI-assisted coding and skill development.</p>
+      </div>
+      <div class="column is-4 has-text-centered-tablet">
+        <div class="is-inline-block">
+          <ul class="is-flex is-justify-content-center" style="gap: 1.5rem;">
+            <li><a class="is-size-7" href="{% url 'about' %}">About</a></li>
+            <li><a class="is-size-7" href="{% url 'privacy' %}">Privacy</a></li>
+            <li><a class="is-size-7" href="{% url 'terms' %}">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="column is-4 has-text-right-tablet has-text-centered-mobile">
+        <p class="is-size-7">
+          <a class="mr-3" href="https://github.com/andytwoods/agenticbrainrot" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          <a href="#"><i class="fab fa-discord"></i> Discord</a>
+        </p>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="content has-text-centered is-size-7">
+      <p>
+        &copy; {% now "Y" %} <strong>AgenticBrainrot</strong>.
+      </p>
+    </div>
+  </div>
+</footer>
