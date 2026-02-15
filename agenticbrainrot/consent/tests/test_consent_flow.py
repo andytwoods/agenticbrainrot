@@ -17,7 +17,7 @@ from agenticbrainrot.consent.models import OptionalConsentRecord
 def user(db):
     return User.objects.create_user(
         email="participant@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
 
 
@@ -43,7 +43,7 @@ def authenticated_client(user):
     client = Client()
     client.login(
         email="participant@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
     return client
 
@@ -119,13 +119,13 @@ class TestConsentGateMiddleware:
         """Staff users bypass the consent gate."""
         User.objects.create_user(
             email="staff@example.com",
-            password="testpass123",  # noqa: S106
+            password="testpass123",
             is_staff=True,
         )
         client = Client()
         client.login(
             email="staff@example.com",
-            password="testpass123",  # noqa: S106
+            password="testpass123",
         )
         response = client.get(reverse("home"))
         assert response.status_code == HTTPStatus.OK

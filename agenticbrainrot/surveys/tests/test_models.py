@@ -15,7 +15,7 @@ def participant(db):
     from agenticbrainrot.accounts.models import Participant  # noqa: PLC0415
 
     user = User.objects.create_user(
-        email="test@example.com", password="testpass123",  # noqa: S106
+        email="test@example.com", password="testpass123",
     )
     participant, _ = Participant.objects.get_or_create(user=user)
     return participant

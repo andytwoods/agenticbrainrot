@@ -1,6 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.signing import BadSignature
+from django.core.signing import SignatureExpired
+from django.core.signing import TimestampSigner
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -154,4 +157,46 @@ def request_deletion(request):
         request,
         "accounts/request_deletion.html",
         {"participant": participant},
+    )
+
+
+def reminder_unsubscribe(request, token):
+    """One-click unsubscribe from reminder emails (no login required)."""
+    from agenticbrainrot.consent.models import OptionalConsentRecord  # noqa: PLC0415
+
+    signer = TimestampSigner()
+    try:
+        # Token valid for 90 days
+        participant_pk = signer.unsign(token, max_age=60 * 60 * 24 * 90)
+    except SignatureExpired:
+        return render(
+            request,
+            "accounts/unsubscribe_result.html",
+            {"error": "This unsubscribe link has expired."},
+        )
+    except BadSignature:
+        return render(
+            request,
+            "accounts/unsubscribe_result.html",
+            {"error": "Invalid unsubscribe link."},
+        )
+
+    updated = OptionalConsentRecord.objects.filter(
+        participant_id=participant_pk,
+        consent_type="reminder_emails",
+        consented=True,
+        withdrawn_at__isnull=True,
+    ).update(consented=False, withdrawn_at=timezone.now())
+
+    if updated:
+        log_audit_event(
+            "optional_consent_withdrawn",
+            participant_id=participant_pk,
+            consent_type="reminder_emails",
+        )
+
+    return render(
+        request,
+        "accounts/unsubscribe_result.html",
+        {"success": True},
     )

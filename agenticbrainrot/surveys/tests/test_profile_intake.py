@@ -25,7 +25,7 @@ EXPECTED_RESPONSE_COUNT = 2
 def user(db):
     return User.objects.create_user(
         email="intake@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
 
 
@@ -60,7 +60,7 @@ def authenticated_client(user):
     client = Client()
     client.login(
         email="intake@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
     return client
 

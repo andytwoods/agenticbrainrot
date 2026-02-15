@@ -51,35 +51,47 @@
     </div>
   </section>
 
-  {# The Big Question Section #}
+  {# Participation Stats #}
   <section class="section has-background-light">
     <div class="container">
       <div class="has-text-centered mb-6">
         <h2 class="title is-2">The Big Question</h2>
         <p class="subtitle">Real-time aggregate data from our participants</p>
       </div>
-      <div class="columns">
-        <div class="column is-8">
-          <div class="card">
-            <div class="card-content">
-              <p class="title is-4">Average Skill Trajectory</p>
-              <figure class="image is-2by1">
-                <div class="has-background-white" style="display: flex; align-items: center; justify-content: center; height: 100%; border: 1px solid #eee;">
-                  <span class="has-text-grey">Placeholder: Chart showing accuracy for High vs Low vibe-coders</span>
-                </div>
-              </figure>
-            </div>
+      <div class="columns is-centered">
+        <div class="column is-3 has-text-centered">
+          <div class="box">
+            <p class="title is-2 has-text-primary">{{ stats.total_participants }}</p>
+            <p class="heading">Participants</p>
           </div>
         </div>
-        <div class="column is-4">
+        <div class="column is-3 has-text-centered">
+          <div class="box">
+            <p class="title is-2 has-text-info">{{ stats.total_sessions }}</p>
+            <p class="heading">Sessions Completed</p>
+          </div>
+        </div>
+        <div class="column is-3 has-text-centered">
+          <div class="box">
+            <p class="title is-2 has-text-success">{{ stats.total_challenges_solved }}</p>
+            <p class="heading">Challenges Solved</p>
+          </div>
+        </div>
+      </div>
+      <div class="columns mt-4">
+        <div class="column is-8 is-offset-2">
           <div class="card">
             <div class="card-content">
-              <p class="title is-4">Participation Growth</p>
-              <figure class="image is-square">
-                <div class="has-background-white" style="display: flex; align-items: center; justify-content: center; height: 100%; border: 1px solid #eee;">
-                  <span class="has-text-grey">Placeholder: Participation Map / Growth Graph</span>
-                </div>
-              </figure>
+              <p class="title is-4 has-text-centered">The Big Question: Does Vibe Coding Affect Skill?</p>
+              <div id="vibe-chart-container">
+                <canvas id="vibe-chart" height="300"></canvas>
+              </div>
+              <p id="vibe-chart-fallback" class="has-text-grey has-text-centered" style="display: none;">
+                We need more participants to show trends — join the study!
+              </p>
+              <p class="has-text-grey is-size-7 has-text-centered mt-3">
+                Average test accuracy over time by vibe-coding intensity. Only groups with 10+ participants shown.
+              </p>
             </div>
           </div>
         </div>
@@ -145,20 +157,103 @@
   </section>
 
   {# Sponsors #}
+  {% if sponsors %}
   <section class="section">
     <div class="container has-text-centered">
       <p class="heading mb-4">Supported By</p>
       <div class="columns is-centered is-mobile is-multiline">
-        <div class="column is-narrow">
-          <span class="tag is-large is-light">University Partner</span>
-        </div>
-        <div class="column is-narrow">
-          <span class="tag is-large is-light">OSS Foundation</span>
-        </div>
-        <div class="column is-narrow">
-          <span class="tag is-large is-light">Tech Sponsor</span>
-        </div>
+        {% for sponsor in sponsors %}
+          <div class="column is-narrow">
+            {% if sponsor.url %}
+              <a href="{{ sponsor.url }}" target="_blank" rel="noopener">
+            {% endif %}
+            {% if sponsor.logo %}
+              <figure class="image is-128x128 is-inline-block">
+                <img src="{{ sponsor.logo.url }}"
+                     alt="{{ sponsor.name }}"
+                     title="{{ sponsor.name }}">
+              </figure>
+            {% else %}
+              <span class="tag is-large is-light">{{ sponsor.name }}</span>
+            {% endif %}
+            {% if sponsor.url %}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
       </div>
     </div>
   </section>
+  {% endif %}
 {% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // Okabe-Ito colourblind-friendly palette
+  var COLOURS = {
+    low:    "rgb(0, 114, 178)",    // blue
+    medium: "rgb(230, 159, 0)",    // orange
+    high:   "rgb(204, 121, 167)",  // reddish purple
+  };
+
+  fetch("{% url 'api_stats_accuracy_by_vibe_coding' %}")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var groups = data.groups || {};
+      var keys = Object.keys(groups);
+
+      if (keys.length === 0) {
+        document.getElementById("vibe-chart-container").style.display = "none";
+        document.getElementById("vibe-chart-fallback").style.display = "block";
+        return;
+      }
+
+      var datasets = [];
+      keys.forEach(function (key) {
+        var g = groups[key];
+        datasets.push({
+          label: key.charAt(0).toUpperCase() + key.slice(1) +
+                 " vibe-coding (n=" + g.n_participants + ")",
+          data: g.accuracy,
+          borderColor: COLOURS[key] || "rgb(128, 128, 128)",
+          backgroundColor: "transparent",
+          tension: 0.3,
+          pointRadius: 4,
+        });
+      });
+
+      // Use months from the first group as labels
+      var labels = groups[keys[0]].months;
+
+      new Chart(document.getElementById("vibe-chart"), {
+        type: "line",
+        data: { labels: labels, datasets: datasets },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "bottom" },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              title: { display: true, text: "Accuracy (%)" },
+            },
+            x: {
+              title: { display: true, text: "Month" },
+            },
+          },
+        },
+      });
+    })
+    .catch(function () {
+      document.getElementById("vibe-chart-container").style.display = "none";
+      document.getElementById("vibe-chart-fallback").style.display = "block";
+    });
+})();
+</script>
+{% endblock extra_js %}

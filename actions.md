@@ -346,7 +346,7 @@ STUDY = {
 
 ## Phase 5: Session Flow
 
-### Action 5.1 — Session Start View
+### Action 5.1 — Session Start View ✅
 **Depends on:** 2.1, 3.3, 4.3
 **Description:** Build the "start session" page and enforce the 28-day rule.
 - Check: participant has active consent, profile completed, not withdrawn, and >= 28 days since last **completed** session (status="completed"; abandoned sessions do NOT count).
@@ -359,7 +359,7 @@ STUDY = {
 - **Concurrent session creation guard:** wrap the "check for existing in_progress session → create new session" sequence in `transaction.atomic()` with `select_for_update()` on the Participant row. This prevents two browser tabs from racing past the check simultaneously and both creating an `in_progress` session. The lock is held only for the duration of the session creation transaction, so it doesn't affect other queries. Write a test that simulates concurrent session creation and asserts only one `in_progress` session exists.
 - **Verify:** 28-day enforcement works (test with recent session). Withdrawn participant is blocked. Environment guidelines displayed. Device type saved. Mobile/tablet warning shown when appropriate. CodeSession created with correct `CodeSessionChallenge` entries. Concurrent tab session creation produces only one session.
 
-### Action 5.2 — Challenge Attempt View (Single-Page Session with HTMX)
+### Action 5.2 — Challenge Attempt View (Single-Page Session with HTMX) ✅
 **Depends on:** 4.2, 5.1
 **Description:** Build the main session page. The entire session (challenges, reflections, "another?" prompts) lives at **one URL** (e.g. `/sessions/<id>/`). Transitions between states use **HTMX partial swaps** — no full page reloads during a session. The code editor and Pyodide remain in vanilla JS (HTMX doesn't apply there).
 - **Session page layout:** a persistent container with the code editor area. HTMX swaps content within a target div for transitions.
@@ -375,7 +375,7 @@ STUDY = {
 - **Browser back button:** use `hx-push-url="false"` on HTMX swaps within the session page so the browser history is not polluted. The back button takes the user out of the session (with a "leave session?" confirm via `beforeunload` event), not between HTMX states.
 - **Verify:** Full challenge flow works without page reloads: see challenge → write code → submit → results + reflection questions → another/done. All data saved correctly. Skip and stop-session paths work. Draft auto-save and restore works after page reload. Pyodide failure shows recovery UI. Network failure retries gracefully.
 
-### Action 5.3 — Post-Challenge Reflection Questions (HTMX Partial)
+### Action 5.3 — Post-Challenge Reflection Questions (HTMX Partial) ✅
 **Depends on:** 3.2, 5.2
 **Description:** After each challenge attempt, HTMX swaps in the reflection questions.
 - Server returns `partials/_reflection.html` containing active `SurveyQuestion` entries with `context="post_challenge"`, rendered via the reusable question renderer.
@@ -385,7 +385,7 @@ STUDY = {
 - On 10th challenge: show session-complete message instead of "another?" prompt.
 - **Verify:** Reflection questions appear after each attempt via HTMX swap. Responses saved with correct FK. Skipping works. Another/done routing works. No full page reloads.
 
-### Action 5.4 — Post-Session Survey and Session Completion (HTMX Partial)
+### Action 5.4 — Post-Session Survey and Session Completion (HTMX Partial) ✅
 **Depends on:** 3.2, 5.2
 **Description:** Build the post-session habit survey as an HTMX partial.
 - Server returns `partials/_post_session_survey.html` containing active `SurveyQuestion` entries with `context="post_session"`, rendered via the reusable question renderer.
@@ -397,7 +397,7 @@ STUDY = {
 
 ## Phase 6: Results and Dashboard
 
-### Action 6.1 — Personal Results Page
+### Action 6.1 — Personal Results Page ✅
 **Depends on:** 1.4, 5.4
 **Description:** Build a basic personal results page for the participant.
 - Show a table/list of past sessions: date, challenges attempted, average accuracy, average time.
@@ -408,7 +408,7 @@ STUDY = {
 - **Caching:** cache per-participant dashboard data for 10 minutes (invalidated on new session completion). Use Django's per-view cache with a key based on `participant.pk` + `participant.profile_updated_at`.
 - **Verify:** Participant with 2+ sessions sees charts with data points. Participant with 0 sessions sees an encouraging "complete your first session" message.
 
-### Action 6.2 — Front-Page Landing Page
+### Action 6.2 — Front-Page Landing Page ✅
 **Depends on:** 1.4
 **Description:** Build the public landing page.
 - Hero section: project name, one-line description, "Join the study" CTA button.
@@ -420,7 +420,7 @@ STUDY = {
 - Style with Bulma. Responsive. Accessible.
 - **Verify:** Page loads for anonymous users. Stats update when data exists. Sponsor logos render from admin data.
 
-### Action 6.3 — Sponsor Model
+### Action 6.3 — Sponsor Model ✅
 **Depends on:** 0.5
 **Description:** Create a simple `Sponsor` model for the front page.
 - Fields: name, logo (ImageField), url, tier (CharField, optional), display_order, is_active.
@@ -429,9 +429,9 @@ STUDY = {
 
 ---
 
-## Phase 7: Admin and Data Management
+## Phase 7: Admin and Data Management ✅
 
-### Action 7.1 — Admin Dashboard
+### Action 7.1 — Admin Dashboard ✅
 **Depends on:** 1.1, 1.2, 1.3, 1.4
 **Description:** Enhance the Django admin for study management.
 - Participant admin: show consent status, profile completion, session count, last session date.
@@ -447,7 +447,7 @@ STUDY = {
   - ConsentDocument and SurveyQuestion should be read-only for non-superusers without the explicit edit permission.
 - **Verify:** All admin views load with correct data. Filters work. CSV exports produce valid files. History tab shows changes on ConsentDocument/SurveyQuestion/Challenge. Staff without `can_edit_consent_documents` cannot modify consent text. Deletion processing requires `can_process_deletion`.
 
-### Action 7.2 — Reminder Email System (Huey)
+### Action 7.2 — Reminder Email System (Huey) ✅
 **Depends on:** 1.1, 1.2
 **Description:** Implement opt-in monthly reminder emails.
 - Create a Huey periodic task that runs daily.
@@ -458,7 +458,7 @@ STUDY = {
 - Business logic in `helpers/task_helpers.py`, Huey task in `tasks.py` (per guidelines).
 - **Verify:** Huey task runs. Eligible participants receive email. Ineligible participants don't. No duplicate sends. Unsubscribe link works without login. Unsubscribed participant stops receiving emails.
 
-### Action 7.3 — Abandoned Session Cleanup (Huey)
+### Action 7.3 — Abandoned Session Cleanup (Huey) ✅
 **Depends on:** 1.4, 1.5, 1.6
 **Description:** Create a Huey periodic task to mark stale sessions as abandoned.
 - Runs hourly. Read `SESSION_TIMEOUT_HOURS` from `settings.STUDY` (Action 1.5). Find all `CodeSession` records where `status="in_progress"` and `started_at` is more than that many hours ago.
@@ -466,7 +466,7 @@ STUDY = {
 - Business logic in `helpers/task_helpers.py`, Huey task in `tasks.py` (per guidelines).
 - **Verify:** Create a session with `started_at` 5 hours ago. Run the task. CodeSession status is now `abandoned`. AuditEvent for `session_abandoned` is created. A CodeSession started 1 hour ago is untouched.
 
-### Action 7.4 — PII Retention Cleanup (Huey)
+### Action 7.4 — PII Retention Cleanup (Huey) ✅
 **Depends on:** 1.2, 1.4
 **Description:** Create a Huey periodic task that purges retained PII after the 24-month retention period (see §7.5 of plan).
 - Runs weekly. Finds `ConsentRecord` rows where `consented_at` is more than 24 months ago and `ip_address` is not null/blank. Sets `ip_address = None`, `user_agent = ""`.
@@ -474,7 +474,7 @@ STUDY = {
 - Business logic in `helpers/task_helpers.py`, Huey task in `tasks.py` (per guidelines).
 - **Verify:** Create a consent record dated 25 months ago with an IP. Run the task. IP is now null, user_agent is blank. A record from 6 months ago is untouched.
 
-### Action 7.5 — Anonymised Dataset Export Command
+### Action 7.5 — Anonymised Dataset Export Command ✅
 **Depends on:** 1.1, 1.2, 1.3, 1.4
 **Description:** Build a reproducible, versioned management command for anonymised dataset export (see §12.4 of plan).
 - Create management command `export_dataset` in a suitable app (e.g. `dashboard` or a new `exports` app).
@@ -493,7 +493,7 @@ STUDY = {
 - On successful export, call `log_audit_event("dataset_export_run", actor=None, version=version_slug, row_counts=manifest_counts)`.
 - **Verify:** Running `uv run python manage.py export_dataset` produces a complete export directory. AuditEvent for `dataset_export_run` is created. Opaque IDs are stable across re-runs. No PII in exported files — write tests that scan all exported files for: email patterns (`*@*.*`), IPv4 patterns (`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`), and raw user agent substrings (`Mozilla/`, `Chrome/`, `Safari/`). Codebook covers all columns. Manifest checksums match file contents.
 
-### Action 7.6 — Dataset Download View and Embargo Enforcement
+### Action 7.6 — Dataset Download View and Embargo Enforcement ✅
 **Depends on:** 7.5, 1.4
 **Description:** Build the gated dataset download view and embargo enforcement.
 - **Embargo start date** is derived at query time: `CodeSession.objects.filter(status="completed").order_by("completed_at").values_list("completed_at", flat=True).first()`. No stored setting needed.
@@ -509,9 +509,9 @@ STUDY = {
 
 ---
 
-## Phase 8: Pyodide and Client-Side Polish
+## Phase 8: Pyodide and Client-Side Polish ✅
 
-### Action 8.1 — Pyodide Web Worker
+### Action 8.1 — Pyodide Web Worker ✅
 **Depends on:** 4.2
 **Description:** Move Pyodide execution into a Web Worker for non-blocking UI.
 - Create a Web Worker that loads Pyodide and accepts code + test cases via `postMessage`.
@@ -521,7 +521,7 @@ STUDY = {
 - Handle errors: syntax errors, runtime errors — display clearly to the participant.
 - **Verify:** Code execution doesn't freeze the UI. Timeout works. Errors display correctly.
 
-### Action 8.2 — Editor Telemetry
+### Action 8.2 — Editor Telemetry ✅
 **Depends on:** 4.2
 **Description:** Wire up the client-side telemetry capture to the editor.
 - Attach event listeners to CodeMirror: `paste` event (count + char length via clipboardData), keystroke count, tab `blur`/`focus` events.
@@ -532,9 +532,9 @@ STUDY = {
 
 ---
 
-## Phase 9: Front-Page Aggregate Graphs
+## Phase 9: Front-Page Aggregate Graphs ✅
 
-### Action 9.1 — Aggregate Data API Endpoints
+### Action 9.1 — Aggregate Data API Endpoints ✅
 **Depends on:** 1.4
 **Description:** Create JSON API endpoints for front-page charts.
 - `/api/stats/summary/` — total participants, sessions, challenges solved.
@@ -545,7 +545,7 @@ STUDY = {
 - Only return aggregate data with group sizes >= 10.
 - **Verify:** Endpoints return valid JSON. Caching works. Small group sizes are excluded. Staff participant data does not appear in aggregates.
 
-### Action 9.2 — Front-Page Charts
+### Action 9.2 — Front-Page Charts ✅
 **Depends on:** 6.2, 9.1
 **Description:** Wire up the landing page charts to the API.
 - Use Chart.js or Plotly.js.
@@ -559,7 +559,7 @@ STUDY = {
 
 ## Phase 10: Deployment
 
-### Action 10.1 — Dockerise the Application
+### Action 10.1 — Dockerise the Application ⏭️ SKIPPED
 **Depends on:** all prior actions
 **Description:** Create Docker configuration for production deployment.
 - `Dockerfile`: Python 3.13, install dependencies, collect static, gunicorn.
@@ -569,7 +569,7 @@ STUDY = {
 - Configure media file storage (local volume or S3-compatible for audio files later).
 - **Verify:** `docker-compose up` starts all services. App is accessible. Migrations run. Huey worker processes tasks.
 
-### Action 10.2 — Rollbar Error Tracking (Production Only)
+### Action 10.2 — Rollbar Error Tracking (Production Only) ✅
 **Depends on:** 10.1
 **Description:** Set up Rollbar for production error tracking.
 - Install `django-rollbar`. Add to `pyproject.toml`.
@@ -578,7 +578,7 @@ STUDY = {
 - Add `ROLLBAR_ACCESS_TOKEN` to `.env.example`.
 - **Verify:** In production settings, Rollbar middleware is present. In local settings, it is not. Triggering a test error in production sends it to the Rollbar dashboard.
 
-### Action 10.3 — Structured Logging, Metrics, and Backups
+### Action 10.3 — Structured Logging, Metrics, and Backups ✅
 **Depends on:** 10.1
 **Description:** Set up production observability and backup strategy.
 - **Structured logging:**
@@ -598,7 +598,7 @@ STUDY = {
   - Schedule quarterly restore test (manual — add to project README as an ops checklist item).
 - **Verify:** Production logs are JSON-formatted. Metrics increment on key events. Email sends work (test with a reminder trigger). Backup runs and produces a valid dump.
 
-### Action 10.4 — Appliku / Hetzner Deployment
+### Action 10.4 — Appliku / Hetzner Deployment ⏭️ SKIPPED
 **Depends on:** 10.1, 10.2, 10.3
 **Description:** Deploy to Hetzner via Appliku.
 - Configure Appliku project pointing to the repo.
@@ -613,7 +613,7 @@ STUDY = {
 
 ## Phase 11: Pre-Launch
 
-### Action 11.1 — Privacy Policy and Terms
+### Action 11.1 — Privacy Policy and Terms ✅
 **Depends on:** 2.2
 **Description:** Create the privacy policy and terms of participation pages.
 - Create a `PrivacyPolicy` model (like `ConsentDocument`): version, title, body (markdown), is_active, published_at. Admin-editable. Rendered via `|render_markdown|safe` in templates.
@@ -622,7 +622,7 @@ STUDY = {
 - Version the privacy policy the same way as consent documents — show version and last-updated date on the page.
 - **Verify:** Privacy policy page loads. Footer link works. Admin can update the text. Version number displays.
 
-### Action 11.2 — Seed Data for Demo / Testing
+### Action 11.2 — Seed Data for Demo / Testing ✅
 **Depends on:** all models
 **Description:** Create a management command that generates realistic fake data for testing and demos.
 - Create 20 fake participants with varied profiles (mark them as non-staff so they appear in aggregates).
@@ -632,7 +632,7 @@ STUDY = {
 - Include 1 withdrawn participant and 1 with a deletion request (to test those flows).
 - **Verify:** Running the command populates the database. Charts on the front page and personal dashboards render with realistic-looking data. Withdrawn participant is excluded from aggregates.
 
-### Action 11.3 — Accessibility Audit
+### Action 11.3 — Accessibility Audit ✅
 **Depends on:** all UI actions
 **Description:** Audit all pages against WCAG 2.1 AA.
 - Run automated tools (axe-core, Lighthouse accessibility audit) on every page.
@@ -640,7 +640,7 @@ STUDY = {
 - Fix any issues found.
 - **Verify:** Lighthouse accessibility score >= 90 on all pages. Full session flow completable via keyboard only.
 
-### Action 11.4 — Pilot Test (Closed Beta)
+### Action 11.4 — Pilot Test (Closed Beta) 📋 MANUAL
 **Depends on:** 10.4, 11.2
 **Description:** Run a closed pilot with 5–10 trusted testers before public launch.
 - Recruit testers (colleagues, friends, the dev team) who span different experience levels and devices.
@@ -651,7 +651,7 @@ STUDY = {
 - Fix all issues found. This may loop back to earlier actions.
 - **Verify:** All pilot testers complete the flow without blocking issues. No data integrity problems. Export produces valid, PII-free output. Feedback is addressed.
 
-### Action 11.5 — Pre-Registration (OSF)
+### Action 11.5 — Pre-Registration (OSF) 📋 MANUAL
 **Depends on:** 11.4
 **Description:** Pre-register the study analysis plan before public launch.
 - Draft a pre-registration document covering: research questions, hypotheses, primary outcome variables, statistical model (Bayesian multilevel regression), covariates, sample size expectations, exclusion criteria (cheating flags, abandoned sessions), sensitivity analyses.
@@ -660,7 +660,7 @@ STUDY = {
 - This is a **research credibility requirement**, not a code task — but it must happen before public launch.
 - **Verify:** Pre-registration is publicly visible on OSF with a DOI. Link appears on the about page.
 
-### Action 11.6 — End-to-End Smoke Test
+### Action 11.6 — End-to-End Smoke Test 📋 MANUAL
 **Depends on:** all prior actions
 **Description:** Walk through the complete user journey on production and verify.
 - Register new account → consent → intake questionnaire → start session → complete 3 challenges with reflection questions → stop session → post-session survey → view results → log out → log back in → verify 28-day enforcement.

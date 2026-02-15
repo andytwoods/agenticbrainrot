@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from .forms import UserAdminChangeForm
 from .forms import UserAdminCreationForm
 from .models import AuditEvent
+from .models import MetricEvent
 from .models import Participant
 from .models import User
 
@@ -112,6 +113,8 @@ class ParticipantAdmin(admin.ModelAdmin):
         "user",
         "has_active_consent",
         "profile_completed",
+        "session_count",
+        "last_session_date",
         "withdrawn_at",
         "deletion_requested_at",
         "deleted_at",
@@ -123,6 +126,17 @@ class ParticipantAdmin(admin.ModelAdmin):
     ]
     search_fields = ["user__email", "user__name"]
     actions = [process_deletion_request]
+
+    @admin.display(description="Sessions")
+    def session_count(self, obj):
+        return obj.code_sessions.count()
+
+    @admin.display(description="Last session")
+    def last_session_date(self, obj):
+        last = obj.code_sessions.order_by("-started_at").first()
+        if last:
+            return last.started_at.strftime("%d %b %Y")
+        return "-"
 
 
 def export_audit_events_csv(modeladmin, request, queryset):
@@ -167,3 +181,10 @@ class AuditEventAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(MetricEvent)
+class MetricEventAdmin(admin.ModelAdmin):
+    list_display = ["event_type", "count", "recorded_at"]
+    list_filter = ["event_type", "recorded_at"]
+    ordering = ["-recorded_at", "event_type"]

@@ -30,7 +30,7 @@ CHALLENGES_PER_SESSION = 10
 def user(db):
     return User.objects.create_user(
         email="challenge@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
 
 
@@ -271,7 +271,7 @@ class TestSessionView:
         # Create another consented user
         other_user = User.objects.create_user(
             email="other@example.com",
-            password="testpass123",  # noqa: S106
+            password="testpass123",
         )
         other_p, _ = Participant.objects.get_or_create(user=other_user)
         doc = ConsentDocument.objects.filter(is_active=True).first()
@@ -287,7 +287,7 @@ class TestSessionView:
         client = Client()
         client.login(
             email="other@example.com",
-            password="testpass123",  # noqa: S106
+            password="testpass123",
         )
         response = client.get(
             reverse(

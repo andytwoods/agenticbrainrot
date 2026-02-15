@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Datasets — AgenticBrainrot{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container is-max-desktop">
+    <h1 class="title">Research Datasets</h1>
+
+    <div class="box">
+      <h2 class="subtitle">Embargo Status</h2>
+      {% if embargo_start %}
+        {% if embargo_active %}
+          <div class="notification is-warning">
+            <p><strong>Embargo is active.</strong></p>
+            <p>Data collection began on {{ embargo_start|date:"d F Y" }}.
+               The embargo lifts on {{ lift_date|date:"d F Y" }}.</p>
+            {% if has_grant %}
+              <p class="mt-2">You have been granted early access.</p>
+            {% else %}
+              <p class="mt-2">Contact the research team if you need early access.</p>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="notification is-success">
+            <p><strong>Embargo has lifted.</strong> Datasets are available for download.</p>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="notification is-info">
+          <p>No sessions have been completed yet. Embargo period has not started.</p>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if versions %}
+      <div class="box">
+        <h2 class="subtitle">Available Versions</h2>
+        <table class="table is-fullwidth is-striped">
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Exported</th>
+              <th>Rows</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for v in versions %}
+              <tr>
+                <td>{{ v.slug }}</td>
+                <td>{{ v.exported_at|truncatechars:10 }}</td>
+                <td>
+                  {% for table, count in v.row_counts.items %}
+                    {{ table }}: {{ count }}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </td>
+                <td>
+                  {% if can_download %}
+                    <a href="{% url 'dashboard:dataset_download' v.slug %}"
+                       class="button is-small is-primary">Download</a>
+                  {% else %}
+                    <span class="tag is-warning">Embargoed</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="notification is-light">
+        <p>No dataset exports are available yet.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

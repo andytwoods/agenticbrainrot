@@ -5,6 +5,10 @@ from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
 
+from agenticbrainrot.pages.api import report_client_metric
+from agenticbrainrot.pages.api import stats_accuracy_by_vibe_coding
+from agenticbrainrot.pages.api import stats_accuracy_over_time
+from agenticbrainrot.pages.api import stats_summary
 from agenticbrainrot.pages.views import AboutView
 from agenticbrainrot.pages.views import HomeView
 from agenticbrainrot.pages.views import PrivacyView
@@ -30,7 +34,32 @@ urlpatterns = [
         include("agenticbrainrot.coding_sessions.urls", namespace="coding_sessions"),
     ),
     # Challenges
-    path("challenges/", include("agenticbrainrot.challenges.urls", namespace="challenges")),
+    path(
+        "challenges/",
+        include("agenticbrainrot.challenges.urls", namespace="challenges"),
+    ),
+    # Dashboard
+    path(
+        "",
+        include("agenticbrainrot.dashboard.urls", namespace="dashboard"),
+    ),
+    # API
+    path("api/stats/summary/", stats_summary, name="api_stats_summary"),
+    path(
+        "api/stats/accuracy-over-time/",
+        stats_accuracy_over_time,
+        name="api_stats_accuracy_over_time",
+    ),
+    path(
+        "api/stats/accuracy-by-vibe-coding/",
+        stats_accuracy_by_vibe_coding,
+        name="api_stats_accuracy_by_vibe_coding",
+    ),
+    path(
+        "api/metrics/report/",
+        report_client_metric,
+        name="api_report_client_metric",
+    ),
     # Hijack
     path("hijack/", include("hijack.urls")),
     # Media files

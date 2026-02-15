@@ -29,9 +29,29 @@ export_as_csv.short_description = "Export selected as CSV"
 
 @admin.register(ConsentDocument)
 class ConsentDocumentAdmin(admin.ModelAdmin):
-    list_display = ["title", "version", "is_active", "published_at", "created_at"]
+    list_display = [
+        "title",
+        "version",
+        "is_active",
+        "published_at",
+        "created_at",
+    ]
     list_filter = ["is_active"]
     search_fields = ["title"]
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return request.user.has_perm(
+            "accounts.can_edit_consent_documents",
+        )
+
+    def has_add_permission(self, request):
+        if request.user.is_superuser:
+            return True
+        return request.user.has_perm(
+            "accounts.can_edit_consent_documents",
+        )
 
 
 @admin.register(ConsentRecord)

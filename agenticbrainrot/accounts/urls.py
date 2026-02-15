@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .views import reminder_unsubscribe
 from .views import request_deletion
 from .views import user_detail_view
 from .views import user_redirect_view
@@ -12,5 +13,10 @@ urlpatterns = [
     path("~update/", view=user_update_view, name="update"),
     path("withdraw/", view=withdraw, name="withdraw"),
     path("request-deletion/", view=request_deletion, name="request_deletion"),
+    path(
+        "reminders/unsubscribe/<str:token>/",
+        view=reminder_unsubscribe,
+        name="reminder_unsubscribe",
+    ),
     path("<int:pk>/", view=user_detail_view, name="detail"),
 ]

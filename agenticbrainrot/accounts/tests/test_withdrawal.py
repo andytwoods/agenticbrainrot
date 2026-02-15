@@ -19,7 +19,7 @@ from agenticbrainrot.surveys.models import SurveyResponse
 def user(db):
     return User.objects.create_user(
         email="withdraw@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
 
 
@@ -53,7 +53,7 @@ def authenticated_client(user):
     client = Client()
     client.login(
         email="withdraw@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
     return client
 
@@ -159,7 +159,7 @@ class TestDeletionProcessing:
         """Deletion helper removes PII but retains timing data."""
         user = User.objects.create_user(
             email="delete@example.com",
-            password="testpass123",  # noqa: S106
+            password="testpass123",
             name="Test User",
         )
         participant, _ = Participant.objects.get_or_create(user=user)

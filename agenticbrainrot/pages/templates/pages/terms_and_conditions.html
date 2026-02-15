@@ -1,28 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Terms and Conditions - AgenticBrainrot{% endblock title %}
+{% load markdown_tags %}
+
+{% block title %}Terms of Participation - AgenticBrainrot{% endblock title %}
 
 {% block content %}
 <div class="container">
-  <h1 class="title">Terms and Conditions</h1>
-  <div class="content">
-    <p>Last updated: February 14, 2026</p>
-    <p>By participating in the AgenticBrainrot research study, you agree to the following terms and conditions.</p>
-
-    <h3>1. Eligibility</h3>
-    <p>You must be at least 18 years old to participate in this study. You should have some experience with the Python programming language.</p>
-
-    <h3>2. Participation</h3>
-    <p>Participation is voluntary. You can stop a session at any time and withdraw from the study without providing a reason.</p>
-
-    <h3>3. Prohibited Conduct</h3>
-    <p>You agree not to use AI assistants, search engines, or external help during the coding challenges unless specifically instructed otherwise. This study aims to measure your individual coding performance.</p>
-
-    <h3>4. Intellectual Property</h3>
-    <p>By submitting code during the study, you grant us a non-exclusive, royalty-free license to use, reproduce, and analyze the code for research and publication purposes.</p>
-
-    <h3>5. Limitation of Liability</h3>
-    <p>The platform is provided "as is" without warranties of any kind. We are not liable for any damages arising from your participation in the study.</p>
-  </div>
+  {% if document %}
+    <h1 class="title">{{ document.title }}</h1>
+    <div class="content">
+      <p class="has-text-grey">Version {{ document.version }} — Last updated: {{ document.updated_at|date:"j F Y" }}</p>
+      {{ document.body|render_markdown }}
+    </div>
+  {% else %}
+    <h1 class="title">Terms of Participation</h1>
+    <div class="content">
+      <p class="has-text-grey">No terms document has been published yet. Please check back later.</p>
+    </div>
+  {% endif %}
 </div>
 {% endblock content %}

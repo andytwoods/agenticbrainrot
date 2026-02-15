@@ -540,7 +540,7 @@ def _handle_post_session_submit(request, session, participant):
     )
 
     response = HttpResponse(status=200)
-    response["HX-Redirect"] = "/"
+    response["HX-Redirect"] = "/results/"
     return response
 
 

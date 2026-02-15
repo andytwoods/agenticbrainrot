@@ -23,7 +23,7 @@ from agenticbrainrot.surveys.models import SurveyResponse
 def user(db):
     return User.objects.create_user(
         email="session@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
 
 
@@ -83,7 +83,7 @@ def logged_in_client(user):
     client = Client()
     client.login(
         email="session@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
     return client
 
@@ -486,7 +486,7 @@ class TestSessionView:
     ):
         other_user = User.objects.create_user(
             email="other2@example.com",
-            password="testpass123",  # noqa: S106
+            password="testpass123",
         )
         other_p, _ = Participant.objects.get_or_create(user=other_user)
         doc = ConsentDocument.objects.filter(is_active=True).first()
@@ -502,7 +502,7 @@ class TestSessionView:
         client = Client()
         client.login(
             email="other2@example.com",
-            password="testpass123",  # noqa: S106
+            password="testpass123",
         )
         response = client.get(
             reverse(
@@ -663,7 +663,7 @@ class TestPostSessionSurvey:
             HTTP_HX_REQUEST="true",
         )
         assert response.status_code == HTTPStatus.OK
-        assert response["HX-Redirect"] == "/"
+        assert response["HX-Redirect"] == "/results/"
 
         session_with_challenges.refresh_from_db()
         assert session_with_challenges.status == (
@@ -792,7 +792,7 @@ class TestFullFlow:
             },
             HTTP_HX_REQUEST="true",
         )
-        assert response["HX-Redirect"] == "/"
+        assert response["HX-Redirect"] == "/results/"
 
         session.refresh_from_db()
         assert session.status == CodeSession.Status.COMPLETED

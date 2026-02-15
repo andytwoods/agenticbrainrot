@@ -28,7 +28,7 @@
     </div>
     <div class="navbar-end">
       <div class="navbar-item">
-        <button id="theme-switcher" class="button is-rounded is-light" title="Toggle dark/light mode">
+        <button id="theme-switcher" class="button is-rounded is-light" title="Toggle dark/light mode" aria-label="Toggle dark/light mode">
           <span class="icon">
             <i class="fas fa-moon"></i>
           </span>
@@ -36,6 +36,8 @@
         </button>
       </div>
       {% if request.user.is_authenticated %}
+        <a class="navbar-item"
+           href="{% url 'dashboard:personal_results' %}">My Results</a>
         <a class="navbar-item"
            href="{% url 'accounts:detail' request.user.pk %}">My Profile</a>
         <div class="navbar-item">

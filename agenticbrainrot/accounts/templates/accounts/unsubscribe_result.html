@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Unsubscribe — AgenticBrainrot{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="box">
+      {% if success %}
+        <h1 class="title is-4">Unsubscribed</h1>
+        <p>You have been unsubscribed from reminder emails. You will no longer receive session reminders.</p>
+        <p class="mt-4">If you change your mind, you can re-enable reminders from your profile settings.</p>
+      {% elif error %}
+        <h1 class="title is-4">Unsubscribe failed</h1>
+        <div class="notification is-warning">{{ error }}</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

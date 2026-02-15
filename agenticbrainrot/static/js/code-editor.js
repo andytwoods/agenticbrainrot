@@ -232,12 +232,14 @@
                     break;
 
                 case "result":
+                    clearRunTimeout();
                     displayTestResults(msg.results);
                     if (runBtn) runBtn.disabled = false;
                     if (submitBtn) submitBtn.disabled = false;
                     break;
 
                 case "error":
+                    clearRunTimeout();
                     appendOutput("Error: " + msg.error, "stderr");
                     if (runBtn) runBtn.disabled = false;
                     if (submitBtn) submitBtn.disabled = false;
@@ -344,20 +346,42 @@
     });
 
     // -- Run/Submit handlers --
+    let runTimeout = null;
+    const RUN_TIMEOUT_MS = 30000; // 30 seconds
+
     function runCode() {
         if (!editor || !worker || !pyodideReady) return;
         clearOutput();
         if (runBtn) runBtn.disabled = true;
-        if (submitBtn) submitBtn.disabled = true; // Also disable submit while running
+        if (submitBtn) submitBtn.disabled = true;
 
         const testCasesEl = document.getElementById("test-cases-data");
         const testCases = testCasesEl ? JSON.parse(testCasesEl.textContent) : [];
+
+        // Set timeout — kill worker and restart if code runs too long
+        if (runTimeout) clearTimeout(runTimeout);
+        runTimeout = setTimeout(() => {
+            worker.terminate();
+            appendOutput("Timeout: your code took longer than 30 seconds. Please optimise and try again.", "stderr");
+            if (runBtn) runBtn.disabled = false;
+            if (submitBtn) submitBtn.disabled = false;
+            // Restart worker
+            pyodideReady = false;
+            initPyodide();
+        }, RUN_TIMEOUT_MS);
 
         worker.postMessage({
             type: "run",
             code: editor.getValue(),
             testCases: testCases,
         });
+    }
+
+    function clearRunTimeout() {
+        if (runTimeout) {
+            clearTimeout(runTimeout);
+            runTimeout = null;
+        }
     }
 
     function prepareSubmission() {

@@ -1,4 +1,3 @@
-# ruff: noqa: E501
 from .base import *  # noqa: F403
 from .base import env
 
@@ -90,6 +89,16 @@ EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 # Django Admin URL regex.
 ADMIN_URL = env("DJANGO_ADMIN_URL")
 
+# ROLLBAR
+# ------------------------------------------------------------------------------
+MIDDLEWARE += ["rollbar.contrib.django.middleware.RollbarNotifierMiddleware"]  # noqa: F405
+ROLLBAR = {
+    "access_token": env("ROLLBAR_ACCESS_TOKEN"),
+    "environment": env("ROLLBAR_ENVIRONMENT", default="production"),
+    "root": str(ROOT_DIR),  # noqa: F405
+    "branch": "master",
+}
+
 # LOGGING
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
@@ -100,8 +109,9 @@ LOGGING = {
     "disable_existing_loggers": False,
     "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s",
+        "json": {
+            "()": "pythonjsonlogger.json.JsonFormatter",
+            "format": "%(asctime)s %(levelname)s %(name)s %(module)s %(message)s",
         },
     },
     "handlers": {
@@ -113,7 +123,7 @@ LOGGING = {
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
-            "formatter": "verbose",
+            "formatter": "json",
         },
     },
     "root": {"level": "INFO", "handlers": ["console"]},

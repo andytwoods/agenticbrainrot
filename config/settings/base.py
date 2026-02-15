@@ -286,7 +286,7 @@ HIJACK_PERMISSION_CHECK = "hijack.permissions.superusers_and_staff"
 CONTENT_SECURITY_POLICY = {
     "DIRECTIVES": {
         "default-src": ["'self'"],
-        "script-src": ["'self'", "https://unpkg.com"],
+        "script-src": ["'self'", "https://unpkg.com", "https://cdn.jsdelivr.net"],
         "style-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
         "img-src": ["'self'", "data:"],
         "font-src": ["'self'", "https://cdn.jsdelivr.net"],
@@ -309,3 +309,18 @@ STUDY = {
     "SESSION_TIMEOUT_HOURS": 4,
     "MIN_GROUP_SIZE_FOR_AGGREGATES": 10,
 }
+
+# Huey
+# ------------------------------------------------------------------------------
+HUEY = {
+    "huey_class": "huey.SqliteHuey",
+    "name": "agenticbrainrot",
+    "immediate": env.bool("HUEY_IMMEDIATE", default=True),
+}
+
+# Dataset export
+# ------------------------------------------------------------------------------
+EXPORT_SECRET_KEY = env(
+    "EXPORT_SECRET_KEY",
+    default="change-me-in-production",
+)
