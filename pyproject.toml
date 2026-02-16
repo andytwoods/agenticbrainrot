@@ -15,7 +15,7 @@ plugins = ["django_coverage_plugin"]
 
 # ==== mypy ====
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.14"
 check_untyped_defs = true
 ignore_missing_imports = true
 warn_unused_ignores = true
@@ -161,7 +161,7 @@ license = { text = "Not open source" }
 authors = [
   { name = "Andy T Woods", email = "andytwoods@gmail.com" },
 ]
-requires-python = "==3.13.*"
+requires-python = "==3.14.*"
 dependencies = [
     "argon2-cffi==25.1.0",
     "crispy-bulma>=0.12.0",
@@ -182,5 +182,6 @@ dependencies = [
     "psycopg[c]==3.3.2",
     "pyarrow>=18.0",
     "python-json-logger>=3.0",
+    "redis>=5.0",
     "whitenoise==6.11.0",
 ]
