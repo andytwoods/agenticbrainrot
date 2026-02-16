@@ -252,22 +252,31 @@
       // Use months from the first group as labels
       var labels = groups[keys[0]].months;
 
+      var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      var textColor = isDark ? "#e0e0e0" : "#363636";
+      var gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
+
       new Chart(document.getElementById("vibe-chart"), {
         type: "line",
         data: { labels: labels, datasets: datasets },
         options: {
           responsive: true,
+          color: textColor,
           plugins: {
-            legend: { position: "bottom" },
+            legend: { position: "bottom", labels: { color: textColor } },
           },
           scales: {
             y: {
               beginAtZero: true,
               max: 100,
-              title: { display: true, text: "Accuracy (%)" },
+              title: { display: true, text: "Accuracy (%)", color: textColor },
+              ticks: { color: textColor },
+              grid: { color: gridColor },
             },
             x: {
-              title: { display: true, text: "Month" },
+              title: { display: true, text: "Month", color: textColor },
+              ticks: { color: textColor },
+              grid: { color: gridColor },
             },
           },
         },

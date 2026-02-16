@@ -60,6 +60,25 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #485fc7;
+  outline: 2px solid var(--bulma-primary, #485fc7);
   outline-offset: 2px;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .has-background-primary-light {
+  background-color: var(--bulma-primary-dark, #1a2a4a) !important;
+  color: var(--bulma-primary-light, #dee5f5);
+}
+
+[data-theme="dark"] .has-background-primary-light .title,
+[data-theme="dark"] .has-background-primary-light .subtitle {
+  color: var(--bulma-primary-invert, #fff) !important;
+}
+
+[data-theme="dark"] .has-text-grey {
+  color: var(--bulma-grey-light, #b5b5b5) !important;
+}
+
+[data-theme="dark"] .heading {
+  color: var(--bulma-text-weak, #b5b5b5);
 }

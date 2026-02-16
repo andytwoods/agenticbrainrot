@@ -86,6 +86,10 @@ document.addEventListener("DOMContentLoaded", function() {
   var accValues = accuracyData.map(function(d) { return d.y; });
   var spdValues = speedData.map(function(d) { return d.y; });
 
+  var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  var textColor = isDark ? "#e0e0e0" : "#363636";
+  var gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
+
   // Accuracy chart
   new Chart(document.getElementById("accuracy-chart"), {
     type: "line",
@@ -104,7 +108,8 @@ document.addEventListener("DOMContentLoaded", function() {
     options: {
       responsive: true,
       scales: {
-        y: { beginAtZero: true, max: 100, title: { display: true, text: "Accuracy (%)" } }
+        y: { beginAtZero: true, max: 100, title: { display: true, text: "Accuracy (%)", color: textColor }, ticks: { color: textColor }, grid: { color: gridColor } },
+        x: { ticks: { color: textColor }, grid: { color: gridColor } }
       },
       plugins: { legend: { display: false } }
     }
@@ -128,7 +133,8 @@ document.addEventListener("DOMContentLoaded", function() {
     options: {
       responsive: true,
       scales: {
-        y: { beginAtZero: true, title: { display: true, text: "Time (seconds)" } }
+        y: { beginAtZero: true, title: { display: true, text: "Time (seconds)", color: textColor }, ticks: { color: textColor }, grid: { color: gridColor } },
+        x: { ticks: { color: textColor }, grid: { color: gridColor } }
       },
       plugins: { legend: { display: false } }
     }
