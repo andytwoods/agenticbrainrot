@@ -69,6 +69,7 @@ THIRD_PARTY_APPS = [
     "hijack",
     "simple_history",
     "django_recaptcha",
+    "huey.contrib.djhuey",
 ]
 
 LOCAL_APPS = [
