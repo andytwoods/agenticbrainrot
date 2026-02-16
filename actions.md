@@ -559,7 +559,7 @@ STUDY = {
 
 ## Phase 10: Deployment
 
-### Action 10.1 — Dockerise the Application ⏭️ SKIPPED
+### Action 10.1 — Dockerise the Application ✅
 **Depends on:** all prior actions
 **Description:** Create Docker configuration for production deployment.
 - `Dockerfile`: Python 3.13, install dependencies, collect static, gunicorn.
@@ -598,7 +598,7 @@ STUDY = {
   - Schedule quarterly restore test (manual — add to project README as an ops checklist item).
 - **Verify:** Production logs are JSON-formatted. Metrics increment on key events. Email sends work (test with a reminder trigger). Backup runs and produces a valid dump.
 
-### Action 10.4 — Appliku / Hetzner Deployment ⏭️ SKIPPED
+### Action 10.4 — Appliku / Hetzner Deployment ✅
 **Depends on:** 10.1, 10.2, 10.3
 **Description:** Deploy to Hetzner via Appliku.
 - Configure Appliku project pointing to the repo.

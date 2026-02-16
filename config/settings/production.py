@@ -1,4 +1,5 @@
 from .base import *  # noqa: F403
+from .base import BASE_DIR
 from .base import env
 
 # GENERAL
@@ -18,9 +19,11 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
 
 # CACHES
 # ------------------------------------------------------------------------------
+REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": REDIS_URL,
     },
 }
 
@@ -95,7 +98,7 @@ MIDDLEWARE += ["rollbar.contrib.django.middleware.RollbarNotifierMiddleware"]  #
 ROLLBAR = {
     "access_token": env("ROLLBAR_ACCESS_TOKEN"),
     "environment": env("ROLLBAR_ENVIRONMENT", default="production"),
-    "root": str(ROOT_DIR),  # noqa: F405
+    "root": str(BASE_DIR),
     "branch": "master",
 }
 
@@ -139,4 +142,14 @@ LOGGING = {
             "propagate": True,
         },
     },
+}
+
+# HUEY
+# ------------------------------------------------------------------------------
+# Override base SqliteHuey with RedisHuey for production
+HUEY = {
+    "huey_class": "huey.RedisHuey",
+    "name": "agenticbrainrot",
+    "url": REDIS_URL,
+    "immediate": False,
 }
