@@ -16,13 +16,20 @@
           A citizen-science study helping protect the Python community's skills.
         </p>
         <div class="buttons is-centered">
-          <a href="{% url 'account_signup' %}" class="button is-primary is-large">
-            <strong>Join the Study</strong>
-          </a>
+          {% if ACCOUNT_ALLOW_REGISTRATION %}
+            <a href="{% url 'account_signup' %}" class="button is-primary is-large">
+              <strong>Join the Study</strong>
+            </a>
+          {% endif %}
           <a href="#about" class="button is-light is-large">
             Learn More
           </a>
         </div>
+        {% if not ACCOUNT_ALLOW_REGISTRATION %}
+          <div class="notification is-warning is-light mt-4" style="display: inline-block;">
+            Registration is currently closed. Check back soon!
+          </div>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -151,7 +158,11 @@
         </div>
         <div class="column is-narrow">
           <div class="buttons">
-            <a href="{% url 'account_signup' %}" class="button is-primary is-large">Start Contributing</a>
+            {% if ACCOUNT_ALLOW_REGISTRATION %}
+              <a href="{% url 'account_signup' %}" class="button is-primary is-large">Start Contributing</a>
+            {% else %}
+              <span class="tag is-warning is-medium">Registration currently closed</span>
+            {% endif %}
             <a href="https://github.com/your-repo/discussions" class="button is-link is-outlined is-large">Collaborator Interest</a>
           </div>
         </div>
