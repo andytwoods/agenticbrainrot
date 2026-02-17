@@ -3,6 +3,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils.crypto import get_random_string
 
+from allauth.account.models import EmailAddress
 
 User = get_user_model()
 

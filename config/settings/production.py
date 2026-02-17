@@ -75,25 +75,25 @@ STORAGES = {
 
 # EMAIL
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
+# TODO: Configure a real email backend (e.g. SMTP, SES, Mailgun) when ready.
+# For now, all emails are printed to the console/logs.
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL",
     default="AgenticBrainrot <noreply@example.com>",
 )
-# https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env(
     "DJANGO_EMAIL_SUBJECT_PREFIX",
     default="[AgenticBrainrot] ",
 )
 ACCOUNT_EMAIL_SUBJECT_PREFIX = EMAIL_SUBJECT_PREFIX
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST", default="localhost")
-EMAIL_PORT = env.int("EMAIL_PORT", default=587)
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = env("EMAIL_HOST", default="localhost")
+# EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+# EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+# EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+# EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 
 # ADMIN
 # ------------------------------------------------------------------------------
