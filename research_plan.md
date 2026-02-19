@@ -17,6 +17,7 @@
 3. **RQ3:** Is the effect of vibe coding on skill change moderated by challenge difficulty tier — specifically, are everyday fluency skills (Tiers 1–2) more susceptible to degradation than algorithmic skills (Tiers 4–5)?
 4. **RQ4:** Does total coding time (hours per week) buffer or amplify the effect of vibe coding on skill change?
 5. **RQ5 (exploratory):** Do participants' subjective assessments of whether tasks have become harder since starting vibe coding correlate with their objective performance trajectories?
+6. **RQ6 (qualitative):** How do participants explain changes (or non-changes) in their own coding skill, and what role do they attribute to vibe coding, codebase complexity, tool diversity, and other contextual factors?
 
 ---
 
@@ -34,7 +35,7 @@ All hypotheses are directional and pre-registered. The key causal claim is that 
 
 **H3:** The negative effect of vibe coding on accuracy over time (H1) will be larger for Tier 1–2 challenges than for Tier 3–5 challenges. Rationale: AI tools most thoroughly replace basic syntax and boilerplate recall; higher-tier problems require algorithmic reasoning that AI augments rather than replaces entirely.
 
-> **Power caveat:** With ascending difficulty ordering and expected session dropout at challenge 4–6, the majority of attempts will be Tier 1–2 and Tier 3+ data will be sparse. H3 may be underpowered or untestable unless session design is adjusted (see §14 gap). If Tier 3–5 data are insufficient, H3 is downgraded to exploratory.
+> **Power caveat:** With ascending difficulty ordering and expected session dropout at challenge 4–6, the majority of attempts will be Tier 1–2 and Tier 3+ data will be sparse. H3 may be underpowered or untestable unless session design is adjusted (see §15 gap). If Tier 3–5 data are insufficient, H3 is downgraded to exploratory.
 
 **H4:** Higher coding hours per week will attenuate (moderate) the negative effect of vibe coding on skill trajectory. Rationale: participants who code many hours may maintain manual practice volume even when a high proportion is vibe coded.
 
@@ -59,7 +60,7 @@ A null result on H1 is defined as a 95% credible interval for the `vibe_coding_p
 | Session structure | 1–10 Python coding challenges per session; participant-controlled |
 | Blinding | Participants are not told specific hypotheses beyond "we are studying AI coding and skill" |
 
-This is a **purely observational study** — there is no random assignment to vibe-coding conditions. Causal inference is therefore limited; the study can establish longitudinal associations and is powered to detect moderation, but cannot rule out all confounds. See §10 (Limitations) for full discussion.
+This is a **purely observational study** — there is no random assignment to vibe-coding conditions. Causal inference is therefore limited; the study can establish longitudinal associations and is powered to detect moderation, but cannot rule out all confounds. See §11 (Limitations) for full discussion.
 
 ---
 
@@ -162,7 +163,58 @@ Prior predictive checks will be run before data collection to confirm priors gen
 
 ---
 
-## 6. Inclusion and Exclusion Criteria
+## 6. Qualitative Component
+
+The quantitative data captures *whether* skill changes; qualitative data captures *why* — the contextual factors, attributions, and lived experiences that numbers cannot. The coding buddy insight that prompted this section is illustrative: "I do a lot of varying things lately so it is impossible to be good at one tool + huge codebases I have to deal with — it is impossible to keep everything in my head." This points to an alternative explanation for apparent skill decline (cognitive load from tool/codebase diversity) that the quantitative model cannot fully disentangle.
+
+### 6.1 Exit Survey
+
+Presented to participants when they choose to leave the study (or at the 12-month mark). Free-text responses. Delivered via the unified question system (`context = "exit"`). All questions are optional.
+
+| # | Question | Purpose |
+|---|----------|---------|
+| 1 | *Looking back, do you feel your Python coding skill has changed since you joined this study? If so, how?* | Subjective trajectory; check against objective data |
+| 2 | *What do you think is the main reason for any change (or lack of change) you noticed?* | Attribution — vibe coding, practice, role change, etc. |
+| 3 | *Has the complexity or variety of your work changed during the study (e.g. larger codebases, more tools, new languages)?* | Tests the "impossible to keep everything in my head" alternative explanation |
+| 4 | *How has your relationship with AI coding tools changed over the course of the study?* | Trajectory of adoption/reliance |
+| 5 | *Is there anything about your experience of the study you'd like us to know?* | Open feedback; surfaces unexpected themes |
+
+Exit survey responses are analysed thematically (Braun & Clarke reflexive thematic analysis) as a standalone qualitative strand and used to contextualise and interrogate the quantitative findings.
+
+### 6.2 Follow-Up Contact Permission
+
+At the end of the exit survey (and optionally during the study on the profile page), participants are asked:
+
+> *"Would you be willing to be contacted about future research related to this study (e.g. a follow-up survey or interview)?"*  Yes / No
+
+- Stored as an `OptionalConsentRecord` with `consent_type = "future_contact"`.
+- **Email address is not re-collected** — the participant's account email is used, and only if they have this consent active.
+- Withdrawn participants or those who have requested data deletion are excluded from any contact list.
+
+### 6.3 Interview Sub-Study
+
+A purposive sample of willing participants (drawn from those who gave follow-up contact permission, §6.2) is invited for a semi-structured interview after the main data collection period.
+
+**Sampling strategy:** maximum variation across:
+- Vibe-coding intensity (low / medium / high)
+- Objective skill trajectory (improving / stable / declining)
+- Role and experience level
+
+**Interview focus:**
+- Their experience of skill change and what they attribute it to
+- How they use AI tools in practice (what tasks, what proportion, how they verify AI output)
+- Whether contextual factors (codebase size, tool switching, role change) feel more explanatory than AI use per se
+- Their views on the study findings (member-checking component)
+
+**Target N:** 15–20 interviews (theoretical saturation expected; reassess after 10).
+
+**Analysis:** reflexive thematic analysis; themes reported alongside quantitative findings in the paper.
+
+**Ethics note:** interviews require a separate ethics amendment or are covered under the initial application if pre-declared. Declare in the ethics application. Interviews are recorded and transcribed (with consent); recordings deleted after transcription.
+
+---
+
+## 7. Inclusion and Exclusion Criteria
 
 ### 6.1 Participant-level inclusion
 
@@ -174,7 +226,7 @@ Prior predictive checks will be run before data collection to confirm priors gen
 
 - Staff / superuser accounts.
 - Participants with `withdrawn_at` or `deletion_requested_at` set.
-- Participants with evidence of systematic result fabrication (see §6.3).
+- Participants with evidence of systematic result fabrication (see §7.3).
 
 ### 6.3 Attempt-level exclusion (pre-specified sensitivity analysis)
 
@@ -190,7 +242,7 @@ If results are materially different between primary and sensitivity analyses, th
 
 ---
 
-## 7. Power and Sample Size
+## 8. Power and Sample Size
 
 ### 7.1 Targets
 
@@ -200,7 +252,7 @@ If results are materially different between primary and sensitivity analyses, th
 | Minimum sessions per participant | 2 | Baseline + at least one follow-up; sufficient for a change score |
 | Study duration | 12 months | Minimum time for detectable skill change if effect exists |
 | Expected total challenge attempts | ~4,000–8,000 | ~4–6 attempts per session (expected; participants are likely to quit when challenges get harder) × 2–5 sessions × 200 participants |
-| Expected Tier 3–5 attempts | Low — sparse | With ascending difficulty ordering, participants who stop at challenge 4–6 will rarely reach Tier 3 and almost never Tier 4–5 (see §10 limitation) |
+| Expected Tier 3–5 attempts | Low — sparse | With ascending difficulty ordering, participants who stop at challenge 4–6 will rarely reach Tier 3 and almost never Tier 4–5 (see §11 limitation) |
 
 ### 7.2 Minimum Effect Size of Interest (MESI)
 
@@ -215,7 +267,7 @@ Effects smaller than these are considered practically insignificant for the clai
 
 Before launch: run simulation-based power analysis using `brms` or `simr`:
 
-1. Simulate datasets under the MESI (§7.2) with the expected data structure (unbalanced, varying N sessions per participant).
+1. Simulate datasets under the MESI (§8.2) with the expected data structure (unbalanced, varying N sessions per participant).
 2. Fit the primary model to each simulated dataset.
 3. Calculate the proportion of simulations where the 95% CI for the key interaction excludes zero.
 4. Target ≥ 80% power; adjust recruitment targets if needed.
@@ -224,7 +276,7 @@ Results of the power simulation to be documented in `analysis/power_simulation.R
 
 ---
 
-## 8. Analysis Timeline
+## 9. Analysis Timeline
 
 | Milestone | When |
 |-----------|------|
@@ -239,7 +291,7 @@ Results of the power simulation to be documented in `analysis/power_simulation.R
 
 ---
 
-## 9. Planned Paper Structure
+## 10. Planned Paper Structure
 
 Mapping research questions and hypotheses to paper sections:
 
@@ -266,12 +318,12 @@ Mapping research questions and hypotheses to paper sections:
 ### Discussion
 - Interpretation of key interaction (or null result)
 - Practical implications: should developers be concerned? What mitigates the effect?
-- Limitations (§10)
-- Future directions (§11)
+- Limitations (§11)
+- Future directions (§12)
 
 ---
 
-## 10. Limitations
+## 11. Limitations
 
 These are pre-acknowledged to prevent post-hoc rationalisation in the paper:
 
@@ -288,21 +340,22 @@ These are pre-acknowledged to prevent post-hoc rationalisation in the paper:
 | **Short study window** | 12 months may be insufficient to detect gradual skill decay if the effect accrues over years | Report effect at 6 and 12 months separately; acknowledge that longer follow-up is needed |
 | **Challenge pool exhaustion for long-term participants** | After ~20 sessions, participants have seen all challenges | Report N participants who approached exhaustion; note this limits the study to approximately 20 months per participant |
 | **Sparse Tier 3–5 data** | Challenges are presented in ascending difficulty order; participants who stop at challenge 4–6 complete only Tier 1–2. Tier 3+ attempts will be rare, weakening H3 and IRT parameter estimation for higher-tier items | Report actual Tier 3–5 attempt counts before running S2 and S3 models; if sparse, downgrade H3 to exploratory and acknowledge limited generalisability to harder challenges |
+| **Codebase complexity / tool diversity confound** | Skill decline may be driven not by vibe coding per se but by working on larger, more complex codebases with more diverse tools — making it cognitively impossible to stay fluent in any one area regardless of AI use. The quantitative model cannot disentangle this from vibe coding | Include exit survey Q3 (§6.1) to measure perceived complexity change; discuss qualitatively; include role-change as a covariate in sensitivity analysis |
 
 ---
 
-## 11. Future Directions
+## 12. Future Directions
 
 - **Longitudinal extension:** extend recruitment and follow-up to 24–36 months to detect slower-accumulating effects.
 - **Objective vibe-coding measure:** integrate with GitHub activity data (with consent) to estimate actual proportion of AI-generated commits, reducing reliance on self-report.
 - **Intervention study:** following this observational phase, a randomised experiment could assign participants to "deliberate practice" vs. "vibe-code freely" conditions for 3 months to test causality.
 - **Skill domain specificity:** extend beyond Python to JavaScript, SQL, or shell scripting to test whether effects are Python-specific or general.
-- **Qualitative component:** if think-aloud data is collected at scale, thematic analysis of verbalised problem-solving strategies between high and low vibe-coders.
+- **Think-aloud thematic analysis:** if think-aloud data is collected at scale, thematic analysis of verbalised problem-solving strategies between high and low vibe-coders (distinct from the exit-survey qualitative strand already planned in §6).
 - **Moderating role of programming education:** compare developers who learned to code before vs. after the widespread availability of AI assistants (i.e., pre- vs. post-2022 entrants to the field).
 
 ---
 
-## 12. Open Science Commitments
+## 13. Open Science Commitments
 
 | Commitment | Plan |
 |------------|------|
@@ -315,21 +368,23 @@ These are pre-acknowledged to prevent post-hoc rationalisation in the paper:
 
 ---
 
-## 13. Ethics
+## 14. Ethics
 
 - **Ethics approval:** Royal Holloway, University of London (application in progress).
 - **Informed consent:** full versioned consent system implemented in-app (see high_level_plan.md §7).
 - **GDPR compliance:** EU participant data handled per GDPR; data processing agreement with Hetzner (EU-based hosting).
 - **Data retention:** per policy in high_level_plan.md §7.5 and §18.
 - **Participant rights:** withdrawal, data deletion, and optional consent mechanisms fully implemented (see high_level_plan.md §18).
+- **Interview sub-study:** semi-structured interviews (§6.3) require explicit consent (recorded, transcribed, deleted post-transcription). Declared in the ethics application; recordings never shared or included in the open dataset. Interviews are conducted only with participants who have given follow-up contact permission (`OptionalConsentRecord.consent_type = "future_contact"`).
+- **`future_contact` optional consent:** requires a new entry in the `OptionalConsentRecord.consent_type` choices alongside existing types (`think_aloud_audio`, `transcript_sharing`, `reminder_emails`). Must be added to the data model and consent flow before launch.
 
 ---
 
-## 14. Identified Gaps (items to resolve before pre-registration)
+## 15. Identified Gaps (items to resolve before pre-registration)
 
 These are open questions that must be answered or decided before the OSF pre-registration is finalised:
 
-- [ ] **Power simulation:** run and document in `analysis/power_simulation.R`; confirm whether N=200 / 3 sessions is sufficient or whether targets need revising.
+- [ ] **Power simulation:** run and document in `analysis/power_simulation.R`; confirm whether N=200 / 2 sessions is sufficient or whether targets need revising.
 - [ ] **Vibe-coding scale anchoring:** the 0–100% slider (profile Q20, post-session) needs concrete anchor examples (e.g., "0% = I write all code myself; 50% = roughly equal; 100% = AI writes everything, I only review"). Without anchors, inter-participant comparability is limited.
 - [ ] **Baseline session design:** the first session establishes each participant's baseline. Should the baseline session have a different structure (e.g., more challenges, no time pressure) to get a more stable estimate of initial ability? Currently it's identical to follow-up sessions.
 - [ ] **IRT calibration timing:** the IRT model (§5 S3) requires sufficient data to estimate item parameters. Plan for when to run the first IRT calibration (after N attempts per challenge?), and how to handle challenges with few responses in early months. Note: Tier 3–5 items may never accumulate sufficient responses if participants routinely quit before reaching them.
@@ -338,3 +393,7 @@ These are open questions that must be answered or decided before the OSF pre-reg
 - [ ] **Minimum meaningful session for analysis:** a session with only 1 challenge attempted has very noisy accuracy (0 or 100%). Define a minimum number of challenge attempts per session for inclusion in the primary model (suggest: ≥ 3 attempts).
 - [ ] **Multiple comparison correction:** the primary model has one pre-specified test (H1). Secondary models (H2, H3, H4) and sensitivity analyses are separate model fits, not additional coefficients in the primary model. State explicitly whether Bayesian posterior probabilities for secondary models will be interpreted with any adjustment.
 - [ ] **Pre-registration of exploratory analyses:** clarify which analyses are confirmatory (H1–H5) and which are explicitly flagged as exploratory to prevent inflated claims in the paper.
+- [ ] **Exit survey implementation:** add `context = "exit"` as a new valid value in the unified question system (`SurveyQuestion.context` choices) and implement the exit survey trigger (shown when participant chooses to leave the study, or at 12-month mark). Define the 5 exit questions (§6.1) as `SurveyQuestion` fixtures.
+- [ ] **`future_contact` consent:** add to `OptionalConsentRecord.consent_type` choices in the data model. Decide where in the UI to present it (profile page, exit survey, or both).
+- [ ] **Interview protocol:** draft a semi-structured interview guide before recruitment opens. Requires ethics approval to be in place first.
+- [ ] **Qualitative analysis plan:** decide whether thematic analysis of exit surveys is reported in the same paper as the quantitative findings (as a mixed-methods paper) or as a separate publication.
