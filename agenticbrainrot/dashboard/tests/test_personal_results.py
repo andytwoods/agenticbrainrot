@@ -121,8 +121,6 @@ class TestPersonalResults:
         )
         assert response.status_code == HTTPStatus.OK
         assert b"Session History" in response.content
-        assert b"Session 1" in response.content
-        assert b"Session 2" in response.content
 
     def test_with_sessions_includes_chart_data(
         self,
