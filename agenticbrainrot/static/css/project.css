@@ -272,11 +272,15 @@ body {
 }
 
 /* Subtle code-symbol watermark */
-.hero-cta::before {
-  content: "</>";
+.hero-watermark-wrap {
   position: absolute;
   left: 2%;
   top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.hero-code-watermark {
   font-family: monospace;
   font-size: clamp(3rem, 9vw, 8rem);
   font-weight: 900;
@@ -285,7 +289,24 @@ body {
   pointer-events: none;
   user-select: none;
   line-height: 1;
+  white-space: nowrap;
+  transition: font-size 0.4s ease;
 }
+.hero-watermark-pause {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.2;
+  font-size: 0.8rem;
+  color: #ffffff;
+  padding: 0.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+.hero-watermark-pause:hover,
+.hero-watermark-pause:focus-visible { opacity: 0.6; }
 
 .hero-eyebrow {
   font-size: 0.8rem;

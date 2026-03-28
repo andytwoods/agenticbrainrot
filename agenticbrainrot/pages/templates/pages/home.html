@@ -96,6 +96,13 @@
 {% block content %}
   {# Hero Section #}
   <section class="hero is-medium hero-cta">
+    <div class="hero-watermark-wrap">
+      <button id="watermarkPause"
+              aria-label="Pause animation"
+              title="Pause animation"
+              class="hero-watermark-pause">⏸</button>
+      <span class="hero-code-watermark" aria-hidden="true"></span>
+    </div>
     <div class="hero-body">
       <div class="container has-text-centered">
         <p class="hero-eyebrow mb-3">citizen science &mdash; open data &mdash; Python</p>
@@ -240,3 +247,146 @@
     </div>
   </section>
 {% endblock content %}
+{% block inline_javascript %}
+<script>
+(function () {
+  const COMMANDS = [
+    "can you make a billion dollar business?",
+    "deploy this app to the internet",
+    "fix all the bugs please",
+    "rewrite this in Rust",
+    "add dark mode",
+    "make it go faster",
+    "add blockchain",
+    "generate 10x more unit tests",
+    "make the logo bigger",
+    "add a loading spinner",
+    "refactor everything",
+    "write me a whitepaper",
+    "pivot to AI",
+    "disrupt the cloud",
+    "scale to 1 million users",
+    "port this to React Native",
+    "add machine learning",
+    "write a terms of service",
+    "build me a mobile app",
+    "10x the developer velocity",
+    "make it look like Apple",
+    "add a payment system",
+    "why is it so slow?",
+    "can you make it pop more?",
+    "just make it work",
+    "make the button more clicky",
+    "add some AI to this",
+    "can it predict the future?",
+    "make it go viral",
+    "generate passive income",
+    "add a crypto wallet",
+    "why is there an error?",
+    "build the next Google",
+    "make it more intuitive",
+    "just delete the tests",
+    "add more synergy",
+    "make it enterprise ready",
+    "can you automate my job?",
+    "add a chat GPT button",
+    "make it GDPR compliant somehow",
+    "just push to production",
+    "add infinite scroll",
+    "make it work on IE6",
+    "build a recommendation engine",
+    "can it mine bitcoin too?",
+    "add a neural network",
+    "generate some sample data",
+    "make the errors go away",
+    "add gamification",
+    "make it self-healing",
+  ];
+
+  const el = document.querySelector(".hero-code-watermark");
+  const pauseBtn = document.getElementById("watermarkPause");
+  if (!el) return;
+
+  const INITIAL = "</>";
+  const rand = (min, max) => Math.random() * (max - min) + min;
+
+  let paused = false;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const sleepOrPause = async ms => {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      if (paused) await new Promise(r => { const id = setInterval(() => { if (!paused) { clearInterval(id); r(); } }, 100); });
+      await sleep(Math.min(50, end - Date.now()));
+    }
+  };
+
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", () => {
+      paused = !paused;
+      pauseBtn.textContent = paused ? "▶" : "⏸";
+      pauseBtn.setAttribute("aria-label", paused ? "Resume animation" : "Pause animation");
+      pauseBtn.title = paused ? "Resume animation" : "Pause animation";
+    });
+  }
+
+  async function typeText(text) {
+    for (const ch of text) {
+      if (paused) await new Promise(r => { const id = setInterval(() => { if (!paused) { clearInterval(id); r(); } }, 100); });
+      el.textContent += ch;
+      await sleep(rand(55, 140));
+    }
+  }
+
+  async function deleteAll() {
+    while (el.textContent.length > 0) {
+      if (paused) await new Promise(r => { const id = setInterval(() => { if (!paused) { clearInterval(id); r(); } }, 100); });
+      el.textContent = el.textContent.slice(0, -1);
+      await sleep(rand(35, 90));
+    }
+  }
+
+  async function deleteBack(n) {
+    for (let i = 0; i < n; i++) {
+      if (paused) await new Promise(r => { const id = setInterval(() => { if (!paused) { clearInterval(id); r(); } }, 100); });
+      el.textContent = el.textContent.slice(0, -1);
+      await sleep(rand(60, 130));
+    }
+  }
+
+  async function run() {
+    // Start with the static text
+    el.textContent = INITIAL;
+
+    // Wait a few seconds before starting the show
+    await sleep(rand(3000, 4500));
+
+    // Backspace the initial </>
+    await deleteBack(INITIAL.length);
+
+    // Shrink font for commands and reveal pause button
+    el.style.fontSize = "clamp(0.9rem, 2.5vw, 2rem)";
+    if (pauseBtn) pauseBtn.style.display = "inline";
+
+    // Out-of-hat shuffle: exhaust all commands before repeating
+    let hat = [];
+    const draw = () => {
+      if (hat.length === 0) {
+        hat = [...COMMANDS].sort(() => Math.random() - 0.5);
+      }
+      return hat.pop();
+    };
+
+    // Loop through commands indefinitely
+    while (true) {
+      const cmd = draw();
+      await typeText(cmd);
+      await sleepOrPause(rand(4500, 5500));
+      await deleteAll();
+      await sleepOrPause(rand(400, 800));
+    }
+  }
+
+  run();
+})();
+</script>
+{% endblock inline_javascript %}
