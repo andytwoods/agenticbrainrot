@@ -57,6 +57,7 @@ class PrivacyView(TemplateView):
         context["document"] = PolicyDocument.get_active(
             PolicyDocument.DocType.PRIVACY_POLICY,
         )
+        context["privacy_email"] = settings.PRIVACY_EMAIL
         return context
 
 
@@ -66,6 +67,7 @@ class TermsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["document"] = PolicyDocument.get_active(PolicyDocument.DocType.TERMS)
+        context["contact_email"] = settings.CONTACT_EMAIL
         return context
 
 

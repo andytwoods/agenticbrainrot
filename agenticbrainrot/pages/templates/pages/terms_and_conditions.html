@@ -1,22 +1,68 @@
 {% extends "base.html" %}
-
 {% load markdown_tags %}
 
 {% block title %}Terms of Participation – Can I Still Code{% endblock title %}
+{% block meta_description %}Terms of participation for the Can I Still Code citizen-science study.{% endblock meta_description %}
 
 {% block content %}
-<div class="container">
-  {% if document %}
-    <h1 class="title">{{ document.title }}</h1>
-    <div class="content">
-      <p class="has-text-grey">Version {{ document.version }}  –  Last updated: {{ document.updated_at|date:"j F Y" }}</p>
-      {{ document.body|render_markdown }}
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+
+        {% if document %}
+          <h1 class="title">{{ document.title }}</h1>
+          <p class="has-text-grey mb-5">Version {{ document.version }} – Last updated: {{ document.updated_at|date:"j F Y" }}</p>
+          <div class="content">
+            {{ document.body|render_markdown }}
+          </div>
+        {% else %}
+
+          <h1 class="title is-1">Terms of Participation</h1>
+          <p class="has-text-grey mb-5">Last updated: March 2026</p>
+
+          <div class="content is-size-5">
+
+            <h2>1. The study</h2>
+            <p>Can I Still Code is a citizen-science research project investigating whether AI-assisted coding practices affect Python developer skill over time. It is run by Andy Woods at Royal Holloway, University of London and has received institutional ethics approval.</p>
+
+            <h2>2. Participation is voluntary</h2>
+            <p>You are free to join, pause, or withdraw from the study at any time without giving a reason and without any negative consequence. Withdrawal instructions are in your profile settings.</p>
+
+            <h2>3. What participation involves</h2>
+            <ul>
+              <li>Completing a brief profile questionnaire at registration.</li>
+              <li>Returning every 28 days to complete a short set of Python coding challenges (typically 20–40 minutes).</li>
+              <li>Answering a short post-session survey about your AI tool usage.</li>
+              <li>Completing the challenges without AI assistance or internet searches, as instructed.</li>
+            </ul>
+
+            <h2>4. Honesty</h2>
+            <p>The scientific value of the study depends on participants completing challenges independently. Please do not use AI tools, search engines, or other external resources during a challenge session. We have no way to enforce this, and we trust you.</p>
+
+            <h2>5. Your data</h2>
+            <p>By participating you consent to your anonymised data being included in the open research dataset, as described in our <a href="{% url 'privacy' %}">Privacy Policy</a>. You may request deletion of your personal data at any time before the dataset is anonymised and released.</p>
+
+            <h2>6. No compensation</h2>
+            <p>Participation is unpaid. In return, you receive a personal results dashboard showing your own skill trends over time, and you contribute to open science.</p>
+
+            <h2>7. Eligibility</h2>
+            <p>You must be 18 or older and able to read and write Python. There are no other eligibility requirements.</p>
+
+            <h2>8. Account</h2>
+            <p>You are responsible for keeping your login credentials secure. One account per person. We reserve the right to remove accounts that show signs of automated or dishonest activity.</p>
+
+            <h2>9. Changes to these terms</h2>
+            <p>If we materially change these terms we will notify active participants by email and publish a new version here. Continued participation after notification constitutes acceptance.</p>
+
+            <h2>10. Contact</h2>
+            <p>For any questions about participation: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+
+          </div>
+        {% endif %}
+
+      </div>
     </div>
-  {% else %}
-    <h1 class="title">Terms of Participation</h1>
-    <div class="content">
-      <p class="has-text-grey">No terms document has been published yet. Please check back later.</p>
-    </div>
-  {% endif %}
-</div>
+  </div>
+</section>
 {% endblock content %}
