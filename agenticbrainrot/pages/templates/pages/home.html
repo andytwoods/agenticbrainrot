@@ -216,8 +216,7 @@
         <div class="columns is-centered is-mobile is-multiline mt-4">
           {% for sponsor in sponsors %}
             <div class="column is-narrow">
-              {% if sponsor.url %}<a href="{{ sponsor.url }}" target="_blank" rel="noopener">{% endif %}
-                2
+              {% if sponsor.url %}<a href="{{ sponsor.url }}" target="_blank" rel="noopener noreferrer">{% endif %}
                 {% if sponsor.logo %}
                   <figure class="image is-128x128 is-inline-block">
                     <img src="{{ sponsor.logo.url }}"

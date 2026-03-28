@@ -8,7 +8,7 @@
          step="1"
          style="width: 100%"
          aria-label="Scale from {{ widget.min_label }} to {{ widget.max_label }}"
-         oninput="document.getElementById('{{ widget.attrs.id }}_display').textContent = this.value"
+         oninput="document.getElementById('{{ widget.attrs.id }}_display').textContent = this.value; this.setAttribute('aria-valuenow', this.value)"
          aria-valuemin="{{ widget.scale_min }}"
          aria-valuemax="{{ widget.scale_max }}"
          {% if widget.value != None %}aria-valuenow="{{ widget.value }}"{% endif %} />

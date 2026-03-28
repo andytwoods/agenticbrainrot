@@ -87,10 +87,16 @@
           href="{% static 'images/social/apple-touch-icon.png' %}" />
     <link rel="manifest" href="{% static 'images/social/site.webmanifest' %}" />
     {% block css %}
-      <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
-      <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+      <link rel="preload" href="{% static 'webfonts/fa-solid-900.woff2' %}" as="font" type="font/woff2" crossorigin />
+      <link rel="preload" href="{% static 'webfonts/fa-brands-400.woff2' %}" as="font" type="font/woff2" crossorigin />
+      <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}" />
+      <link rel="preload"
+            href="{% static 'css/font-awesome.min.css' %}"
+            as="style"
+            onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript>
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+      </noscript>
       {% block extra_css %}
       {% endblock extra_css %}
       <link href="{% static 'css/project.css' %}" rel="stylesheet" />
@@ -215,6 +221,7 @@
             const $target = document.getElementById(target);
             el.classList.toggle('is-active');
             $target.classList.toggle('is-active');
+            el.setAttribute('aria-expanded', el.classList.contains('is-active') ? 'true' : 'false');
           });
         });
 

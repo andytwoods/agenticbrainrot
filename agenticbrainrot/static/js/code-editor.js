@@ -504,8 +504,14 @@
         if (timerEl) {
             timerEl.style.cursor = "pointer";
             timerEl.title = "Click to toggle timer visibility";
-            timerEl.onclick = function () {
-                timerEl.style.visibility = timerEl.style.visibility === "hidden" ? "visible" : "hidden";
+            function toggleTimer() {
+                var hidden = timerEl.style.visibility === "hidden";
+                timerEl.style.visibility = hidden ? "visible" : "hidden";
+                timerEl.setAttribute("aria-label", hidden ? "Time elapsed" : "Timer hidden");
+            }
+            timerEl.onclick = toggleTimer;
+            timerEl.onkeydown = function (e) {
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleTimer(); }
             };
         }
     }

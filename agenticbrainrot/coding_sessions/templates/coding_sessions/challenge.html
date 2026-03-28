@@ -26,10 +26,15 @@
         </div>
         <div class="level-right">
           <div class="level-item">
-            <span id="timer-display" class="tag is-dark is-medium">00:00</span>
+            <span id="timer-display"
+                  class="tag is-dark is-medium"
+                  role="timer"
+                  aria-label="Time elapsed"
+                  tabindex="0">00:00</span>
           </div>
           <div class="level-item">
             <a href="#"
+               role="button"
                class="has-text-grey is-size-7"
                hx-post="{% url 'coding_sessions:session_view' session.pk %}"
                hx-target="#session-container"
