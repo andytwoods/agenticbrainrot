@@ -76,6 +76,47 @@ class Challenge(models.Model):
         raise ProtectedError(msg, {self})
 
 
+class ChallengeReport(models.Model):
+    """A participant-submitted report of a problem with a challenge."""
+
+    class Category(models.TextChoices):
+        UNCLEAR_DESCRIPTION = "unclear_description", "Unclear description"
+        WRONG_TEST_CASE = "wrong_test_case", "Wrong or unexpected test case"
+        BROKEN_SKELETON = "broken_skeleton", "Broken skeleton code"
+        OTHER = "other", "Other"
+
+    challenge = models.ForeignKey(
+        Challenge,
+        on_delete=models.PROTECT,
+        related_name="reports",
+    )
+    participant = models.ForeignKey(
+        "accounts.Participant",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="challenge_reports",
+    )
+    category = models.CharField(max_length=50, choices=Category.choices)
+    description = models.TextField()
+    resolved = models.BooleanField(default=False)
+    resolution_notes = models.TextField(
+        blank=True,
+        default="",
+        help_text="Internal notes on how the report was resolved. Reference DEVIATIONS.md entries here.",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["challenge"]),
+            models.Index(fields=["resolved"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_category_display()} on {self.challenge} ({self.created_at:%Y-%m-%d})"
+
+
 class ChallengeAttempt(models.Model):
     """
     A single attempt by a participant at a challenge within a session.

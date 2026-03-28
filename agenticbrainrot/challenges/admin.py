@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 from .models import Challenge
 from .models import ChallengeAttempt
+from .models import ChallengeReport
 
 
 @admin.action(description="Export selected as CSV")
@@ -80,3 +81,13 @@ class ChallengeAttemptAdmin(admin.ModelAdmin):
     search_fields = ["participant__user__email", "challenge__title"]
     readonly_fields = ["started_at", "attempt_uuid"]
     actions = [export_attempts_csv]
+
+
+@admin.register(ChallengeReport)
+class ChallengeReportAdmin(admin.ModelAdmin):
+    list_display = ["challenge", "category", "participant", "resolved", "created_at"]
+    list_filter = ["resolved", "category", "challenge__difficulty"]
+    search_fields = ["challenge__title", "challenge__external_id", "description"]
+    readonly_fields = ["challenge", "participant", "category", "description", "created_at"]
+    fields = ["challenge", "participant", "category", "description", "created_at", "resolved", "resolution_notes"]
+    ordering = ["resolved", "-created_at"]

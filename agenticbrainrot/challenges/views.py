@@ -4,7 +4,9 @@ from django.conf import settings
 from django.contrib.auth.views import redirect_to_login
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
+from .forms import ChallengeReportForm
 from .models import Challenge
 
 
@@ -62,3 +64,35 @@ def preview_challenge(request, challenge_id=None):
         "challenges/partials/_preview_content.html" if request.headers.get("HX-Request") else "challenges/preview.html"
     )
     return render(request, template, context)
+
+
+@require_http_methods(["GET", "POST"])
+def report_challenge(request, challenge_id):
+    """Render or handle a participant report about a challenge problem."""
+    challenge = get_object_or_404(Challenge, pk=challenge_id)
+
+    if request.method == "GET":
+        return render(
+            request,
+            "challenges/partials/_report_form.html",
+            {"challenge": challenge},
+        )
+
+    form = ChallengeReportForm(request.POST)
+    if form.is_valid():
+        report = form.save(commit=False)
+        report.challenge = challenge
+        if request.user.is_authenticated and hasattr(request.user, "participant"):
+            report.participant = request.user.participant
+        report.save()
+        return render(
+            request,
+            "challenges/partials/_report_success.html",
+            {"challenge": challenge},
+        )
+
+    return render(
+        request,
+        "challenges/partials/_report_form.html",
+        {"challenge": challenge},
+    )

@@ -1,0 +1,42 @@
+<div id="report-form-container">
+  <p class="is-size-7 has-text-weight-semibold mb-2">Report a problem with this challenge</p>
+  <form hx-post="{% url 'challenges:report_challenge' challenge.pk %}"
+        hx-target="#report-form-container"
+        hx-swap="outerHTML">
+    {% csrf_token %}
+    <div class="field">
+      <label class="label is-small" for="id_report_category">What kind of issue is it?</label>
+      <div class="control">
+        <div class="select is-small is-fullwidth">
+          <select id="id_report_category" name="category" required>
+            <option value="unclear_description">Unclear description</option>
+            <option value="wrong_test_case">Wrong or unexpected test case</option>
+            <option value="broken_skeleton">Broken skeleton code</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label is-small" for="id_report_description">Details</label>
+      <div class="control">
+        <textarea id="id_report_description"
+                  name="description"
+                  class="textarea is-small"
+                  rows="3"
+                  placeholder="Describe the problem briefly."
+                  required></textarea>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <button type="submit" class="button is-small is-warning">Submit report</button>
+        <button type="button"
+                class="button is-small is-light"
+                onclick="document.getElementById('report-toggle').style.display='inline-flex'; document.getElementById('report-inline').style.display='none'">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

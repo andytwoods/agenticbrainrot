@@ -3,7 +3,7 @@
     <a class="navbar-item" href="{% url 'home' %}">
       <strong>Can I Still Code</strong>
     </a>
-    <button class="navbar-item a11y-open-btn"
+    <button class="navbar-item a11y-open-btn is-hidden-desktop"
             type="button"
             aria-controls="a11yPanel"
             aria-expanded="false"
@@ -11,7 +11,6 @@
       <span class="icon">
         <i class="fas fa-universal-access" aria-hidden="true"></i>
       </span>
-      <span class="is-hidden-touch">Accessibility</span>
     </button>
     <a role="button"
        class="navbar-burger"
@@ -60,6 +59,16 @@
              href="{% url 'account_login' %}">Sign In</a>
         </div>
       {% endif %}
+      <button class="navbar-item a11y-open-btn is-hidden-touch"
+              type="button"
+              aria-controls="a11yPanel"
+              aria-expanded="false"
+              aria-label="Open accessibility settings">
+        <span class="icon">
+          <i class="fas fa-universal-access" aria-hidden="true"></i>
+        </span>
+        <span>Accessibility</span>
+      </button>
     </div>
   </div>
 </nav>

@@ -14,4 +14,9 @@ urlpatterns = [
         views.preview_challenge,
         name="preview_challenge_detail",
     ),
+    path(
+        "<int:challenge_id>/report/",
+        views.report_challenge,
+        name="report_challenge",
+    ),
 ]

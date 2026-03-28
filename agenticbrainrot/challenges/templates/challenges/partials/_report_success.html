@@ -1,0 +1,12 @@
+<div id="report-form-container">
+  <p class="is-size-7 has-text-success mb-2">
+    <span class="icon"><i class="fas fa-check-circle"></i></span>
+    Thanks – your report has been logged.
+  </p>
+  <button class="button is-small is-ghost has-text-grey"
+          hx-get="{% url 'challenges:report_challenge' challenge.pk %}"
+          hx-target="#report-form-container"
+          hx-swap="outerHTML">
+    Report another problem
+  </button>
+</div>

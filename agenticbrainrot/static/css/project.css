@@ -430,7 +430,7 @@ body {
 .a11y-panel {
   position: fixed;
   top: 3.75rem;
-  right: 1.5rem;
+  left: 1.5rem;
   z-index: 1001;
   width: 20rem;
   max-width: calc(100vw - 2rem);
@@ -443,6 +443,9 @@ body {
   color: var(--theme-text);
 }
 .a11y-panel.is-open { display: block; }
+@media (min-width: 1024px) {
+  .a11y-panel { left: auto; right: 1.5rem; }
+}
 .a11y-panel-header {
   display: flex;
   align-items: center;

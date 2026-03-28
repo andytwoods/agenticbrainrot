@@ -1,4 +1,4 @@
-<div class="box">
+<div>
   <h2 class="title is-4">{{ challenge.title }}</h2>
   <div class="content">{{ challenge.description|linebreaksbr }}</div>
   {% if challenge.clarification %}
@@ -7,6 +7,17 @@
       <p class="is-size-7">{{ challenge.clarification|linebreaksbr }}</p>
     </div>
   {% endif %}
+  <div class="mt-3">
+    <button id="report-toggle"
+            class="button is-small is-ghost has-text-grey"
+            onclick="this.style.display='none'; document.getElementById('report-inline').style.display='block'">
+      <span class="icon is-small"><i class="fas fa-flag"></i></span>
+      <span>Report a problem</span>
+    </button>
+    <div id="report-inline" style="display:none">
+      {% include "challenges/partials/_report_form.html" %}
+    </div>
+  </div>
 </div>
 <div id="code-editor-toolbar"
      class="field is-grouped mb-0 p-2 is-dark"
@@ -33,7 +44,9 @@
     <span class="is-size-7 has-text-grey">Python 3.x</span>
   </div>
 </div>
-<div id="code-editor" aria-label="Python code editor"></div>
+<div id="code-editor"
+     aria-label="Python code editor"
+     style="border: 1px solid var(--bulma-border); border-top: none; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;"></div>
 {{ challenge.skeleton_code|json_script:"skeleton-code-data" }}
 <div class="buttons mt-3">
   <button id="run-btn" class="button is-info" type="button" disabled>Run Code</button>
@@ -46,7 +59,7 @@
           hx-vals='{"action": "skip"}'>Skip</button>
 </div>
 <div id="output"
-     class="box mt-3"
+     class="mt-3"
      role="log"
      aria-label="Code output"
      aria-live="polite"
