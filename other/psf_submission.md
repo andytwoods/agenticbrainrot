@@ -1,87 +1,101 @@
 # PSF Community Partner Application – Can I Still Code?
 
-> **Submission note:** This document is structured to map onto the PSF Community Partner online form. Copy each section into the corresponding field. Items marked **[FILL IN]** require manual completion before submitting.
+> **Submission note:** This draft is structured to map onto the PSF Community Partner form.
 
 ---
 
 ## Applicant / Organisation Name
 
-Can I Still Code? — A Longitudinal Python Skill Study
-PI: Dr Andy Woods, Royal Holloway, University of London
+**Can I Still Code? – a longitudinal Python skill study**  
+PI: Dr Andy Woods, Royal Holloway, University of London  
 Website: https://canistillcode.org
 
 ---
 
 ## What is your initiative, and what does it do?
 
-*Can I Still Code?* is a longitudinal citizen-science study asking a question that matters to every working Python developer: does AI-assisted ("vibe") coding quietly erode our unassisted programming skills over time?
+*Can I Still Code?* is a longitudinal, open-science research initiative for the Python community. It asks a simple but important question: as AI coding tools become part of everyday Python practice, what happens to people’s ability to code in Python without assistance?
 
-Participants register on canistillcode.org and complete a short set of Python coding challenges — with no AI assistance and no web search — once every 28 days over 12 months or more. Before each session they report what proportion of their day-to-day coding is currently AI-assisted. The result is a time-series dataset linking vibe-coding intensity to objective, test-validated Python performance, collected at individual participant level across a full year.
+Participants sign up at canistillcode.org and periodically complete short Python tasks without AI assistance or web search. They also report their current AI tool use in day-to-day Python work. This produces a dataset tracking AI-tool use and unassisted Python performance over time.
 
-The study is fully open-science: pre-registered hypotheses, analysis code on GitHub, and a fully anonymised dataset released under CC BY 4.0 after a 12-month embargo.
+The study is designed to be transparent and reproducible. Study materials, analysis code, and an anonymised dataset will be released under an open licence after an embargo. The project is also designed with privacy-preserving data handling and UK/EU data protection requirements in mind.
 
-**Tech stack:** Django (Python 3.14), Pyodide (CPython in WebAssembly — code runs in the participant's browser, never on our server), HTMX, Bulma CSS.
+**Tech stack:** The platform is built with Django, HTMX, Bulma CSS, and Pyodide. Python code runs in the participant’s browser rather than on our server.
 
 ---
 
 ## Why does this matter for the Python community?
 
-The Python community is living through a rapid shift in how Python is written. GitHub Copilot, Cursor, Claude, and similar tools have moved from novelty to daily infrastructure for many developers. Yet there is almost no empirical evidence on what this shift does to the underlying skills of the people using these tools.
+AI coding tools are now shaping Python development for many people, but there is still little empirical evidence about how ongoing use affects unassisted Python skill.
 
-This study exists specifically to generate that evidence — for Python, about Python developers, using Python challenges. The findings will inform:
+This initiative exists to generate that evidence in a Python-specific way. The findings should be useful to:
 
-- Individual developers deciding how much to lean on AI tooling
-- Educators designing Python curricula for the AI-assisted era
-- Companies setting policy on AI tool use in Python engineering teams
-- The broader Python community's understanding of its own skill trajectory
+- Python developers deciding how heavily to rely on AI tooling
+- educators designing Python teaching for the AI-assisted era
+- employers and teams setting expectations around AI-assisted Python work
+- researchers studying skill change, programming practice, and human–AI collaboration
 
-The open dataset will be a permanent community resource: any researcher, educator, or organisation can build on it under CC BY 4.0.
+By producing empirical evidence on AI’s effect on independent Python practice, the study will help the community understand how skills are changing and how best to support long-term learning.
+
+We want the outputs to be useful beyond the initial study. Open materials, analysis, and an anonymised dataset will give the wider Python community a resource to inspect, critique, reuse, and build on. We will also share findings through blog posts, talks, and public summaries to support informed discussion about AI-assisted Python practice.
 
 ---
 
 ## How does the initiative serve the Python community specifically?
 
-- **Participants are Python developers** — any skill level, professional or hobbyist, anywhere in the world
-- **Challenges are Python** — drawn from validated research datasets; all tiers from basic syntax (Tier 1) to algorithmic reasoning (Tier 5)
-- **The central predictor is Python-specific AI tool use** — not "coding" in general, but vibe-coding Python specifically
-- **Results will be published with fully reproducible R analysis** (lme4/brms multilevel models) and open data, so the Python community can interrogate and extend the findings
-- **Recruitment targets Python communities** — Reddit (r/Python, r/learnpython), Hacker News, GitHub Discussions, PyPI, developer Discords
+- **It is Python-specific** – participants complete Python tasks, and the study focuses on Python programming practice rather than coding in general
+- **It is aimed at Python users across the community** – including learners, hobbyists, and professionals
+- **It addresses a live community question** – how AI-assisted Python development affects long-term independent skill
+- **Its outputs are designed for community reuse** – methods, code, and data will be shared openly where permitted
+- **It will return findings to the community** – through blog posts, talks, and public summaries designed to support informed discussion
+- **It is built in Python technologies** – the platform itself is a Django web application
 
 ---
 
 ## Credentials and credibility
 
-- **PI:** Dr Andy Woods, Royal Holloway, University of London (MediaArts / StoryFutures Academy). Background: experimental psychology + 15+ years production Python and JavaScript development. 70+ publications. Royal Holloway profile: https://pure.royalholloway.ac.uk/en/persons/andrew-woods/
+- **PI:** Dr Andy Woods – experimental psychologist and Python developer with 25+ years of coding experience; has used Django since 1.11. Elected DSF Individual Member in December 2025  
+  Relevant publications include *First Steps in Django Web Development* and *Conducting Perception Research over the Internet: A Tutorial Review*
+
 - **Co-Investigator:** Dr Alex Reppel, Royal Holloway
+
 - **PhD Researcher:** Chris Chowen, Royal Holloway
+
 - **Institutional affiliation:** Royal Holloway, University of London
-- **Funding:** RHUL internal funding
-- **Ethics:** Approved by the Royal Holloway Research Ethics Committee (study dates: 21 March 2026 – 31 March 2028)
-- **Pre-registration:** OSF (in progress / submitted — **[FILL IN: OSF DOI once live]**)
-- **Current participants:** **[FILL IN: number]** registered; **[FILL IN: number]** with at least one completed session
+
+- **Funding:** self funded
+
+- **Ethics:** Application submitted to the Royal Holloway Research Ethics Committee; approval is currently pending. The wider study will launch once approval is in place.
+
+- **Pilot activity:** The platform has already undergone small-scale pilot testing with approximately 30 users
+
+- **Expected participation:** We anticipate 1,000+ participants during the planned year-long study
 
 ---
 
 ## What are you asking the PSF for?
 
-We are requesting **in-kind support only** — no financial grant:
+We are requesting non-monetary support only.
 
-1. **Use of the PSF name and logo** on the canistillcode.org study site, to signal to potential participants that this is a credible, community-endorsed initiative
-2. **Promotional posts on PSF social media channels** (Twitter/X, LinkedIn, Mastodon) to support participant recruitment — ideally at launch and again at the 6-month mark
+Specifically, we are asking for:
 
-Recruitment is the primary bottleneck for longitudinal citizen-science. An endorsement from the PSF would materially increase participation from exactly the community the study is designed to serve.
+1. **Community Partner recognition** for *Can I Still Code?*
+2. **Permission to reference PSF Community Partner status and use the PSF name and logo** in line with PSF trademark guidance
+3. **Re-sharing of up to two eligible social media posts**, subject to PSF capacity, to help us reach participants
+
+Participant recruitment is the main practical challenge for this project. Because the study will run over an extended period, support arriving after the initial launch window would still be useful and timely.
 
 ---
 
 ## Code of Conduct
 
-The study operates under a Code of Conduct drawn from the Contributor Covenant, applied to all participant-facing community spaces (GitHub Discussions, any future events). Reporting contact: andy.woods@rhul.ac.uk. Full text available at: **[FILL IN: direct URL to CoC page on canistillcode.org once published]**
+The project’s Code of Conduct aligns with the PSF Code of Conduct. It covers all participant-facing community spaces, including GitHub Discussions and any future public community activity associated with the study.
 
 ---
 
 ## Trademark / logo usage acknowledgement
 
-We acknowledge that use of the PSF name and logo is subject to the PSF Trademark Usage Policy and the Community Partner guidelines. We will not imply PSF endorsement of findings, and will remove all PSF marks on request.
+We understand that use of the PSF name and logo is subject to the PSF Trademark Usage Policy and Community Partner guidance. If approved, we will make clear that Community Partner status does not imply PSF endorsement, and we will remove PSF marks upon request.
 
 ---
 
@@ -91,20 +105,30 @@ We acknowledge that use of the PSF name and logo is subject to the PSF Trademark
 |---|---|
 | Study website | https://canistillcode.org |
 | PI profile (RHUL) | https://pure.royalholloway.ac.uk/en/persons/andrew-woods/ |
-| GitHub (analysis code) | **[FILL IN]** |
-| OSF pre-registration | **[FILL IN once live]** |
 | PI Google Scholar | https://scholar.google.co.uk/citations?user=p5dUkQIAAAAJ&hl=en |
+| PI LinkedIn | https://www.linkedin.com/in/woodsandy/ |
+| GitHub | https://github.com/andytwoods/can-I-still-code/ |
 
 ---
 
-## Items to fill in before submitting
+## Submission notes
 
-| # | Item | Notes |
-|---|---|---|
-| 1 | Current registered participant count | From the admin dashboard |
-| 2 | Current count with ≥1 completed session | From the admin dashboard |
-| 3 | Ethics status | Approved (dates above) — confirm wording you want to use |
-| 4 | OSF pre-registration DOI | Once the pre-reg is submitted/published |
-| 5 | GitHub repo URL | If you want to link directly to the analysis repo |
-| 6 | Code of Conduct URL | Once a CoC page is live on canistillcode.org |
-| 7 | Submission timing | PSF asks for ≥6 weeks before your target promotion date — pick a target and back-calculate |
+- **Initiative timing:** Spring 2026 launch window, with recruitment and participation continuing over a planned year-long study period
+- **Social posts:** Prepare one launch-style recruitment post and one follow-up recruitment post, adapted from the approved recruitment wording
+- **Timing:** No urgency – support later in the study would still be useful
+
+---
+
+## Shorter version for form fields with tighter character limits
+
+### What is your initiative, and what does it do?
+
+*Can I Still Code?* is a longitudinal Python skill project examining how AI-assisted Python development may affect unassisted coding ability over time. Participants return periodically to complete short Python tasks without AI assistance or web search, while also reporting their current level of AI tool use in everyday Python work. The study is designed as an open-science community resource, with open materials, open analysis, and an anonymised dataset planned for release after the research period.
+
+### Why does this matter for the Python community?
+
+AI coding tools are changing how Python is written, but there is still little empirical evidence about how sustained use affects independent Python skill. This initiative aims to generate Python-specific evidence that can help developers, educators, employers, and researchers make better-informed decisions. It will also contribute to the Python community’s understanding of how AI is affecting long-term skill development and the need for reskilling or skill maintenance.
+
+### What are you asking the PSF for?
+
+We are seeking non-monetary support from the PSF: Community Partner recognition, permission to reference that status and use the PSF name and logo in accordance with PSF guidance, and possible re-sharing of up to two social media posts. Because the study will run for approximately a year, support provided after the initial launch period would still be valuable.
