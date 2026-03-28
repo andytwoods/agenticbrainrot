@@ -49,6 +49,10 @@ class AboutView(TemplateView):
     template_name = "pages/about.html"
 
 
+class HowItWorksView(TemplateView):
+    template_name = "pages/how_it_works.html"
+
+
 class PrivacyView(TemplateView):
     template_name = "pages/privacy.html"
 

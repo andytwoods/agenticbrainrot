@@ -132,54 +132,6 @@
     </div>
   </section>
 
-  {# Participation Stats #}
-  <section class="section" style="background-color: var(--bulma-scheme-main-bis);">
-    <div class="container">
-      <div class="has-text-centered mb-6">
-        <h2 class="title is-2">The Big Question</h2>
-        <p class="subtitle has-text-weight-normal">Real-time aggregate data from our participants</p>
-      </div>
-      <div class="columns is-centered">
-        <div class="column is-3 has-text-centered">
-          <div class="box">
-            <p class="title is-2 has-text-primary">{{ stats.total_participants }}</p>
-            <p class="heading">Participants</p>
-          </div>
-        </div>
-        <div class="column is-3 has-text-centered">
-          <div class="box">
-            <p class="title is-2 has-text-info">{{ stats.total_sessions }}</p>
-            <p class="heading">Sessions Completed</p>
-          </div>
-        </div>
-        <div class="column is-3 has-text-centered">
-          <div class="box">
-            <p class="title is-2 has-text-success">{{ stats.total_challenges_solved }}</p>
-            <p class="heading">Challenges Solved</p>
-          </div>
-        </div>
-      </div>
-      <div class="columns mt-4">
-        <div class="column is-8 is-offset-2">
-          <div class="card">
-            <div class="card-content">
-              <p class="title is-4 has-text-centered">The Big Question: Does Vibe Coding Affect Skill?</p>
-              <div id="vibe-chart-container">
-                <canvas id="vibe-chart" height="300"></canvas>
-              </div>
-              <p id="vibe-chart-fallback" class="has-text-grey has-text-centered" style="display: none;">
-                We need more participants to show trends  –  join the study!
-              </p>
-              <p class="has-text-grey is-size-7 has-text-centered mt-3">
-                Average test accuracy over time by vibe-coding intensity. Only groups with 10+ participants shown.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   {# How it Works #}
   <section class="section">
     <div class="container">
@@ -199,7 +151,7 @@
             <i class="fas fa-code fa-3x"></i>
           </div>
           <h3 class="title is-4 mt-4">2. Assessment</h3>
-          <p>Complete short Python challenges periodically (no AI, no Googling!).</p>
+          <p>Complete short Python challenges periodically (no AI, no Googling!). <a href="{% url 'how_it_works' %}">How does this work?</a></p>
         </div>
         <div class="column has-text-centered">
           <div class="icon is-large has-text-primary">
@@ -247,7 +199,7 @@
       <h2 class="title is-3 mb-2">
         <span class="icon mr-2"><i class="fas fa-heart"></i></span>
         Support This Research</h2>
-      {% if sponsors %}
+      {% if sponsors %}h
         <div class="columns is-centered is-mobile is-multiline mt-4">
           {% for sponsor in sponsors %}
             <div class="column is-narrow">
@@ -286,83 +238,3 @@
     </div>
   </section>
 {% endblock content %}
-
-{% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script>
-(function () {
-  "use strict";
-
-  // Okabe-Ito colourblind-friendly palette
-  var COLOURS = {
-    low:    "rgb(0, 114, 178)",    // blue
-    medium: "rgb(230, 159, 0)",    // orange
-    high:   "rgb(204, 121, 167)",  // reddish purple
-  };
-
-  fetch("{% url 'api_stats_accuracy_by_vibe_coding' %}")
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      var groups = data.groups || {};
-      var keys = Object.keys(groups);
-
-      if (keys.length === 0) {
-        document.getElementById("vibe-chart-container").style.display = "none";
-        document.getElementById("vibe-chart-fallback").style.display = "block";
-        return;
-      }
-
-      var datasets = [];
-      keys.forEach(function (key) {
-        var g = groups[key];
-        datasets.push({
-          label: key.charAt(0).toUpperCase() + key.slice(1) +
-                 " vibe-coding (n=" + g.n_participants + ")",
-          data: g.accuracy,
-          borderColor: COLOURS[key] || "rgb(128, 128, 128)",
-          backgroundColor: "transparent",
-          tension: 0.3,
-          pointRadius: 4,
-        });
-      });
-
-      // Use months from the first group as labels
-      var labels = groups[keys[0]].months;
-
-      var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-      var textColor = isDark ? "#e0e0e0" : "#363636";
-      var gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
-
-      new Chart(document.getElementById("vibe-chart"), {
-        type: "line",
-        data: { labels: labels, datasets: datasets },
-        options: {
-          responsive: true,
-          color: textColor,
-          plugins: {
-            legend: { position: "bottom", labels: { color: textColor } },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-              title: { display: true, text: "Accuracy (%)", color: textColor },
-              ticks: { color: textColor },
-              grid: { color: gridColor },
-            },
-            x: {
-              title: { display: true, text: "Month", color: textColor },
-              ticks: { color: textColor },
-              grid: { color: gridColor },
-            },
-          },
-        },
-      });
-    })
-    .catch(function () {
-      document.getElementById("vibe-chart-container").style.display = "none";
-      document.getElementById("vibe-chart-fallback").style.display = "block";
-    });
-})();
-</script>
-{% endblock extra_js %}

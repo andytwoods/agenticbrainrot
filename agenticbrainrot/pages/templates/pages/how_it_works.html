@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}How It Works – Can I Still Code{% endblock title %}
+{% block meta_description %}How the Can I Still Code study works: Python challenges run entirely in your browser using Pyodide, with no code sent to the server.{% endblock meta_description %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+
+        <h1 class="title is-1">How It Works</h1>
+
+        <div class="content is-size-5">
+          <h2>The challenge format</h2>
+          <p>
+            Each session presents you with a small set of Python problems. For each one you see a description and a function skeleton. You fill in the body of the function – no internet, no AI – then click <strong>Run</strong>. Your code is tested against a hidden set of test cases and you see which ones pass or fail instantly.
+          </p>
+          <p>
+            Sessions typically take 20 – 40 minutes. You can attempt each challenge as many times as you like before moving on.
+          </p>
+
+          <h2>Python runs in your browser</h2>
+          <p>
+            Your code never leaves your device. We use <a href="https://pyodide.org" target="_blank" rel="noopener noreferrer">Pyodide</a> – a full CPython interpreter compiled to WebAssembly – running inside a Web Worker. When you click Run, your code is sent to that sandboxed worker thread, executed there, and the results are returned to the page. The server never sees your code; it only receives a summary (pass/fail counts) when you submit.
+          </p>
+          <p>
+            This means the challenges work offline once the page has loaded, and there is no server-side code execution infrastructure to worry about.
+          </p>
+
+          <h2>Why no AI or Googling?</h2>
+          <p>
+            The study is measuring your <em>unassisted</em> coding ability over time. If you use AI or search engines during a challenge the data becomes noise. We cannot technically prevent it – we rely on participant honesty, which is why we explain the reasoning rather than just issuing a rule.
+          </p>
+        </div>
+
+        <hr class="my-6">
+
+        {# Live demo #}
+        <h2 class="title is-2">Try it yourself</h2>
+        <p class="content is-size-5 mb-5">
+          This is a real challenge, running live in your browser right now. Write a function that satisfies the test cases below and click <strong>Run</strong>.
+        </p>
+
+        <div class="box" id="demo-box">
+
+          <div class="notification is-info is-light mb-4" id="demo-status">
+            <span class="icon"><i class="fas fa-spinner fa-spin"></i></span>
+            Loading Python environment&hellip; (first load takes ~5 s)
+          </div>
+
+          <div class="mb-4">
+            <p class="label">Challenge: <strong>reverse_words</strong></p>
+            <p class="is-size-6 mb-3">
+              Write a function <code>reverse_words(sentence)</code> that takes a string and returns it with the order of the words reversed.<br>
+              <em>Example:</em> <code>reverse_words("hello world")</code> → <code>"world hello"</code>
+            </p>
+          </div>
+
+          <div class="mb-4">
+            <label class="label" for="demo-editor">Your code</label>
+            <textarea id="demo-editor" class="textarea is-family-monospace" rows="7" spellcheck="false">def reverse_words(sentence):
+    # your code here
+    pass</textarea>
+          </div>
+
+          <div class="buttons mb-4">
+            <button class="button is-primary" id="demo-run-btn" disabled>
+              <span class="icon"><i class="fas fa-play"></i></span>
+              <span>Run</span>
+            </button>
+            <button class="button is-light" id="demo-reset-btn">
+              <span class="icon"><i class="fas fa-undo"></i></span>
+              <span>Reset</span>
+            </button>
+          </div>
+
+          <div id="demo-output"></div>
+
+        </div>
+
+        <hr class="my-6">
+
+        <div class="content is-size-5">
+          <h2>The tech stack</h2>
+          <ul>
+            <li><strong>Backend:</strong> Django (Python), PostgreSQL on Appliku.</li>
+            <li><strong>Frontend:</strong> Bulma CSS, HTMX for challenge navigation (no page reload between challenges), CodeMirror 5 for the code editor.</li>
+            <li><strong>Code execution:</strong> Pyodide v0.27 in a Web Worker – full CPython, sandboxed in the browser.</li>
+            <li><strong>Analysis:</strong> R with <code>lme4</code> / <code>brms</code> for Bayesian multilevel regression.</li>
+            <li><strong>Source:</strong> <a href="https://github.com/andytwoods/can-I-still-code" target="_blank" rel="noopener noreferrer">github.com/andytwoods/can-I-still-code</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+(function () {
+  'use strict';
+
+  var STARTER = 'def reverse_words(sentence):\n    # your code here\n    pass\n';
+
+  var TEST_CASES = [
+    { description: 'reverses two words',       args: ['hello world'],        expected: 'world hello' },
+    { description: 'reverses three words',     args: ['one two three'],      expected: 'three two one' },
+    { description: 'single word unchanged',    args: ['python'],             expected: 'python' },
+    { description: 'handles extra spaces',     args: ['  a  b  '],          expected: 'b  a' },
+  ];
+
+  var worker = null;
+  var ready = false;
+  var statusEl  = document.getElementById('demo-status');
+  var outputEl  = document.getElementById('demo-output');
+  var runBtn    = document.getElementById('demo-run-btn');
+  var resetBtn  = document.getElementById('demo-reset-btn');
+  var editorEl  = document.getElementById('demo-editor');
+
+  function setStatus(html, cls) {
+    statusEl.className = 'notification ' + cls + ' mb-4';
+    statusEl.innerHTML = html;
+  }
+
+  function clearOutput() { outputEl.innerHTML = ''; }
+
+  function showResults(results) {
+    clearOutput();
+    var passed = 0;
+    results.forEach(function (r) {
+      var div = document.createElement('div');
+      div.className = 'notification ' + (r.passed ? 'is-success' : 'is-danger') + ' is-light py-2 px-3 mb-2';
+      var text = (r.passed ? '✓ PASS' : '✗ FAIL') + ': ' + r.description;
+      if (!r.passed && r.error) {
+        text += '\n  Error: ' + r.error;
+      } else if (!r.passed) {
+        text += '\n  Expected: ' + JSON.stringify(r.expected) + '\n  Got: ' + JSON.stringify(r.actual);
+      }
+      div.style.whiteSpace = 'pre-wrap';
+      div.style.fontFamily = 'monospace';
+      div.style.fontSize = '0.875em';
+      div.textContent = text;
+      outputEl.appendChild(div);
+      if (r.passed) passed++;
+    });
+    var summary = document.createElement('div');
+    var allPassed = passed === results.length;
+    summary.className = 'notification ' + (allPassed ? 'is-success' : 'is-warning') + ' mt-3';
+    summary.innerHTML = '<strong>' + passed + ' / ' + results.length + ' tests passed</strong>'
+      + (allPassed ? ' – nice work!' : '');
+    outputEl.appendChild(summary);
+    runBtn.disabled = false;
+  }
+
+  worker = new Worker('{% static "js/pyodide-worker.js" %}');
+
+  worker.onmessage = function (e) {
+    var msg = e.data;
+    if (msg.type === 'ready') {
+      ready = true;
+      runBtn.disabled = false;
+      setStatus('<span class="icon"><i class="fas fa-check"></i></span> Python ready – write your solution and click Run.', 'is-success is-light');
+    } else if (msg.type === 'init_error') {
+      setStatus('<strong>Could not load Python.</strong> Check your connection and reload.', 'is-danger is-light');
+    } else if (msg.type === 'result') {
+      showResults(msg.results);
+    } else if (msg.type === 'error') {
+      clearOutput();
+      var err = document.createElement('div');
+      err.className = 'notification is-danger is-light';
+      err.textContent = msg.error;
+      outputEl.appendChild(err);
+      runBtn.disabled = false;
+    } else if (msg.type === 'stdout') {
+      var pre = document.createElement('pre');
+      pre.textContent = msg.text;
+      outputEl.appendChild(pre);
+    }
+  };
+
+  worker.postMessage({ type: 'init' });
+
+  runBtn.addEventListener('click', function () {
+    if (!ready) return;
+    runBtn.disabled = true;
+    clearOutput();
+    worker.postMessage({
+      type: 'run',
+      code: editorEl.value,
+      testCases: TEST_CASES,
+    });
+  });
+
+  resetBtn.addEventListener('click', function () {
+    editorEl.value = STARTER;
+    clearOutput();
+  });
+}());
+</script>
+{% endblock extra_js %}

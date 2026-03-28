@@ -12,12 +12,14 @@ from agenticbrainrot.pages.api import stats_summary
 from agenticbrainrot.pages.views import AboutView
 from agenticbrainrot.pages.views import CoCView
 from agenticbrainrot.pages.views import HomeView
+from agenticbrainrot.pages.views import HowItWorksView
 from agenticbrainrot.pages.views import PrivacyView
 from agenticbrainrot.pages.views import TermsView
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("about/", AboutView.as_view(), name="about"),
+    path("how-it-works/", HowItWorksView.as_view(), name="how_it_works"),
     path("privacy/", PrivacyView.as_view(), name="privacy"),
     path("terms/", TermsView.as_view(), name="terms"),
     path("code-of-conduct/", CoCView.as_view(), name="code_of_conduct"),
