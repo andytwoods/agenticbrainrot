@@ -1,54 +1,50 @@
 {% extends "base.html" %}
+
 {% load static %}
 
-{% block title %}Challenge  –  Can I Still Code{% endblock title %}
-
+{% block title %}
+  Challenge  –  Can I Still Code
+{% endblock title %}
 {% block extra_css %}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/solarized.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/solarized.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css" />
 {% endblock extra_css %}
-
 {% block content %}
-<div class="columns">
-  <div class="column is-12">
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item" id="progress-indicator">
-          <span class="tag is-info is-medium">
-            Challenge {{ position }} of {{ total_challenges }}
-          </span>
+  <div class="columns">
+    <div class="column is-12">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item" id="progress-indicator">
+            <span class="tag is-info is-medium">Challenge {{ position }} of {{ total_challenges }}</span>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <span id="timer-display" class="tag is-dark is-medium">00:00</span>
+          </div>
+          <div class="level-item">
+            <a href="#"
+               class="has-text-grey is-size-7"
+               hx-post="{% url 'coding_sessions:session_view' session.pk %}"
+               hx-target="#session-container"
+               hx-vals='{"action": "stop"}'
+               hx-confirm="Are you sure you want to stop this session? Your progress will be saved.">Stop session</a>
+          </div>
         </div>
       </div>
-      <div class="level-right">
-        <div class="level-item">
-          <span id="timer-display" class="tag is-dark is-medium">00:00</span>
-        </div>
-        <div class="level-item">
-          <a href="#"
-             class="has-text-grey is-size-7"
-             hx-post="{% url 'coding_sessions:session_view' session.pk %}"
-             hx-target="#session-container"
-             hx-vals='{"action": "stop"}'
-             hx-confirm="Are you sure you want to stop this session? Your progress will be saved.">
-            Stop session
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div id="session-container">
-      {% include "coding_sessions/partials/_challenge_display.html" %}
+      <div id="session-container">{% include "coding_sessions/partials/_challenge_display.html" %}</div>
     </div>
   </div>
-</div>
-
-<!-- Hidden telemetry inputs -->
-<input type="hidden" id="pyodide-load-ms" name="pyodide_load_ms" value="">
-<input type="hidden" id="editor-ready" name="editor_ready" value="">
+  <!-- Hidden telemetry inputs -->
+  <input type="hidden" id="pyodide-load-ms" name="pyodide_load_ms" value="" />
+  <input type="hidden" id="editor-ready" name="editor_ready" value="" />
 {% endblock content %}
-
 {% block extra_js %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>

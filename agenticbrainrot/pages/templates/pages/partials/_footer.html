@@ -1,14 +1,33 @@
 <footer class="footer py-4">
   <div class="container">
-    <div class="is-flex is-flex-wrap-wrap is-align-items-center is-justify-content-space-between" style="gap: 1rem;">
-      <p class="is-size-7">&copy; {% now "Y" %} <strong>Can I Still Code</strong></p>
-      <ul class="is-flex is-flex-wrap-wrap is-justify-content-center" style="gap: 1rem; list-style: none;">
-        <li><a class="is-size-7" href="{% url 'about' %}">About</a></li>
-        <li><a class="is-size-7" href="{% url 'privacy' %}">Privacy</a></li>
-        <li><a class="is-size-7" href="{% url 'terms' %}">Terms</a></li>
-        <li><a class="is-size-7" href="{% url 'code_of_conduct' %}">Code of Conduct</a></li>
-        <li><a class="is-size-7" href="{% url 'how_it_works' %}">Tech Stack</a></li>
-        <li><a class="is-size-7" href="https://github.com/andytwoods/can-i-still-code" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+    <div class="is-flex is-flex-wrap-wrap is-align-items-center is-justify-content-space-between"
+         style="gap: 1rem">
+      <p class="is-size-7">
+        &copy; {% now "Y" %} <strong>Can I Still Code</strong>
+      </p>
+      <ul class="is-flex is-flex-wrap-wrap is-justify-content-center"
+          style="gap: 1rem;
+                 list-style: none">
+        <li>
+          <a class="is-size-7" href="{% url 'about' %}">About</a>
+        </li>
+        <li>
+          <a class="is-size-7" href="{% url 'privacy' %}">Privacy</a>
+        </li>
+        <li>
+          <a class="is-size-7" href="{% url 'terms' %}">Terms</a>
+        </li>
+        <li>
+          <a class="is-size-7" href="{% url 'code_of_conduct' %}">Code of Conduct</a>
+        </li>
+        <li>
+          <a class="is-size-7" href="{% url 'how_it_works' %}">Tech Stack</a>
+        </li>
+        <li>
+          <a class="is-size-7"
+             href="https://github.com/andytwoods/can-i-still-code"
+             target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        </li>
       </ul>
     </div>
   </div>

@@ -1,70 +1,86 @@
 {% extends "base.html" %}
+
 {% load markdown_tags %}
 
-{% block title %}Privacy Policy – Can I Still Code{% endblock title %}
-{% block meta_description %}How Can I Still Code collects, uses, and protects your personal data.{% endblock meta_description %}
-
+{% block title %}
+  Privacy Policy – Can I Still Code
+{% endblock title %}
+{% block meta_description %}
+  How Can I Still Code collects, uses, and protects your personal data.
+{% endblock meta_description %}
 {% block content %}
-<section class="section">
-  <div class="container">
-    <div class="columns">
-      <div class="column is-8 is-offset-2">
-
-        {% if document %}
-          <h1 class="title">{{ document.title }}</h1>
-          <p class="has-text-grey mb-5">Version {{ document.version }} – Last updated: {{ document.updated_at|date:"j F Y" }}</p>
-          <div class="content">
-            {{ document.body|render_markdown }}
-          </div>
-        {% else %}
-
-          <h1 class="title is-1">Privacy Policy</h1>
-          <p class="has-text-grey mb-5">Last updated: March 2026</p>
-
-          <div class="content is-size-5">
-
-            <h2>Who we are</h2>
-            <p>Can I Still Code is a citizen-science research project run by Andy Woods at Royal Holloway, University of London. References to "we", "us", or "the study" mean this project. The data controller is Andy Woods (Royal Holloway, University of London).</p>
-
-            <h2>What data we collect</h2>
-            <ul>
-              <li><strong>Account data:</strong> email address and password (hashed) when you register.</li>
-              <li><strong>Profile data:</strong> years of coding experience, programming languages used, level of AI tool use, and other background questions you complete at signup.</li>
-              <li><strong>Session data:</strong> your responses to Python coding challenges, the time you spend on each challenge, and whether you passed or failed each test case.</li>
-              <li><strong>Survey data:</strong> post-session self-reports of AI tool usage during your day-to-day work (slider responses, not free text).</li>
-              <li><strong>Technical data:</strong> standard web server logs (IP address, browser type, pages visited). These are not linked to your account for research purposes.</li>
-            </ul>
-
-            <h2>How we use your data</h2>
-            <ul>
-              <li>To run the study: present challenges, record your responses, and show you your personal results dashboard.</li>
-              <li>For research: the anonymised dataset (no name, no email, no IP) is used to answer the study's research questions and will be published openly after a 12-month embargo.</li>
-              <li>To contact you: only to send session reminders or study updates, and only if you opted in. You can unsubscribe at any time.</li>
-            </ul>
-
-            <h2>Legal basis (GDPR)</h2>
-            <p>We process your data on the basis of your explicit consent, given when you complete the consent form during registration. You may withdraw consent at any time by using the withdrawal option in your profile.</p>
-
-            <h2>Data retention</h2>
-            <p>Your account and research data are retained for the duration of the study (at least 12 months) and for up to 5 years afterwards to support replication. If you withdraw, your identifiable data (email, IP logs) is deleted within 10 working days. Anonymised research records cannot be identified or removed once the dataset has been released.</p>
-
-            <h2>Sharing your data</h2>
-            <p>We do not sell or share your personal data with third parties. The anonymised open dataset will be deposited on OSF and/or Zenodo under a CC BY 4.0 licence. Royal Holloway's ethics board may inspect records for audit purposes.</p>
-
-            <h2>Your rights</h2>
-            <p>Under UK GDPR you have the right to access, correct, or delete your personal data, and to withdraw from the study at any time. Use the options in your profile, or contact us at the address below.</p>
-
-            <h2>Cookies</h2>
-            <p>We use a single session cookie to keep you logged in. No advertising or tracking cookies are used.</p>
-
-            <h2>Contact</h2>
-            <p>For any privacy-related questions: <a href="mailto:{{ privacy_email }}">{{ privacy_email }}</a></p>
-
-          </div>
-        {% endif %}
-
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-8 is-offset-2">
+          {% if document %}
+            <h1 class="title">{{ document.title }}</h1>
+            <p class="has-text-grey mb-5">
+              Version {{ document.version }} – Last updated: {{ document.updated_at|date:"j F Y" }}
+            </p>
+            <div class="content">{{ document.body|render_markdown }}</div>
+          {% else %}
+            <h1 class="title is-1">Privacy Policy</h1>
+            <p class="has-text-grey mb-5">Last updated: March 2026</p>
+            <div class="content is-size-5">
+              <h2>Who we are</h2>
+              <p>
+                Can I Still Code is a citizen-science research project run by Andy Woods at Royal Holloway, University of London. References to "we", "us", or "the study" mean this project. The data controller is Andy Woods (Royal Holloway, University of London).
+              </p>
+              <h2>What data we collect</h2>
+              <ul>
+                <li>
+                  <strong>Account data:</strong> email address and password (hashed) when you register.
+                </li>
+                <li>
+                  <strong>Profile data:</strong> years of coding experience, programming languages used, level of AI tool use, and other background questions you complete at signup.
+                </li>
+                <li>
+                  <strong>Session data:</strong> your responses to Python coding challenges, the time you spend on each challenge, and whether you passed or failed each test case.
+                </li>
+                <li>
+                  <strong>Survey data:</strong> post-session self-reports of AI tool usage during your day-to-day work (slider responses, not free text).
+                </li>
+                <li>
+                  <strong>Technical data:</strong> standard web server logs (IP address, browser type, pages visited). These are not linked to your account for research purposes.
+                </li>
+              </ul>
+              <h2>How we use your data</h2>
+              <ul>
+                <li>To run the study: present challenges, record your responses, and show you your personal results dashboard.</li>
+                <li>
+                  For research: the anonymised dataset (no name, no email, no IP) is used to answer the study's research questions and will be published openly after a 12-month embargo.
+                </li>
+                <li>
+                  To contact you: only to send session reminders or study updates, and only if you opted in. You can unsubscribe at any time.
+                </li>
+              </ul>
+              <h2>Legal basis (GDPR)</h2>
+              <p>
+                We process your data on the basis of your explicit consent, given when you complete the consent form during registration. You may withdraw consent at any time by using the withdrawal option in your profile.
+              </p>
+              <h2>Data retention</h2>
+              <p>
+                Your account and research data are retained for the duration of the study (at least 12 months) and for up to 5 years afterwards to support replication. If you withdraw, your identifiable data (email, IP logs) is deleted within 10 working days. Anonymised research records cannot be identified or removed once the dataset has been released.
+              </p>
+              <h2>Sharing your data</h2>
+              <p>
+                We do not sell or share your personal data with third parties. The anonymised open dataset will be deposited on OSF and/or Zenodo under a CC BY 4.0 licence. Royal Holloway's ethics board may inspect records for audit purposes.
+              </p>
+              <h2>Your rights</h2>
+              <p>
+                Under UK GDPR you have the right to access, correct, or delete your personal data, and to withdraw from the study at any time. Use the options in your profile, or contact us at the address below.
+              </p>
+              <h2>Cookies</h2>
+              <p>We use a single session cookie to keep you logged in. No advertising or tracking cookies are used.</p>
+              <h2>Contact</h2>
+              <p>
+                For any privacy-related questions: <a href="mailto:{{ privacy_email }}">{{ privacy_email }}</a>
+              </p>
+            </div>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock content %}

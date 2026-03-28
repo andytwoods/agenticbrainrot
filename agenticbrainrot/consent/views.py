@@ -33,7 +33,7 @@ def give_consent(request):
                 consent_document=active_doc,
                 consented=True,
                 ip_address=_get_client_ip(request),
-                user_agent=request.META.get("HTTP_USER_AGENT", "")[:512],
+                user_agent=request.headers.get("user-agent", "")[:512],
             )
 
             # Update participant consent status
@@ -88,7 +88,7 @@ def decline_consent(request):
 
 def _get_client_ip(request):
     """Extract client IP from request."""
-    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    x_forwarded_for = request.headers.get("x-forwarded-for")
     if x_forwarded_for:
         return x_forwarded_for.split(",")[0].strip()
     return request.META.get("REMOTE_ADDR")

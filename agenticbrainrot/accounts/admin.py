@@ -85,6 +85,7 @@ class PendingDeletionFilter(admin.SimpleListFilter):
         return queryset
 
 
+@admin.action(description="Process deletion request")
 def process_deletion_request(modeladmin, request, queryset):
     """Process data deletion for selected participants."""
     from agenticbrainrot.helpers.task_helpers import process_participant_deletion  # noqa: PLC0415
@@ -100,9 +101,6 @@ def process_deletion_request(modeladmin, request, queryset):
         request,
         f"Processed deletion for {processed} participant(s).",
     )
-
-
-process_deletion_request.short_description = "Process deletion request"
 
 
 @admin.register(Participant)
@@ -137,6 +135,7 @@ class ParticipantAdmin(admin.ModelAdmin):
         return "-"
 
 
+@admin.action(description="Export selected as CSV")
 def export_audit_events_csv(modeladmin, request, queryset):
     """Export selected audit events as CSV."""
     response = HttpResponse(content_type="text/csv")
@@ -154,9 +153,6 @@ def export_audit_events_csv(modeladmin, request, queryset):
             ],
         )
     return response
-
-
-export_audit_events_csv.short_description = "Export selected as CSV"
 
 
 @admin.register(AuditEvent)

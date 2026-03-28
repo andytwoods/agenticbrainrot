@@ -1,8 +1,6 @@
 <div class="box">
   <h2 class="title is-4">{{ challenge.title }}</h2>
-  <div class="content">
-    {{ challenge.description|linebreaksbr }}
-  </div>
+  <div class="content">{{ challenge.description|linebreaksbr }}</div>
   {% if challenge.clarification %}
     <div class="notification is-info is-light mt-3">
       <p class="is-size-7 has-text-weight-semibold mb-1">Context</p>
@@ -10,11 +8,18 @@
     </div>
   {% endif %}
 </div>
-
-<div id="code-editor-toolbar" class="field is-grouped mb-0 p-2 is-dark" style="background-color: var(--bulma-scheme-main-ter); border: 1px solid var(--bulma-border); border-bottom: none; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+<div id="code-editor-toolbar"
+     class="field is-grouped mb-0 p-2 is-dark"
+     style="background-color: var(--bulma-scheme-main-ter);
+            border: 1px solid var(--bulma-border);
+            border-bottom: none;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px">
   <div class="control">
     <div class="select is-small">
-      <select id="theme-select" title="Change editor theme" aria-label="Select code editor theme">
+      <select id="theme-select"
+              title="Change editor theme"
+              aria-label="Select code editor theme">
         <option value="default">Default Theme</option>
         <option value="dark">Dark Theme</option>
         <option value="light">Light Theme</option>
@@ -30,48 +35,64 @@
 </div>
 <div id="code-editor" aria-label="Python code editor"></div>
 {{ challenge.skeleton_code|json_script:"skeleton-code-data" }}
-
 <div class="buttons mt-3">
-  <button id="run-btn" class="button is-info" type="button" disabled>
-    Run Code
-  </button>
-  <button id="submit-btn" class="button is-primary" type="button" disabled>
-    Submit
-  </button>
-  <button id="skip-btn" class="button is-light"
+  <button id="run-btn" class="button is-info" type="button" disabled>Run Code</button>
+  <button id="submit-btn" class="button is-primary" type="button" disabled>Submit</button>
+  <button id="skip-btn"
+          class="button is-light"
           type="button"
           hx-post="{% url 'coding_sessions:session_view' session.pk %}"
           hx-target="#session-container"
-          hx-vals='{"action": "skip"}'>
-    Skip
-  </button>
+          hx-vals='{"action": "skip"}'>Skip</button>
 </div>
-
-<div id="output" class="box mt-3" role="log" aria-label="Code output" aria-live="polite" style="min-height: 50px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.85em;">
-</div>
-
+<div id="output"
+     class="box mt-3"
+     role="log"
+     aria-label="Code output"
+     aria-live="polite"
+     style="min-height: 50px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85em"></div>
 <div id="test-results" class="mt-3"></div>
-
 <!-- Test cases data for JS -->
-<script id="test-cases-data" type="application/json">{{ test_cases_json|safe }}</script>
-
+<script id="test-cases-data" type="application/json">
+  {
+    {
+      test_cases_json | safe
+    }
+  }
+</script>
 <!-- Hidden form for HTMX submission -->
 <form id="challenge-form"
       hx-post="{% url 'coding_sessions:session_view' session.pk %}"
       hx-target="#session-container"
       hx-swap="innerHTML"
-      style="display: none;">
+      style="display: none">
   {% csrf_token %}
-  <input type="hidden" name="action" value="submit">
-  <input type="hidden" id="attempt-uuid" name="attempt_uuid" value="{{ attempt_uuid }}">
-  <input type="hidden" id="submitted-code" name="submitted_code" value="">
-  <input type="hidden" id="tests-passed" name="tests_passed" value="">
-  <input type="hidden" id="tests-total" name="tests_total" value="">
-  <input type="hidden" id="time-taken" name="time_taken_seconds" value="">
-  <input type="hidden" id="active-time" name="active_time_seconds" value="">
-  <input type="hidden" id="idle-time" name="idle_time_seconds" value="">
-  <input type="hidden" id="paste-count-input" name="paste_count" value="0">
-  <input type="hidden" id="paste-total-chars-input" name="paste_total_chars" value="0">
-  <input type="hidden" id="keystroke-count-input" name="keystroke_count" value="0">
-  <input type="hidden" id="tab-blur-count-input" name="tab_blur_count" value="0">
+  <input type="hidden" name="action" value="submit" />
+  <input type="hidden"
+         id="attempt-uuid"
+         name="attempt_uuid"
+         value="{{ attempt_uuid }}" />
+  <input type="hidden" id="submitted-code" name="submitted_code" value="" />
+  <input type="hidden" id="tests-passed" name="tests_passed" value="" />
+  <input type="hidden" id="tests-total" name="tests_total" value="" />
+  <input type="hidden" id="time-taken" name="time_taken_seconds" value="" />
+  <input type="hidden" id="active-time" name="active_time_seconds" value="" />
+  <input type="hidden" id="idle-time" name="idle_time_seconds" value="" />
+  <input type="hidden" id="paste-count-input" name="paste_count" value="0" />
+  <input type="hidden"
+         id="paste-total-chars-input"
+         name="paste_total_chars"
+         value="0" />
+  <input type="hidden"
+         id="keystroke-count-input"
+         name="keystroke_count"
+         value="0" />
+  <input type="hidden"
+         id="tab-blur-count-input"
+         name="tab_blur_count"
+         value="0" />
 </form>

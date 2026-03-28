@@ -1,38 +1,41 @@
 {% extends "base.html" %}
+
 {% load static %}
 
-{% block title %}Staff Preview  –  {{ challenge.title }}{% endblock title %}
-
+{% block title %}
+  Staff Preview  –  {{ challenge.title }}
+{% endblock title %}
 {% block extra_css %}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/solarized.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/solarized.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css" />
 {% endblock extra_css %}
-
 {% block content %}
-<nav class="breadcrumb" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li class="is-active"><a href="#" aria-current="page">Staff Preview</a></li>
-  </ul>
-</nav>
-
-{% if error %}
-<div class="notification is-warning">
-  {{ error }}
-</div>
-{% else %}
-<div class="notification is-info is-light">
-  {% if request.user.is_staff %}<strong>Staff Preview Mode:</strong> {% endif %}Try out the code editor. No data is saved.
-</div>
-
-<div id="preview-container">
-  {% include "challenges/partials/_preview_content.html" %}
-</div>
-{% endif %}
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>
+        <a href="{% url 'home' %}">Home</a>
+      </li>
+      <li class="is-active">
+        <a href="#" aria-current="page">Staff Preview</a>
+      </li>
+    </ul>
+  </nav>
+  {% if error %}
+    <div class="notification is-warning">{{ error }}</div>
+  {% else %}
+    <div class="notification is-info is-light">
+      {% if request.user.is_staff %}<strong>Staff Preview Mode:</strong>{% endif %}
+      Try out the code editor. No data is saved.
+    </div>
+    <div id="preview-container">{% include "challenges/partials/_preview_content.html" %}</div>
+  {% endif %}
 {% endblock content %}
-
 {% block extra_js %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
@@ -40,34 +43,34 @@
   <script src="{% static 'js/code-editor.js' %}"></script>
   <script>
     function bindPreviewControls() {
-        // Wire "Test Tests" button to just run code
-        var submitBtn = document.getElementById('preview-submit-btn');
-        if (submitBtn) {
-            submitBtn.onclick = function () {
-                var runBtn = document.getElementById('run-btn');
-                if (runBtn) runBtn.click();
-            };
-        }
-        // Wire dropdown to navigate via HTMX
-        var sel = document.getElementById('challenge-select');
-        if (sel) {
-            sel.onchange = function () {
-                if (sel.value) {
-                    htmx.ajax('GET', sel.value, {
-                        target: '#preview-container',
-                        swap: 'innerHTML',
-                        pushUrl: true
-                    });
-                }
-            };
-        }
+      // Wire "Test Tests" button to just run code
+      var submitBtn = document.getElementById('preview-submit-btn');
+      if (submitBtn) {
+        submitBtn.onclick = function() {
+          var runBtn = document.getElementById('run-btn');
+          if (runBtn) runBtn.click();
+        };
+      }
+      // Wire dropdown to navigate via HTMX
+      var sel = document.getElementById('challenge-select');
+      if (sel) {
+        sel.onchange = function() {
+          if (sel.value) {
+            htmx.ajax('GET', sel.value, {
+              target: '#preview-container',
+              swap: 'innerHTML',
+              pushUrl: true
+            });
+          }
+        };
+      }
     }
     document.addEventListener('DOMContentLoaded', bindPreviewControls);
-    document.addEventListener('htmx:afterSwap', function (e) {
-        if (e.detail.target && e.detail.target.id === 'preview-container') {
-            bindPreviewControls();
-            htmx.process(e.detail.target);
-        }
+    document.addEventListener('htmx:afterSwap', function(e) {
+      if (e.detail.target && e.detail.target.id === 'preview-container') {
+        bindPreviewControls();
+        htmx.process(e.detail.target);
+      }
     });
   </script>
 {% endblock extra_js %}

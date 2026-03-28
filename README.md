@@ -2,7 +2,7 @@
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-Can I Still Code is a longitudinal, citizen-science research tool designed to measure whether **vibe coding** (AI-assisted coding) leads to coding skill degradation over time. 
+Can I Still Code is a longitudinal, citizen-science research tool designed to measure whether **vibe coding** (AI-assisted coding) leads to coding skill degradation over time.
 
 Participants periodically complete short Python coding challenges while self-reporting their coding habits. The resulting dataset supports **Bayesian multilevel regression** modelling and invites the broader community to contribute analyses.
 
@@ -105,7 +105,7 @@ uv run ruff check .
 
 ## 📦 Deployment
 
-Deployed on **Hetzner** VPS via **Appliku**. Configuration is managed in `appliku.yaml`. 
+Deployed on **Hetzner** VPS via **Appliku**. Configuration is managed in `appliku.yaml`.
 Production requires:
 - `ROLLBAR_ACCESS_TOKEN` for error tracking.
 - `POSTGRES_URL` for the database.

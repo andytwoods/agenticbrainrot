@@ -7,6 +7,7 @@ from .models import SurveyQuestion
 from .models import SurveyResponse
 
 
+@admin.action(description="Export selected as CSV")
 def export_survey_responses_csv(modeladmin, request, queryset):
     """Export selected survey responses as CSV."""
     response = HttpResponse(content_type="text/csv")
@@ -36,9 +37,6 @@ def export_survey_responses_csv(modeladmin, request, queryset):
             ],
         )
     return response
-
-
-export_survey_responses_csv.short_description = "Export selected as CSV"
 
 
 @admin.register(SurveyQuestion)

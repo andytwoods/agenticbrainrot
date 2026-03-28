@@ -1,160 +1,225 @@
 {% extends "base.html" %}
 
-{% block title %}My Results  –  Can I Still Code{% endblock title %}
-
+{% block title %}
+  My Results  –  Can I Still Code
+{% endblock title %}
 {% block content %}
-<div class="columns is-centered">
-  <div class="column is-10">
-    <h1 class="title">My Results</h1>
-
-    {% if not has_sessions %}
-      <div class="notification is-info is-light">
-        <p class="is-size-5">You haven't completed any sessions yet.</p>
-        <p class="mt-2">
-          <a href="{% url 'coding_sessions:session_start' %}" class="button is-primary">
-            Start your first session
-          </a>
-        </p>
-      </div>
-    {% else %}
-
-      {# Charts #}
-      <div class="columns">
-        <div class="column is-6">
-          <div class="box">
-            <h2 class="title is-5">Accuracy Over Sessions</h2>
-            <canvas id="accuracy-chart"
-                    aria-label="Line chart showing accuracy percentage across sessions"
-                    role="img"></canvas>
-            <p class="is-size-7 has-text-grey mt-2" id="accuracy-summary"></p>
+  <div class="columns is-centered">
+    <div class="column is-10">
+      <h1 class="title">My Results</h1>
+      {% if not has_sessions %}
+        <div class="notification is-info is-light">
+          <p class="is-size-5">You haven't completed any sessions yet.</p>
+          <p class="mt-2">
+            <a href="{% url 'coding_sessions:session_start' %}"
+               class="button is-primary">Start your first session</a>
+          </p>
+        </div>
+      {% else %}
+        {# Charts #}
+        <div class="columns">
+          <div class="column is-6">
+            <div class="box">
+              <h2 class="title is-5">Accuracy Over Sessions</h2>
+              <canvas id="accuracy-chart"
+                      aria-label="Line chart showing accuracy percentage across sessions"
+                      role="img"></canvas>
+              <p class="is-size-7 has-text-grey mt-2" id="accuracy-summary"></p>
+            </div>
+          </div>
+          <div class="column is-6">
+            <div class="box">
+              <h2 class="title is-5">Average Time Over Sessions</h2>
+              <canvas id="speed-chart"
+                      aria-label="Line chart showing average time in seconds across sessions"
+                      role="img"></canvas>
+              <p class="is-size-7 has-text-grey mt-2" id="speed-summary"></p>
+            </div>
           </div>
         </div>
-        <div class="column is-6">
-          <div class="box">
-            <h2 class="title is-5">Average Time Over Sessions</h2>
-            <canvas id="speed-chart"
-                    aria-label="Line chart showing average time in seconds across sessions"
-                    role="img"></canvas>
-            <p class="is-size-7 has-text-grey mt-2" id="speed-summary"></p>
-          </div>
-        </div>
-      </div>
-
-      {# Session History Table #}
-      <div class="box">
-        <h2 class="title is-5">Session History</h2>
-        <div class="table-container">
-          <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Date</th>
-                <th>Challenges</th>
-                <th>Avg Accuracy</th>
-                <th>Avg Time (s)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for row in session_rows %}
+        {# Session History Table #}
+        <div class="box">
+          <h2 class="title is-5">Session History</h2>
+          <div class="table-container">
+            <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
                 <tr>
-                  <td>{{ row.number }}</td>
-                  <td>{{ row.date }}</td>
-                  <td>{{ row.challenges_attempted }}</td>
-                  <td>{{ row.avg_accuracy }}%</td>
-                  <td>{{ row.avg_time }}</td>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Challenges</th>
+                  <th>Avg Accuracy</th>
+                  <th>Avg Time (s)</th>
                 </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {% for row in session_rows %}
+                  <tr>
+                    <td>{{ row.number }}</td>
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.challenges_attempted }}</td>
+                    <td>{{ row.avg_accuracy }}%</td>
+                    <td>{{ row.avg_time }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
-</div>
 {% endblock content %}
-
 {% block extra_js %}
-{% if has_sessions %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  var accuracyData = {{ accuracy_data|safe }};
-  var speedData = {{ speed_data|safe }};
-  var colours = {{ chart_colours|safe }};
+  {% if has_sessions %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var accuracyData = {
+          {
+            accuracy_data | safe
+          }
+        };
+        var speedData = {
+          {
+            speed_data | safe
+          }
+        };
+        var colours = {
+          {
+            chart_colours | safe
+          }
+        };
 
-  var labels = accuracyData.map(function(d) { return d.x; });
-  var accValues = accuracyData.map(function(d) { return d.y; });
-  var spdValues = speedData.map(function(d) { return d.y; });
+        var labels = accuracyData.map(function(d) {
+          return d.x;
+        });
+        var accValues = accuracyData.map(function(d) {
+          return d.y;
+        });
+        var spdValues = speedData.map(function(d) {
+          return d.y;
+        });
 
-  var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-  var textColor = isDark ? "#e0e0e0" : "#363636";
-  var gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
+        var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+        var textColor = isDark ? "#e0e0e0" : "#363636";
+        var gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
 
-  // Accuracy chart
-  new Chart(document.getElementById("accuracy-chart"), {
-    type: "line",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Accuracy (%)",
-        data: accValues,
-        borderColor: colours.accuracy,
-        backgroundColor: colours.accuracy_bg,
-        fill: true,
-        tension: 0.3,
-        pointRadius: 5
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true, max: 100, title: { display: true, text: "Accuracy (%)", color: textColor }, ticks: { color: textColor }, grid: { color: gridColor } },
-        x: { ticks: { color: textColor }, grid: { color: gridColor } }
-      },
-      plugins: { legend: { display: false } }
-    }
-  });
+        // Accuracy chart
+        new Chart(document.getElementById("accuracy-chart"), {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "Accuracy (%)",
+              data: accValues,
+              borderColor: colours.accuracy,
+              backgroundColor: colours.accuracy_bg,
+              fill: true,
+              tension: 0.3,
+              pointRadius: 5
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                  display: true,
+                  text: "Accuracy (%)",
+                  color: textColor
+                },
+                ticks: {
+                  color: textColor
+                },
+                grid: {
+                  color: gridColor
+                }
+              },
+              x: {
+                ticks: {
+                  color: textColor
+                },
+                grid: {
+                  color: gridColor
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
 
-  // Speed chart
-  new Chart(document.getElementById("speed-chart"), {
-    type: "line",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Avg Time (s)",
-        data: spdValues,
-        borderColor: colours.speed,
-        backgroundColor: colours.speed_bg,
-        fill: true,
-        tension: 0.3,
-        pointRadius: 5
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: "Time (seconds)", color: textColor }, ticks: { color: textColor }, grid: { color: gridColor } },
-        x: { ticks: { color: textColor }, grid: { color: gridColor } }
-      },
-      plugins: { legend: { display: false } }
-    }
-  });
+        // Speed chart
+        new Chart(document.getElementById("speed-chart"), {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "Avg Time (s)",
+              data: spdValues,
+              borderColor: colours.speed,
+              backgroundColor: colours.speed_bg,
+              fill: true,
+              tension: 0.3,
+              pointRadius: 5
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: "Time (seconds)",
+                  color: textColor
+                },
+                ticks: {
+                  color: textColor
+                },
+                grid: {
+                  color: gridColor
+                }
+              },
+              x: {
+                ticks: {
+                  color: textColor
+                },
+                grid: {
+                  color: gridColor
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
 
-  // Text summaries
-  if (accValues.length > 1) {
-    var accFirst = accValues[0], accLast = accValues[accValues.length – 1];
-    var accDiff = (accLast – accFirst).toFixed(1);
-    var accDir = accDiff >= 0 ? "up" : "down";
-    document.getElementById("accuracy-summary").textContent =
-      "Your accuracy went " + accDir + " by " + Math.abs(accDiff) + "% from your first to latest session.";
+        // Text summaries
+        if (accValues.length > 1) {
+          var accFirst = accValues[0],
+            accLast = accValues[accValues.length– 1];
+          var accDiff = (accLast– accFirst).toFixed(1);
+          var accDir = accDiff >= 0 ? "up" : "down";
+          document.getElementById("accuracy-summary").textContent =
+            "Your accuracy went " + accDir + " by " + Math.abs(accDiff) + "% from your first to latest session.";
 
-    var spdFirst = spdValues[0], spdLast = spdValues[spdValues.length – 1];
-    var spdDiff = (spdLast – spdFirst).toFixed(1);
-    var spdDir = spdDiff >= 0 ? "increased" : "decreased";
-    document.getElementById("speed-summary").textContent =
-      "Your average time " + spdDir + " by " + Math.abs(spdDiff) + "s from your first to latest session.";
-  }
-});
-</script>
-{% endif %}
+          var spdFirst = spdValues[0],
+            spdLast = spdValues[spdValues.length– 1];
+          var spdDiff = (spdLast– spdFirst).toFixed(1);
+          var spdDir = spdDiff >= 0 ? "increased" : "decreased";
+          document.getElementById("speed-summary").textContent =
+            "Your average time " + spdDir + " by " + Math.abs(spdDiff) + "s from your first to latest session.";
+        }
+      });
+    </script>
+  {% endif %}
 {% endblock extra_js %}

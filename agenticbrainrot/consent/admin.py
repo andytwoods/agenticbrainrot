@@ -8,6 +8,7 @@ from .models import ConsentRecord
 from .models import OptionalConsentRecord
 
 
+@admin.action(description="Export selected as CSV")
 def export_as_csv(modeladmin, request, queryset):
     """Export selected records as CSV."""
     meta = modeladmin.model._meta  # noqa: SLF001
@@ -22,9 +23,6 @@ def export_as_csv(modeladmin, request, queryset):
         writer.writerow([getattr(obj, field) for field in field_names])
 
     return response
-
-
-export_as_csv.short_description = "Export selected as CSV"
 
 
 @admin.register(ConsentDocument)

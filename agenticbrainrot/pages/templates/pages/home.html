@@ -1,16 +1,21 @@
 {% extends "base.html" %}
+
 {% load static %}
 
 {# ── SEO: Primary ────────────────────────────────────────────────────────── #}
-{% block title %}Does Vibe Coding Erode Python Skills? | Can I Still Code{% endblock title %}
-
-{% block meta_description %}Join a longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills. Complete short monthly coding challenges, see your own progress, and contribute to peer-reviewed open research.{% endblock meta_description %}
-
+{% block title %}
+  Does Vibe Coding Erode Python Skills? | Can I Still Code
+{% endblock title %}
+{% block meta_description %}
+  Join a longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills. Complete short monthly coding challenges, see your own progress, and contribute to peer-reviewed open research.
+{% endblock meta_description %}
 {# ── SEO: Open Graph ─────────────────────────────────────────────────────── #}
-{% block og_title %}Does Vibe Coding Erode Python Skills? | Can I Still Code{% endblock og_title %}
-
-{% block og_description %}AI coding tools are everywhere  –  but are they quietly eroding our raw Python ability? Can I Still Code is an open citizen-science study that tracks your coding skills over time. Join free, complete monthly challenges, and help answer the big question.{% endblock og_description %}
-
+{% block og_title %}
+  Does Vibe Coding Erode Python Skills? | Can I Still Code
+{% endblock og_title %}
+{% block og_description %}
+  AI coding tools are everywhere  –  but are they quietly eroding our raw Python ability? Can I Still Code is an open citizen-science study that tracks your coding skills over time. Join free, complete monthly challenges, and help answer the big question.
+{% endblock og_description %}
 {#
   og_image / twitter_image  –  PLACEHOLDER
   Replace 'images/og/og-home.png' with a real 1200×630 PNG (or JPG < 5 MB).
@@ -18,104 +23,102 @@
   Tools: Canva, Figma, or any image editor. Keep text large enough to read at small sizes.
   Place the file at:  <project_root>/agenticbrainrot/static/images/og/og-home.png
 #}
-{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og/og-home.png' %}{% endblock og_image %}
-{% block og_image_alt %}Can I Still Code  –  a citizen-science study tracking whether vibe coding erodes Python developer skills{% endblock og_image_alt %}
-
+{% block og_image %}
+  {{ request.scheme }}://{{ request.get_host }}{% static 'images/og/og-home.png' %}
+{% endblock og_image %}
+{% block og_image_alt %}
+  Can I Still Code  –  a citizen-science study tracking whether vibe coding erodes Python developer skills
+{% endblock og_image_alt %}
 {# ── SEO: Twitter / X Card ───────────────────────────────────────────────── #}
-{% block twitter_title %}Does Vibe Coding Erode Python Skills? | Can I Still Code{% endblock twitter_title %}
-
-{% block twitter_description %}AI tools are everywhere  –  are they quietly eroding our raw coding ability? Join this free citizen-science study to track your Python skills over time and contribute to open research.{% endblock twitter_description %}
-
-{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og/og-home.png' %}{% endblock twitter_image %}
-{% block twitter_image_alt %}Can I Still Code  –  citizen-science study on vibe coding and Python skills{% endblock twitter_image_alt %}
-
+{% block twitter_title %}
+  Does Vibe Coding Erode Python Skills? | Can I Still Code
+{% endblock twitter_title %}
+{% block twitter_description %}
+  AI tools are everywhere  –  are they quietly eroding our raw coding ability? Join this free citizen-science study to track your Python skills over time and contribute to open research.
+{% endblock twitter_description %}
+{% block twitter_image %}
+  {{ request.scheme }}://{{ request.get_host }}{% static 'images/og/og-home.png' %}
+{% endblock twitter_image %}
+{% block twitter_image_alt %}
+  Can I Still Code  –  citizen-science study on vibe coding and Python skills
+{% endblock twitter_image_alt %}
 {# ── SEO: Structured Data (JSON-LD) ─────────────────────────────────────── #}
 {% block extra_head %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
+  <script type="application/ld+json">
     {
-      "@type": "WebSite",
-      "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
-      "url": "{{ request.scheme }}://{{ request.get_host }}/",
-      "name": "Can I Still Code",
-      "description": "A longitudinal citizen-science study measuring whether AI-assisted vibe coding leads to Python skill degradation over time.",
-      "inLanguage": "en-GB"
-    },
-    {
-      "@type": "ResearchProject",
-      "@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project",
-      "name": "Can I Still Code: Longitudinal Assessment of Coding Skills in the Vibe Coding Era",
-      "alternateName": "Can I Still Code",
-      "url": "{{ request.scheme }}://{{ request.get_host }}/",
-      "description": "A longitudinal, citizen-science research project designed to measure whether vibe coding  –  AI-assisted coding where the AI generates most of the logic  –  leads to degradation of Python developer skills over time. Participants complete short Python coding challenges monthly and self-report their AI tool usage. The resulting open dataset supports Bayesian multilevel regression modelling.",
-      "keywords": [
-        "vibe coding", "AI coding assistants", "GitHub Copilot", "Cursor", "Python skills",
-        "longitudinal study", "citizen science", "coding skill degradation", "software developer research",
-        "Bayesian analysis", "open science", "coding challenges"
-      ],
-      "subjectOf": {
-        "@type": "Dataset",
-        "name": "Can I Still Code Open Dataset",
-        "description": "Anonymised longitudinal dataset of Python coding challenge performance and self-reported AI tool usage, released after a 12-month embargo.",
-        "license": "https://creativecommons.org/licenses/by/4.0/"
-      },
-      "funder": {
-        "@type": "Organization",
-        "name": "Royal Holloway, University of London"
-      }
-    },
-    {
-      "@type": "WebPage",
-      "@id": "{{ request.scheme }}://{{ request.get_host }}/#webpage",
-      "url": "{{ request.scheme }}://{{ request.get_host }}/",
-      "name": "Does Vibe Coding Erode Python Skills? | Can I Still Code",
-      "isPartOf": { "@id": "{{ request.scheme }}://{{ request.get_host }}/#website" },
-      "about": { "@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project" },
-      "description": "Join a free longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills.",
-      "inLanguage": "en-GB"
+      "@context": "https://schema.org",
+      "@graph": [{
+        "@type": "WebSite",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
+        "name": "Can I Still Code",
+        "description": "A longitudinal citizen-science study measuring whether AI-assisted vibe coding leads to Python skill degradation over time.",
+        "inLanguage": "en-GB"
+      }, {
+        "@type": "ResearchProject",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project",
+        "name": "Can I Still Code: Longitudinal Assessment of Coding Skills in the Vibe Coding Era",
+        "alternateName": "Can I Still Code",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
+        "description": "A longitudinal, citizen-science research project designed to measure whether vibe coding  –  AI-assisted coding where the AI generates most of the logic  –  leads to degradation of Python developer skills over time. Participants complete short Python coding challenges monthly and self-report their AI tool usage. The resulting open dataset supports Bayesian multilevel regression modelling.",
+        "keywords": [
+          "vibe coding", "AI coding assistants", "GitHub Copilot", "Cursor", "Python skills",
+          "longitudinal study", "citizen science", "coding skill degradation", "software developer research",
+          "Bayesian analysis", "open science", "coding challenges"
+        ],
+        "subjectOf": {
+          "@type": "Dataset",
+          "name": "Can I Still Code Open Dataset",
+          "description": "Anonymised longitudinal dataset of Python coding challenge performance and self-reported AI tool usage, released after a 12-month embargo.",
+          "license": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "funder": {
+          "@type": "Organization",
+          "name": "Royal Holloway, University of London"
+        }
+      }, {
+        "@type": "WebPage",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#webpage",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
+        "name": "Does Vibe Coding Erode Python Skills? | Can I Still Code",
+        "isPartOf": {
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#website"
+        },
+        "about": {
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project"
+        },
+        "description": "Join a free longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills.",
+        "inLanguage": "en-GB"
+      }]
     }
-  ]
-}
-</script>
+  </script>
 {% endblock extra_head %}
-
 {% block content %}
   {# Hero Section #}
   <section class="hero is-medium hero-cta">
     <div class="hero-body">
       <div class="container has-text-centered">
         <p class="hero-eyebrow mb-3">citizen science &mdash; open data &mdash; Python</p>
-        <h1 class="title is-1 hero-title">
-          Can I Still Code?
-        </h1>
-        <p class="subtitle is-4 hero-subtitle mt-3">
-          Is vibe coding quietly eroding our Python skills?
-        </p>
-        <p class="is-size-5 mb-6 hero-body-text">
-          A longitudinal study tracking real developers over time.
-        </p>
+        <h1 class="title is-1 hero-title">Can I Still Code?</h1>
+        <p class="subtitle is-4 hero-subtitle mt-3">Is vibe coding quietly eroding our Python skills?</p>
+        <p class="is-size-5 mb-6 hero-body-text">A longitudinal study tracking real developers over time.</p>
         <div class="buttons is-centered">
           {% if ACCOUNT_ALLOW_REGISTRATION %}
-            <a href="{% url 'account_signup' %}" class="button is-large hero-btn-primary">
+            <a href="{% url 'account_signup' %}"
+               class="button is-large hero-btn-primary">
               <span class="icon"><i class="fas fa-flask"></i></span>
               <strong>Join the Study</strong>
             </a>
           {% endif %}
-          <a href="#about" class="button is-large hero-btn-secondary">
-            Learn More
-          </a>
+          <a href="#about" class="button is-large hero-btn-secondary">Learn More</a>
         </div>
         {% if not ACCOUNT_ALLOW_REGISTRATION %}
-          <div class="notification is-warning is-light mt-4" style="display: inline-block;">
-            Registration is currently closed. Check back soon!
-          </div>
+          <div class="notification is-warning is-light mt-4"
+               style="display: inline-block">Registration is currently closed. Check back soon!</div>
         {% endif %}
       </div>
     </div>
   </section>
-
   {# About Section #}
   <section id="about" class="section">
     <div class="container">
@@ -131,7 +134,6 @@
       </p>
     </div>
   </section>
-
   {# How it Works #}
   <section class="section">
     <div class="container">
@@ -151,7 +153,9 @@
             <i class="fas fa-code fa-3x"></i>
           </div>
           <h3 class="title is-4 mt-4">2. Assessment</h3>
-          <p>Complete short Python challenges periodically (no AI, no Googling!). <a href="{% url 'how_it_works' %}">How does this work?</a></p>
+          <p>
+            Complete short Python challenges periodically (no AI, no Googling!). <a href="{% url 'how_it_works' %}">How does this work?</a>
+          </p>
         </div>
         <div class="column has-text-centered">
           <div class="icon is-large has-text-primary">
@@ -165,12 +169,13 @@
             <i class="fas fa-calendar-check fa-3x"></i>
           </div>
           <h3 class="title is-4 mt-4">4. Longitudinal</h3>
-          <p>Return every 28 days (but just 2 sessions a year apart is useful!) to build a robust dataset of your skills over time.</p>
+          <p>
+            Return every 28 days (but just 2 sessions a year apart is useful!) to build a robust dataset of your skills over time.
+          </p>
         </div>
       </div>
     </div>
   </section>
-
   {# Call to Action #}
   <section class="section has-background-primary-light">
     <div class="container">
@@ -186,51 +191,48 @@
             {% else %}
               <span class="tag is-warning is-medium">Registration currently closed</span>
             {% endif %}
-            <a href="https://github.com/andytwoods/can-I-still-code/discussions" class="button is-link is-outlined is-large">Collaborator Interest</a>
+            <a href="https://github.com/andytwoods/can-I-still-code/discussions"
+               class="button is-link is-outlined is-large">Collaborator Interest</a>
           </div>
         </div>
       </div>
     </div>
   </section>
-
   {# Sponsors #}
   <section class="section">
     <div class="container has-text-centered">
       <h2 class="title is-3 mb-2">
         <span class="icon mr-2"><i class="fas fa-heart"></i></span>
-        Support This Research</h2>
+        Support This Research
+      </h2>
       {% if sponsors %}
         <div class="columns is-centered is-mobile is-multiline mt-4">
           {% for sponsor in sponsors %}
             <div class="column is-narrow">
-              {% if sponsor.url %}
-                <a href="{{ sponsor.url }}" target="_blank" rel="noopener">
-              {% endif %}2
-              {% if sponsor.logo %}
-                <figure class="image is-128x128 is-inline-block">
-                  <img src="{{ sponsor.logo.url }}"
-                       alt="{{ sponsor.name }}"
-                       title="{{ sponsor.name }}">
-                </figure>
-              {% else %}
-                <span class="tag is-large is-light">{{ sponsor.name }}</span>
-              {% endif %}
-              {% if sponsor.url %}
-                </a>
-              {% endif %}
+              {% if sponsor.url %}<a href="{{ sponsor.url }}" target="_blank" rel="noopener">{% endif %}
+                2
+                {% if sponsor.logo %}
+                  <figure class="image is-128x128 is-inline-block">
+                    <img src="{{ sponsor.logo.url }}"
+                         alt="{{ sponsor.name }}"
+                         title="{{ sponsor.name }}" />
+                  </figure>
+                {% else %}
+                  <span class="tag is-large is-light">{{ sponsor.name }}</span>
+                {% endif %}
+                {% if sponsor.url %}</a>{% endif %}
             </div>
           {% endfor %}
         </div>
       {% else %}
         <div class="columns is-centered mt-4">
           <div class="column is-6">
-            <div class="box has-text-centered" style="border: 2px dashed var(--bulma-border);">
+            <div class="box has-text-centered"
+                 style="border: 2px dashed var(--bulma-border)">
               <p class="has-text-grey mb-4">
                 Please help cover the costs of this app, including servers, storage, and ongoing development. With your support, I'd be able to bring in researchers and developers to add new features and further advance the science.
               </p>
-              <a href="mailto:{{ contact_email }}" class="button is-link is-outlined">
-                Get in touch
-              </a>
+              <a href="mailto:{{ contact_email }}" class="button is-link is-outlined">Get in touch</a>
             </div>
           </div>
         </div>

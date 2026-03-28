@@ -7,6 +7,7 @@ from .models import Challenge
 from .models import ChallengeAttempt
 
 
+@admin.action(description="Export selected as CSV")
 def export_attempts_csv(modeladmin, request, queryset):
     """Export selected challenge attempts as CSV."""
     response = HttpResponse(content_type="text/csv")
@@ -44,9 +45,6 @@ def export_attempts_csv(modeladmin, request, queryset):
             ],
         )
     return response
-
-
-export_attempts_csv.short_description = "Export selected as CSV"
 
 
 @admin.register(Challenge)

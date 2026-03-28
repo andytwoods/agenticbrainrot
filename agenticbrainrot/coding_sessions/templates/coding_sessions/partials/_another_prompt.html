@@ -8,15 +8,11 @@
             hx-post="{% url 'coding_sessions:session_view' session.pk %}"
             hx-target="#session-container"
             hx-swap="innerHTML"
-            hx-vals='{"action": "another"}'>
-      Another challenge
-    </button>
+            hx-vals='{"action": "another"}'>Another challenge</button>
     <button class="button is-light is-medium"
             hx-post="{% url 'coding_sessions:session_view' session.pk %}"
             hx-target="#session-container"
             hx-swap="innerHTML"
-            hx-vals='{"action": "done"}'>
-      I'm done for today
-    </button>
+            hx-vals='{"action": "done"}'>I'm done for today</button>
   </div>
 </div>

@@ -1,7 +1,7 @@
 Practice effects  –  the biggest methodological threat. Participants do coding challenges every month for a year+. That
 alone will improve their skills, especially on Tier 1–2
 problems. The non-vibe-coders will improve, the vibe-coders might improve less (or not at all)  –  but you're measuring a
-difference in improvement rates, not absolute decline.    
+difference in improvement rates, not absolute decline.
 This is fine statistically (the interaction term captures it), but it needs to be clearly framed in any write-up. You
 might also want a "no-practice" baseline  –  e.g. participants
 who do sessions every 3 months instead of monthly, to estimate the practice effect size.
@@ -76,4 +76,3 @@ and broken edge cases. Budget time for this.
 Sample size for subgroup analyses. 200 participants is enough for the main effect, but if you want to slice by industry,
 role, experience level, or LeetCode familiarity, you need
 larger cells. Consider whether recruitment should be targeted to ensure enough variance in key predictors.
-
