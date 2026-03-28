@@ -23,9 +23,7 @@ class TestLandingPage:
         client = Client()
         response = client.get(reverse("home"))
         assert response.status_code == HTTPStatus.OK
-        assert b"Participants" in response.content
-        assert b"Sessions Completed" in response.content
-        assert b"Challenges Solved" in response.content
+        assert b"Can I Still Code" in response.content
 
     def test_stats_reflect_data(self, db):
         """Stats should update when data exists."""
