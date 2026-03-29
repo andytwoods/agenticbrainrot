@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+</head>
+<body style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 1rem; color: #363636;">
+
+  <p>Dear {{ participant_name }},</p>
+
+  <p><strong>[PLACEHOLDER — replace with approved debrief text before sending.]</strong></p>
+
+  <h2>Thank you for taking part in Can I Still Code?</h2>
+
+  <p>
+    The data collection period for this phase of the project has now concluded. We wanted
+    to share some information about what we found and what happens next.
+  </p>
+
+  <h3>What the project was about</h3>
+  <p>
+    [Placeholder: brief lay summary of the research question — does AI-assisted vibe coding
+    affect unassisted Python skill over time?]
+  </p>
+
+  <h3>What we found</h3>
+  <p>
+    [Placeholder: high-level summary of findings, or a note that analysis is ongoing and results
+    will be published openly.]
+  </p>
+
+  <h3>What happens to your data</h3>
+  <p>
+    [Placeholder: remind participants of the anonymisation timeline, the CC BY 4.0 open release,
+    and how to request deletion if they change their mind.]
+  </p>
+
+  <h3>Next steps</h3>
+  <p>
+    [Placeholder: link to pre-registration, publication, or dataset once available. Invite
+    participants to follow the project on social media or GitHub.]
+  </p>
+
+  <p>
+    If you have any questions, please contact
+    <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.
+  </p>
+
+  <p>Thank you again for your contribution to open science.</p>
+
+  <p>
+    Dr Andy Woods<br />
+    Principal Investigator, Can I Still Code?<br />
+    Royal Holloway, University of London
+  </p>
+
+  <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;" />
+  <p style="font-size: 0.8rem; color: #888;">
+    You are receiving this email because you participated in the Can I Still Code? citizen
+    science project. To request deletion of your data, visit
+    <a href="{{ site_url }}{% url 'accounts:request_deletion' %}">your account settings</a>.
+  </p>
+
+</body>
+</html>

@@ -15,9 +15,9 @@ from agenticbrainrot.surveys.forms import build_survey_form
 from agenticbrainrot.surveys.models import SurveyQuestion
 from agenticbrainrot.surveys.models import SurveyResponse
 
-EXPECTED_PROFILE_QUESTIONS = 24
+EXPECTED_PROFILE_QUESTIONS = 28
 EXPECTED_POST_CHALLENGE_QUESTIONS = 3
-EXPECTED_POST_SESSION_QUESTIONS = 6
+EXPECTED_POST_SESSION_QUESTIONS = 9
 EXPECTED_RESPONSE_COUNT = 2
 
 

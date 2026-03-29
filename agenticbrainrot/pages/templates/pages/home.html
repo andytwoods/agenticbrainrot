@@ -6,9 +6,7 @@
 {% block title %}
   Does Vibe Coding Erode Python Skills? | Can I Still Code
 {% endblock title %}
-{% block meta_description %}
-  Join a longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills. Complete short monthly coding challenges, see your own progress, and contribute to peer-reviewed open research.
-{% endblock meta_description %}
+{% block meta_description %}Join a free longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills. Complete short monthly challenges, see your own progress, and contribute to open research.{% endblock meta_description %}
 {# ── SEO: Open Graph ─────────────────────────────────────────────────────── #}
 {% block og_title %}
   Does Vibe Coding Erode Python Skills? | Can I Still Code
@@ -47,49 +45,101 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [{
-        "@type": "WebSite",
-        "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
-        "url": "{{ request.scheme }}://{{ request.get_host }}/",
-        "name": "Can I Still Code",
-        "description": "A longitudinal citizen-science study measuring whether AI-assisted vibe coding leads to Python skill degradation over time.",
-        "inLanguage": "en-GB"
-      }, {
-        "@type": "ResearchProject",
-        "@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project",
-        "name": "Can I Still Code: Longitudinal Assessment of Coding Skills in the Vibe Coding Era",
-        "alternateName": "Can I Still Code",
-        "url": "{{ request.scheme }}://{{ request.get_host }}/",
-        "description": "A longitudinal, citizen-science research project designed to measure whether vibe coding  –  AI-assisted coding where the AI generates most of the logic  –  leads to degradation of Python developer skills over time. Participants complete short Python coding challenges monthly and self-report their AI tool usage. The resulting open dataset supports Bayesian multilevel regression modelling.",
-        "keywords": [
-          "vibe coding", "AI coding assistants", "GitHub Copilot", "Cursor", "Python skills",
-          "longitudinal study", "citizen science", "coding skill degradation", "software developer research",
-          "Bayesian analysis", "open science", "coding challenges"
-        ],
-        "subjectOf": {
-          "@type": "Dataset",
-          "name": "Can I Still Code Open Dataset",
-          "description": "Anonymised longitudinal dataset of Python coding challenge performance and self-reported AI tool usage, released after a 12-month embargo.",
-          "license": "https://creativecommons.org/licenses/by/4.0/"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "name": "Can I Still Code",
+          "description": "A longitudinal citizen-science study measuring whether AI-assisted vibe coding leads to Python skill degradation over time.",
+          "inLanguage": "en-GB",
+          "publisher": {
+            "@id": "{{ request.scheme }}://{{ request.get_host }}/#organisation"
+          }
         },
-        "funder": {
+        {
           "@type": "Organization",
-          "name": "Royal Holloway, University of London"
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#organisation",
+          "name": "Can I Still Code",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "sameAs": [
+            "https://github.com/andytwoods/can-I-still-code"
+          ],
+          "parentOrganization": {
+            "@type": "CollegeOrUniversity",
+            "name": "Royal Holloway, University of London",
+            "url": "https://www.royalholloway.ac.uk/"
+          }
+        },
+        {
+          "@type": "ResearchProject",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project",
+          "name": "Can I Still Code: Longitudinal Assessment of Coding Skills in the Vibe Coding Era",
+          "alternateName": "Can I Still Code",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "description": "A longitudinal, citizen-science research project measuring whether vibe coding – AI-assisted coding where the AI generates most of the logic – leads to degradation of Python developer skills over time. Participants complete short Python coding challenges every 28 days and self-report their AI tool usage. The resulting open dataset supports Bayesian multilevel regression modelling.",
+          "keywords": "vibe coding, AI coding assistants, GitHub Copilot, Cursor, Claude, Python skills, longitudinal study, citizen science, coding skill degradation, software developer research, Bayesian analysis, open science, coding challenges",
+          "sameAs": "https://github.com/andytwoods/can-I-still-code",
+          "funder": {
+            "@type": "CollegeOrUniversity",
+            "name": "Royal Holloway, University of London",
+            "url": "https://www.royalholloway.ac.uk/"
+          },
+          "subjectOf": {
+            "@type": "Dataset",
+            "name": "Can I Still Code Open Dataset",
+            "description": "Anonymised longitudinal dataset of Python coding challenge performance and self-reported AI tool usage, released after a 12-month embargo.",
+            "license": "https://creativecommons.org/licenses/by/4.0/",
+            "isAccessibleForFree": true
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#webpage",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "name": "Does Vibe Coding Erode Python Skills? | Can I Still Code",
+          "isPartOf": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#website"},
+          "about": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project"},
+          "publisher": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#organisation"},
+          "description": "Join a free longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills. Complete short monthly Python challenges and see your own skill trends over time.",
+          "inLanguage": "en-GB",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"}]
+          }
+        },
+        {
+          "@type": "HowTo",
+          "name": "How to participate in the Can I Still Code study",
+          "description": "Four simple steps to join the longitudinal Python skills study.",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Register",
+              "text": "Create a free account and complete a short profile survey about your coding background and AI tool usage."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Complete a coding assessment",
+              "text": "Solve short Python challenges in your browser – no AI assistance, no web searches. Takes around 30 minutes."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "View your personal insights",
+              "text": "Explore your accuracy and speed trends across sessions and see how your skills are changing over time."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Return every 28 days",
+              "text": "Repeat the assessment at least every 28 days to build a longitudinal dataset. Even just two sessions a year apart is valuable."
+            }
+          ]
         }
-      }, {
-        "@type": "WebPage",
-        "@id": "{{ request.scheme }}://{{ request.get_host }}/#webpage",
-        "url": "{{ request.scheme }}://{{ request.get_host }}/",
-        "name": "Does Vibe Coding Erode Python Skills? | Can I Still Code",
-        "isPartOf": {
-          "@id": "{{ request.scheme }}://{{ request.get_host }}/#website"
-        },
-        "about": {
-          "@id": "{{ request.scheme }}://{{ request.get_host }}/#research-project"
-        },
-        "description": "Join a free longitudinal citizen-science study tracking whether AI-assisted vibe coding erodes Python developer skills.",
-        "inLanguage": "en-GB"
-      }]
+      ]
     }
   </script>
 {% endblock extra_head %}
@@ -105,7 +155,7 @@
     </div>
     <div class="hero-body">
       <div class="container has-text-centered">
-        <p class="hero-eyebrow mb-3">citizen science &mdash; open data &mdash; Python</p>
+        <p class="hero-eyebrow mb-3">citizen science &ndash; open data &ndash; Python</p>
         <h1 class="title is-1 hero-title">Can I Still Code?</h1>
         <p class="subtitle is-4 hero-subtitle mt-3">Is vibe coding quietly eroding our Python skills?</p>
         <p class="is-size-5 mb-6 hero-body-text">A longitudinal study tracking real developers over time.</p>
@@ -139,6 +189,24 @@
       <p class="content is-size-5">
         <strong>Can I Still Code</strong> is a longitudinal, citizen-science research project designed to measure exactly that.
       </p>
+    </div>
+  </section>
+  {# Protective Behaviours #}
+  <section class="section has-background-primary-light">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column is-narrow has-text-centered" style="min-width: 6rem">
+          <span class="icon is-large has-text-primary">
+            <i class="fas fa-shield-alt fa-3x"></i>
+          </span>
+        </div>
+        <div class="column">
+          <h2 class="title is-3">Discovering what protects your skills</h2>
+          <p class="content is-size-5">
+            Beyond measuring decline, this project also explores what protects your skills – despite heavy AI use. By identifying what those developers have in common, we can surface concrete, evidence-backed habits and share them with the whole community.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
   {# How it Works #}
@@ -181,6 +249,18 @@
           </p>
         </div>
       </div>
+    </div>
+  </section>
+  {# Demo charts #}
+  <section class="section">
+    <div class="container">
+      <div class="has-text-centered mb-5">
+        <h2 class="title is-3">What your data looks like</h2>
+        <p class="subtitle is-5">
+          Example trends from a single participant.
+        </p>
+      </div>
+      {% include "pages/partials/_result_charts.html" with accuracy_chart_title="Accuracy (demo)" speed_chart_title="Time Taken (demo)" runs_chart_title="Submissions Per Challenge (demo)" %}
     </div>
   </section>
   {# Call to Action #}
@@ -250,7 +330,6 @@
   <script>
     (function() {
       const COMMANDS = [
-        "can you make a billion dollar business?",
         "deploy this app to the internet",
         "fix all the bugs please",
         "rewrite this in Rust",
@@ -418,3 +497,8 @@
     })();
   </script>
 {% endblock inline_javascript %}
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  {% include "pages/partials/_result_charts_js.html" %}
+{% endblock extra_js %}

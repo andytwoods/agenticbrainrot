@@ -574,6 +574,45 @@ POST_SESSION_QUESTIONS = [
         "is_required": False,
         "display_order": 6,
     },
+    {
+        "text": (
+            "Do you ever deliberately code without AI assistance, even when AI tools are available to you?"
+        ),
+        "question_type": "single_choice",
+        "choices": [
+            ["never", "No – I use AI whenever it is available"],
+            ["rarely", "Rarely (less than once a month)"],
+            ["sometimes", "Sometimes (once or twice a month)"],
+            ["often", "Often (most weeks)"],
+            ["always", "Always – I maintain a regular AI-free coding practice"],
+        ],
+        "context": "post_session",
+        "category": "Protective Behaviours",
+        "is_required": True,
+        "display_order": 7,
+    },
+    {
+        "text": (
+            "Roughly what percentage of your coding time do you keep deliberately AI-free by choice? "
+            "(Enter 0 if you do not deliberately code without AI.)"
+        ),
+        "question_type": "number",
+        "context": "post_session",
+        "category": "Protective Behaviours",
+        "is_required": True,
+        "display_order": 8,
+    },
+    {
+        "text": (
+            "Are you taking any specific steps to maintain or protect your coding skills alongside your use of AI tools? "
+            "If so, please describe what you do. (e.g. personal projects without AI, code katas, reading others' code, teaching, competitive programming, etc.)"
+        ),
+        "question_type": "text",
+        "context": "post_session",
+        "category": "Protective Behaviours",
+        "is_required": False,
+        "display_order": 9,
+    },
 ]
 
 

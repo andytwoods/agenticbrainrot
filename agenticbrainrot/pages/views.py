@@ -1,3 +1,6 @@
+import json
+from datetime import timedelta
+
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
@@ -15,6 +18,38 @@ from .models import Sponsor
 
 STATS_CACHE_KEY = "landing_page_stats"
 STATS_CACHE_TIMEOUT = 600  # 10 minutes
+
+# Okabe-Ito palette (matches dashboard)
+_CHART_COLOURS = {
+    "accuracy": "rgb(0, 114, 178)",
+    "speed": "rgb(230, 159, 0)",
+    "runs": "rgb(0, 158, 115)",
+    "accuracy_bg": "rgba(0, 114, 178, 0.1)",
+    "speed_bg": "rgba(230, 159, 0, 0.1)",
+    "runs_bg": "rgba(0, 158, 115, 0.1)",
+}
+
+# Demo trajectory: accuracy drifts down, time and runs drift up over 6 sessions
+_DEMO_SESSIONS = [
+    (0,   88.0, 42.0, 2.1),
+    (28,  85.0, 46.0, 2.4),
+    (59,  83.0, 49.0, 2.6),
+    (89,  79.0, 54.0, 3.0),
+    (120, 75.0, 61.0, 3.4),
+    (151, 71.0, 68.0, 3.8),
+]
+
+
+def _demo_chart_data():
+    """Return demo accuracy/speed/runs data anchored to today minus ~5 months."""
+    anchor = timezone.now() - timedelta(days=151)
+    accuracy, speed, runs = [], [], []
+    for days_offset, acc, spd, run in _DEMO_SESSIONS:
+        x = (anchor + timedelta(days=days_offset)).isoformat()
+        accuracy.append({"x": x, "y": acc})
+        speed.append({"x": x, "y": spd})
+        runs.append({"x": x, "y": run})
+    return accuracy, speed, runs
 
 
 class HomeView(TemplateView):
@@ -51,6 +86,12 @@ class HomeView(TemplateView):
         context["stats"] = stats
         context["sponsors"] = Sponsor.objects.filter(is_active=True)
         context["contact_email"] = settings.ADMINS[0][1]
+
+        acc, spd, runs = _demo_chart_data()
+        context["accuracy_data"] = json.dumps(acc)
+        context["speed_data"] = json.dumps(spd)
+        context["runs_data"] = json.dumps(runs)
+        context["chart_colours"] = json.dumps(_CHART_COLOURS)
         return context
 
 

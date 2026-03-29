@@ -1,0 +1,79 @@
+{# Chart.js initialisation. Requires Chart.js + chartjs-adapter-date-fns already loaded. #}
+{# Requires accuracy_data, speed_data, runs_data, chart_colours in context.              #}
+<script>
+  (function () {
+    {# djlint:off #}
+    var accuracyData = {{ accuracy_data|safe }};
+    var speedData    = {{ speed_data|safe }};
+    var runsData     = {{ runs_data|safe }};
+    var colours      = {{ chart_colours|safe }};
+    {# djlint:on #}
+
+    var accValues = accuracyData.map(function(d) { return d.y; });
+    var spdValues = speedData.map(function(d)    { return d.y; });
+    var runValues = runsData.map(function(d)      { return d.y; });
+
+    var isDark    = document.documentElement.getAttribute("data-theme") === "dark";
+    var textColor = isDark ? "#e0e0e0" : "#363636";
+    var gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
+
+    var timeAxis = {
+      type: "time",
+      time: {
+        displayFormats: { day: "d MMM", week: "d MMM", month: "MMM yyyy", quarter: "MMM yyyy", year: "yyyy" },
+        tooltipFormat: "d MMM yyyy"
+      },
+      ticks: { color: textColor },
+      grid:  { color: gridColor }
+    };
+
+    function makeChart(id, data, colour, colourBg, yMax) {
+      var opts = {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true, ticks: { color: textColor }, grid: { color: gridColor } },
+          x: timeAxis
+        },
+        plugins: { legend: { display: false } }
+      };
+      if (yMax !== undefined) { opts.scales.y.max = yMax; }
+      new Chart(document.getElementById(id), {
+        type: "line",
+        data: {
+          datasets: [{
+            data: data,
+            borderColor: colour,
+            backgroundColor: colourBg,
+            fill: true,
+            tension: 0.3,
+            pointStyle: "line",
+            pointRadius: 6,
+            rotation: 90
+          }]
+        },
+        options: opts
+      });
+    }
+
+    makeChart("accuracy-chart", accuracyData, colours.accuracy, colours.accuracy_bg, 100);
+    makeChart("speed-chart",    speedData,    colours.speed,    colours.speed_bg);
+    makeChart("runs-chart",     runsData,     colours.runs,     colours.runs_bg);
+
+    function setSummary(id, values, unit) {
+      var el = document.getElementById(id);
+      if (!el || !values.length) return;
+      var mn  = Math.min.apply(null, values).toFixed(1);
+      var mx  = Math.max.apply(null, values).toFixed(1);
+      var txt = "Range: " + mn + unit + " \u2013 " + mx + unit;
+      if (values.length > 1) {
+        var diff = (values[values.length - 1] - values[0]).toFixed(1);
+        txt += "  \u00b7  " + (diff >= 0 ? "+" : "") + diff + unit + " overall";
+      }
+      el.textContent = txt;
+    }
+
+    setSummary("accuracy-summary", accValues, "%");
+    setSummary("speed-summary",    spdValues, "s");
+    setSummary("runs-summary",     runValues, "");
+  })();
+</script>

@@ -152,12 +152,12 @@ class TestConsentView:
         participant,
         consent_doc,
     ):
-        """Consent page renders the active document."""
+        """Consent page renders the ethics agreement."""
         url = reverse("consent:give_consent")
         response = authenticated_client.get(url)
         assert response.status_code == HTTPStatus.OK
-        assert b"Study Consent" in response.content
-        assert b"You agree to participate" in response.content
+        assert b"Ethics Agreement" in response.content
+        assert b"v1" in response.content
 
     def test_consent_page_no_document(
         self,
@@ -240,12 +240,12 @@ class TestConsentView:
         authenticated_client,
         participant,
     ):
-        """Decline page explains they can return later."""
+        """Decline page explains they must accept or delete their account."""
         response = authenticated_client.get(
             reverse("consent:declined"),
         )
         assert response.status_code == HTTPStatus.OK
-        assert b"welcome to return" in response.content
+        assert b"delete your account" in response.content
 
     def test_re_consent_after_version_update(
         self,

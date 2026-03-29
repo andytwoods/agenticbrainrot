@@ -1,0 +1,31 @@
+{# Reusable chart canvases. Requires accuracy_data, speed_data, runs_data, chart_colours in context. #}
+{# JS initialisation lives in pages/partials/_result_charts_js.html — include that in extra_js. #}
+<div class="columns is-multiline">
+  <div class="column is-4">
+    <div class="box">
+      <h2 class="title is-5">{{ accuracy_chart_title|default:"Accuracy" }}</h2>
+      <canvas id="accuracy-chart"
+              aria-label="Line chart showing accuracy percentage over time"
+              role="img">Accuracy percentage over time.</canvas>
+      <p class="is-size-7 has-text-grey mt-2" id="accuracy-summary"></p>
+    </div>
+  </div>
+  <div class="column is-4">
+    <div class="box">
+      <h2 class="title is-5">{{ speed_chart_title|default:"Time Taken" }}</h2>
+      <canvas id="speed-chart"
+              aria-label="Line chart showing average time in seconds over time"
+              role="img">Average time per challenge in seconds over time.</canvas>
+      <p class="is-size-7 has-text-grey mt-2" id="speed-summary"></p>
+    </div>
+  </div>
+  <div class="column is-4">
+    <div class="box">
+      <h2 class="title is-5">{{ runs_chart_title|default:"Submissions Per Challenge" }}</h2>
+      <canvas id="runs-chart"
+              aria-label="Line chart showing average number of code runs per challenge over time"
+              role="img">Average runs per challenge over time.</canvas>
+      <p class="is-size-7 has-text-grey mt-2" id="runs-summary"></p>
+    </div>
+  </div>
+</div>

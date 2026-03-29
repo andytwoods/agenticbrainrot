@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 from .models import ConsentDocument
 from .models import ConsentRecord
+from .models import DebriefRecord
 from .models import OptionalConsentRecord
 
 
@@ -58,6 +59,14 @@ class ConsentRecordAdmin(admin.ModelAdmin):
     list_filter = ["consented", "consented_at"]
     search_fields = ["participant__user__email"]
     actions = [export_as_csv]
+
+
+@admin.register(DebriefRecord)
+class DebriefRecordAdmin(admin.ModelAdmin):
+    list_display = ["participant", "sent_at", "sent_by"]
+    list_filter = ["sent_at"]
+    search_fields = ["participant__user__email"]
+    readonly_fields = ["participant", "sent_at", "sent_by"]
 
 
 @admin.register(OptionalConsentRecord)
