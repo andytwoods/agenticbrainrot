@@ -108,7 +108,7 @@ class TestWithdrawal:
             update_fields=["withdrawn_at", "has_active_consent"],
         )
         # Consent gate should not redirect withdrawn participants
-        response = authenticated_client.get(reverse("home"))
+        response = authenticated_client.get(reverse("logged_in_home"))
         assert response.status_code == HTTPStatus.OK
 
     def test_htmx_withdraw_returns_partial(

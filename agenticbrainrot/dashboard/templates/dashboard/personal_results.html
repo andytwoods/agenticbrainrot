@@ -74,21 +74,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
-        var accuracyData = {
-          {
-            accuracy_data | safe
-          }
-        };
-        var speedData = {
-          {
-            speed_data | safe
-          }
-        };
-        var colours = {
-          {
-            chart_colours | safe
-          }
-        };
+        {# djlint:off #}
+        var accuracyData = {{ accuracy_data|safe }};
+        var speedData = {{ speed_data|safe }};
+        var colours = {{ chart_colours|safe }};
+        {# djlint:on #}
 
         var labels = accuracyData.map(function(d) {
           return d.x;
@@ -206,15 +196,15 @@
         // Text summaries
         if (accValues.length > 1) {
           var accFirst = accValues[0],
-            accLast = accValues[accValues.length– 1];
-          var accDiff = (accLast– accFirst).toFixed(1);
+            accLast = accValues[accValues.length - 1];
+          var accDiff = (accLast - accFirst).toFixed(1);
           var accDir = accDiff >= 0 ? "up" : "down";
           document.getElementById("accuracy-summary").textContent =
             "Your accuracy went " + accDir + " by " + Math.abs(accDiff) + "% from your first to latest session.";
 
           var spdFirst = spdValues[0],
-            spdLast = spdValues[spdValues.length– 1];
-          var spdDiff = (spdLast– spdFirst).toFixed(1);
+            spdLast = spdValues[spdValues.length - 1];
+          var spdDiff = (spdLast - spdFirst).toFixed(1);
           var spdDir = spdDiff >= 0 ? "increased" : "decreased";
           document.getElementById("speed-summary").textContent =
             "Your average time " + spdDir + " by " + Math.abs(spdDiff) + "s from your first to latest session.";

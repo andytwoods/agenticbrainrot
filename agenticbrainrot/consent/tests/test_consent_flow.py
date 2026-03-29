@@ -80,7 +80,7 @@ class TestConsentGateMiddleware:
             consent_document=consent_doc,
             consented=True,
         )
-        response = authenticated_client.get(reverse("home"))
+        response = authenticated_client.get(reverse("logged_in_home"))
         assert response.status_code == HTTPStatus.OK
 
     def test_consent_page_not_redirected(
@@ -141,7 +141,7 @@ class TestConsentGateMiddleware:
             email="staff@example.com",
             password="testpass123",
         )
-        response = client.get(reverse("home"))
+        response = client.get(reverse("logged_in_home"))
         assert response.status_code == HTTPStatus.OK
 
 

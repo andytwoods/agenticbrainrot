@@ -58,7 +58,7 @@ def _build_session_data(participant):
             avg_accuracy = 0
             avg_time = 0
 
-        label = f"Session {i}"
+        label = session.completed_at.strftime("%b '%y")
         date_str = session.completed_at.strftime("%d %b %Y")
 
         session_rows.append(
