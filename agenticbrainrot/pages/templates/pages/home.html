@@ -157,7 +157,7 @@
       <div class="container has-text-centered">
         <p class="hero-eyebrow mb-3">citizen science &ndash; open data &ndash; Python</p>
         <h1 class="title is-1 hero-title">Can I Still Code?</h1>
-        <p class="subtitle is-4 hero-subtitle mt-3">How is vibe coding changing our Python skills?</p>
+        <p class="subtitle is-4 hero-subtitle mt-3">How is  coding changing our Python skills?</p>
         <p class="is-size-5 mb-6 hero-body-text">A longitudinal project tracking real developers over time</p>
         <div class="buttons is-centered">
           {% if ACCOUNT_ALLOW_REGISTRATION %}
@@ -269,21 +269,26 @@
   {# Call to Action #}
   <section class="section has-background-primary-light">
     <div class="container">
-      <div class="columns is-vcentered">
-        <div class="column">
-          <h2 class="title is-3">Help us answer the big question</h2>
-          <p class="subtitle">We are looking for participants, researchers, and collaborators.</p>
-        </div>
-        <div class="column is-narrow">
-          <div class="buttons">
-            {% if ACCOUNT_ALLOW_REGISTRATION %}
-              <a href="{% url 'account_signup' %}" class="button is-primary is-large">Start Contributing</a>
-            {% else %}
-              <a href="{% url 'waitlist_signup' %}" class="button is-warning is-large">Get notified when we open</a>
-            {% endif %}
-            <a href="https://github.com/andytwoods/can-I-still-code/discussions"
-               class="button is-link is-outlined is-large">Collaborator Interest</a>
-          </div>
+      <div class="has-text-centered">
+        <h2 class="title is-3 mt-3">Help us answer these key questions</h2>
+        <p class="content is-size-5">We are looking for participants, researchers, and collaborators.</p>
+        <div class="buttons is-centered mt-4">
+          {% if ACCOUNT_ALLOW_REGISTRATION %}
+            <a href="{% url 'account_signup' %}" class="button is-primary is-medium">
+              <span class="icon"><i class="fas fa-flask"></i></span>
+              <span>Start Contributing</span>
+            </a>
+          {% else %}
+            <a href="{% url 'waitlist_signup' %}" class="button is-warning is-medium">
+              <span class="icon"><i class="fas fa-bell"></i></span>
+              <span>Get notified when we open</span>
+            </a>
+          {% endif %}
+          <a href="https://github.com/andytwoods/can-I-still-code/discussions"
+             class="button is-medium is-light">
+            <span class="icon"><i class="fab fa-github"></i></span>
+            <span>Collaborator Interest</span>
+          </a>
         </div>
       </div>
     </div>
