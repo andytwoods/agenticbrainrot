@@ -44,3 +44,10 @@ TEMPLATES[0]["OPTIONS"]["debug"] = True  # type: ignore[index]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "http://media.testserver/"
+
+# CAPTCHA
+# ------------------------------------------------------------------------------
+# Accept the literal "PASSED" as a valid answer so tests/e2e can submit the
+# signup form deterministically without solving a generated image.
+# https://django-simple-captcha.readthedocs.io/en/latest/usage.html#unit-testing
+CAPTCHA_TEST_MODE = True

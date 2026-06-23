@@ -174,15 +174,26 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
+        # Redefine Django's default `django` logger to drop the built-in
+        # `mail_admins` handler. Error reporting goes to Rollbar (via
+        # middleware), so admin error emails are redundant noise. ADMINS is
+        # left intact for the deliberate mail_admins() signup notification and
+        # contact-email fallbacks. propagate=False on the children below stops
+        # records bubbling back up to any surviving default handlers.
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
         "django.request": {
             "handlers": ["console"],
             "level": "ERROR",
-            "propagate": True,
+            "propagate": False,
         },
         "django.security.DisallowedHost": {
             "level": "ERROR",
             "handlers": ["console"],
-            "propagate": True,
+            "propagate": False,
         },
     },
 }

@@ -266,6 +266,17 @@ LOGGING = {
         },
     },
     "root": {"level": "INFO", "handlers": ["console"]},
+    "loggers": {
+        # Drop Django's built-in `mail_admins` handler so 5xx/security errors
+        # are not emailed to ADMINS. disable_existing_loggers is False, so the
+        # default `django` logger (which carries mail_admins) would otherwise
+        # survive and fire. Production reports errors via Rollbar instead.
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
 }
 
 
@@ -290,9 +301,20 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_ADAPTER = "agenticbrainrot.accounts.adapters.AccountAdapter"
+# Rate limits (defense-in-depth alongside the signup CAPTCHA). The signup
+# endpoint sends a confirmation email per submission, so the default
+# "20/m/ip" is far too generous against form-abuse / list-bombing.
+# https://docs.allauth.org/en/latest/account/configuration.html#rate-limits
+ACCOUNT_RATE_LIMITS = {
+    "signup": "5/h/ip",
+    "login_failed": "10/m/ip,5/300s/key",
+    "reset_password": "5/h/ip,3/h/key",
+    "confirm_email": "1/3m/key",
+}
 # https://docs.allauth.org/en/latest/account/forms.html
 ACCOUNT_FORMS = {
     "signup": "agenticbrainrot.accounts.forms.UserSignupForm",
+    "reset_password": "agenticbrainrot.accounts.forms.ResetPasswordFormWithCaptcha",
     "reset_password_from_key": "agenticbrainrot.accounts.forms.ResetPasswordKeyFormFixed",
 }
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
